@@ -1,0 +1,111 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  border-radius: var(--border-radius);
+}
+::-webkit-scrollbar-thumb {
+  background: #2A3647; 
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2A3647d0;
+  cursor: pointer;
+}
+
+:root {
+    --primary-color: #2A3647;
+    --primary-color-light: #2a364750;
+    --highligted-color: #29ABE2;
+    --menu-color:#42526E;
+    --border-color: #D1D1D1;
+    --border-radius: 8px;
+    --nav-link-color: #CDCDCD;
+    --error-color: #E60026;
+}
+
+a {
+    text-decoration: none;
+    font-family: InterRegular;
+    color: black;
+}
+
+.highlighted {
+    color: var(--highligted-color);
+}
+
+.no-decoration {
+    text-decoration: none;
+    list-style: none;
+}
+
+h1 {
+    font-size: 60px;
+    font-family: InterBold;
+}
+h2 {
+    font-size: 48px;
+    font-family: InterBold;
+}
+h3 {
+    font-size: 38px;
+}
+h4 {
+    font-size: 24px;
+    font-family: InterBold;
+    color: var(--menu-color);
+}
+
+button {
+    cursor: pointer;
+    background-color: unset;
+}
+
+button, input {
+    border: unset;
+}
+
+.hide {
+    opacity: 0;
+}
+
+/* Responsive Styling */
+
+@media (max-width: 768px) {
+    h1 {
+    font-size: 44px;
+    }
+    h2 {
+        font-size: 36px;
+    }
+    h3 {
+        font-size: 26px;
+    }
+    h4 {
+        font-size: 18px;
+    }
+}
+
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 38px;
+    }
+    h2 {
+        font-size: 32px;
+    }
+    h3 {
+        font-size: 24px;
+    }
+    h4 {
+        font-size: 18px;
+    }
+}
+

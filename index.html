@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join | Log in</title>
+    <script type="module" src="./js/authGuard.js"></script>
+    <link rel="stylesheet" href="/main.css" />
+    <link
+      rel="shortcut icon"
+      href="./assets/img/logo-light.svg"
+      type="image/x-icon"
+    />
+  </head>
+
+  <body onload="switchToLogin()">
+    <div id="animated-img-wrapper" class="animated-img-wrapper">
+      <img src="/assets/img/logo-dark.svg" class="animated-img" />
+    </div>
+
+    <header id="login-signup-navbar">
+      <nav>
+        <img
+          src="./assets/img/logo-dark.svg"
+          id="navbar-logo"
+          class="logo hide"
+        />
+        <div id="signup">
+          <p>Not a Join user?</p>
+          <button class="primary-btn btn" onclick="switchToSignup()">
+            Sign up
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main id="login-signup-main">
+      <section id="login-signup-section"></section>
+
+      <span id="message-box"></span>
+      <div id="signupResponsiv">
+        <p>Not a Join user?</p>
+        <button class="primary-btn btn" onclick="switchToSignup()">
+          Sign up
+        </button>
+      </div>
+    </main>
+
+    <footer>
+      <div id="login-signup-privacy" class="privacy">
+        <a href="./privacy.html">Privacy Policy</a>
+        <a href="./legal.html">Legal notice</a>
+      </div>
+    </footer>
+
+    <script src="./script.js"></script>
+    <script src="./js/templates.js"></script>
+    <script type="module" src="./js/authService.js"></script>
+  </body>
+</html>

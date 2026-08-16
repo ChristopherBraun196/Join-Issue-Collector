@@ -1,0 +1,290 @@
+#login-signup-main {
+  position: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: none;
+  min-height: calc(100vh - 400px);
+  padding-block: 40px;
+}
+
+#login-signup-privacy {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  gap: 16px;
+}
+
+footer {
+  max-height: 200px;
+  height: 100%;
+}
+
+#login-signup-privacy a {
+  color: #6d6d6d;
+  text-decoration: none;
+}
+#login-signup-privacy a:hover {
+  color: var(--highligted-color);
+  font-weight: bolder;
+}
+
+#login-signup-navbar {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 0 48px;
+}
+
+#login-signup-navbar nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 200px;
+  max-width: 1440px;
+  width: 100%;
+}
+
+#signup {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+#signup.hidden, #signupResponsiv.hidden {
+    display: none;
+}
+
+#login-signup-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 500px;
+  min-height: 350px;
+  background-color: white;
+  gap: 24px;
+  border-radius: 30px;
+  padding: 50px;
+
+  box-shadow: 0 0 30px rgba(130, 130, 130, 0.515);
+}
+
+#login-signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.form-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  width: 100%;
+}
+
+.spacer {
+  height: 3px;
+  width: 150px;
+  background-color: #29abe2;
+  border-radius: 10px;
+}
+
+.input-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.name-input,
+.email-input,
+.pwd-input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px #dbdcde;
+  border-style: solid;
+  padding: 0 12px;
+  width: 350px;
+  border-radius: 8px;
+}
+
+.input-icon {
+  width: 20px;
+  object-fit: cover;
+}
+
+.accept-input {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+#accept-btn.invalid {
+  outline: 2px solid var(--error-color);
+  border-radius: 3px;
+}
+
+#accept-error {
+  text-align: center;
+  padding-left: 0;
+}
+
+.login-btns {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 32px;
+}
+
+#guest-login-btn a {
+  color: #2a3647;
+}
+
+.field-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-error {
+  visibility: hidden;
+  color: var(--error-color);
+  font-size: 16px;
+  margin-top: 4px;
+  padding-left: 4px;
+  min-height: 20px;
+}
+
+.field-error.visible {
+  visibility: visible;
+}
+
+.pwd-toggle-btn {
+  display: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  line-height: 0;
+}
+
+.pwd-toggle-btn.visible {
+  display: flex;
+}
+
+.pwd-toggle-btn .eye-on {
+  display: none;
+}
+
+.pwd-toggle-btn.showing .eye-off {
+  display: none;
+}
+
+.pwd-toggle-btn.showing .eye-on {
+  display: block;
+}
+
+.pwd-lock-icon.hidden {
+  display: none;
+}
+
+.pwd-input input[type="text"] {
+  border: none;
+  outline: none;
+  padding: 0;
+}
+
+.email-input.invalid,
+.pwd-input.invalid,
+.name-input.invalid {
+  border-color: var(--error-color);
+}
+
+.back {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+}
+
+#signupResponsiv {
+  display: none;
+}
+
+@media (max-width: 575px) {
+  #login-signup-navbar nav{
+    height: 100px;
+  }
+
+  #login-signup-navbar{
+    padding-top: 37px;
+    padding-left: 37px;
+  }
+
+  #login-signup-navbar nav .logo{
+    height: 80px;
+  }
+
+  #login-signup-section {
+    width: 90%;
+    min-width: 310px;
+    padding: 50px 0px;
+
+  }
+
+  #login-signup-privacy{
+    height: 100px;
+  }
+
+
+
+  #login-signup-main{
+    padding-top:30px;
+  }
+     
+
+  #login-signup-form {
+    align-items: center;
+  }
+
+  .spacer {
+    width: 90px;
+  }
+
+  .btn {
+    font-size: 16px;
+  }
+
+  .name-input,
+  .email-input,
+  .pwd-input {
+    width: 290px;
+  }
+
+  .login-btns {
+    display: flex;
+    width: 50%;
+    gap: 12px;
+    flex-direction: column;
+  }
+
+  #signup {
+    display: none;
+  }
+
+  #signupResponsiv {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding-top: 46px;
+  }
+}

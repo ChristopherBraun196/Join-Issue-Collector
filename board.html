@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join | Board</title>
+  <link rel="shortcut icon" href="./assets/img/logo-light.svg" type="image/x-icon" />
+  <link rel="stylesheet" href="./main.css" />
+</head>
+
+<body onload="initBoard('board')">
+  <aside id="sidebar"></aside>
+
+  <main class="summary-add-task-board-main" id="board-main">
+    <section class="board-bar" >
+      <h1>Board</h1>
+      <div class="search-wrapper">
+        <div class="search-input-group">
+          <input id="searchTask" class="find-task" type="text" role="search" placeholder="Find Task"
+            oninput="findTask()" />
+          <div id="search-spacer"></div>
+          <button class="search-btn" onclick="findTask()">
+            <img src="./assets/icons/search.svg" class="search-icon" />
+          </button>
+        </div>
+        <button class="primary-btn add-task-btn" onclick="openAddTaskDialog('toDo')">
+          Add task +
+        </button>
+      </div>
+    </section>
+
+    <section class="board-bar-mobile">
+      <div id="board-header">
+        <h1>Board</h1>
+        <button class="add-task-btn-mobile" onclick="openAddTaskDialog('toDo')">+</button>
+      </div>
+      <div class="search-wrapper">
+        <div class="search-input-group">
+          <input id="searchTask" class="find-task" type="text" role="search" placeholder="Find Task"
+            oninput="findTask()" />
+          <div id="search-spacer"></div>
+          <button class="search-btn" onclick="findTask()">
+            <img src="./assets/icons/search.svg" class="search-icon" />
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="progress-board">
+      <div class="board-task">
+        <div class="board-task-header">
+          <h4>To do</h4>
+          <button class="plus-btn" onclick="openAddTaskDialog('toDo')">+</button>
+        </div>
+        <div class="board-task-body" data-column="toDo">
+          <button class="scroll-arrow arrow-up hidden" data-target="toDo" onclick="scrollColumn('toDo', -1)">
+            <svg width="16" height="16" viewBox="0 0 16 16"><polyline points="2,11 8,5 14,11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="no-tasks-placeholder hidden" id="placeholder-toDo">
+            <p class="p-no-task">No Tasks to do</p>
+          </div>
+          <div id="toDo" class="task-cards"></div>
+          <button class="scroll-arrow arrow-down hidden" data-target="toDo" onclick="scrollColumn('toDo', 1)">
+            <svg width="16" height="16" viewBox="0 0 16 16"><polyline points="2,5 8,11 14,5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="board-task">
+        <div class="board-task-header">
+          <h4>In progress</h4>
+          <button class="plus-btn" onclick="openAddTaskDialog('inProgress')">+</button>
+        </div>
+        <div class="board-task-body" data-column="inProgress">
+          <button class="scroll-arrow arrow-up hidden" data-target="inProgress" onclick="scrollColumn('inProgress', -1)">
+            <svg width="16" height="16" viewBox="0 0 16 16"><polyline points="2,11 8,5 14,11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="no-tasks-placeholder hidden" id="placeholder-inProgress">
+            <p class="p-no-task">No Tasks in Progress</p>
+          </div>
+          <div id="inProgress" class="task-cards"></div>
+          <button class="scroll-arrow arrow-down hidden" data-target="inProgress" onclick="scrollColumn('inProgress', 1)">
+            <svg width="16" height="16" viewBox="0 0 16 16"><polyline points="2,5 8,11 14,5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="board-task">
+        <div class="board-task-header">
+          <h4>Await feedback</h4>
+          <button class="plus-btn" onclick="openAddTaskDialog('await')">+</button>
+        </div>
+        <div class="board-task-body" data-column="await">
+          <button class="scroll-arrow arrow-up hidden" data-target="await" onclick="scrollColumn('await', -1)">
+            <svg width="16" height="16" viewBox="0 0 16 16"><polyline points="2,11 8,5 14,11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="no-tasks-placeholder hidden" id="placeholder-await">
+            <p class="p-no-task">No Task to await feedback</p>
+          </div>
+          <div id="await" class="task-cards"></div>
+          <button class="scroll-arrow arrow-down hidden" data-target="await" onclick="scrollColumn('await', 1)">
+            <svg width="16" height="16" viewBox="0 0 16 16"><polyline points="2,5 8,11 14,5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="board-task">
+        <div class="board-task-header">
+          <h4>Done</h4>
+        </div>
+        <div class="board-task-body" data-column="done">
+          <button class="scroll-arrow arrow-up hidden" data-target="done" onclick="scrollColumn('done', -1)">
+            <svg width="16" height="16" viewBox="0 0 16 16"><polyline points="2,11 8,5 14,11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="no-tasks-placeholder hidden" id="placeholder-done">
+            <p class="p-no-task">No Task is done</p>
+          </div>
+          <div id="done" class="task-cards"></div>
+          <button class="scroll-arrow arrow-down hidden" data-target="done" onclick="scrollColumn('done', 1)">
+            <svg width="16" height="16" viewBox="0 0 16 16"><polyline points="2,5 8,11 14,5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+    <span id="message-box"></span>
+  </main>
+  <dialog id="openDialogBoard"></dialog>
+
+  <script type="module" src="./js/authGuard.js"></script>
+  <script src="./script.js"></script>
+  <!-- <script src="./js/database.js"></script> -->
+  <script type="module" src="./js/database.js"></script>
+  <script src="./js/validation.js"></script>
+  <script src="./js/templates.js"></script>
+  <script src="./js/addTask.js"></script>
+  <script src="./js/addSubtask.js"></script>
+  <script src="./js/board.js"></script>
+  <script src="./js/boardTask.js"></script>
+</body>
+
+</html>

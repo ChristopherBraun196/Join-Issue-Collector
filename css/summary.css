@@ -1,0 +1,178 @@
+.summary_bubble {
+  padding: 16px 24px;
+  background-color: white;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.summary_bubble:hover {
+  background-color: #2f3e4e;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+  transform: scale(1.05);
+}
+
+.summary_bubble:hover a{
+  color: white;
+}
+
+.icon-wrapper {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.summary_bubble:hover:hover .icon-bg {
+  fill: white;
+  transition: 0.2s;
+}
+
+.summary_bubble:hover .icon-symbol {
+  fill: #2a3647;
+  transition: 0.2s;
+}
+
+.summary_bubble:hover .icon-symbol-done {
+  stroke: #2a3647;
+  transition: 0.2s;
+}
+
+.summary_bubble:hover #deadline {
+  color: white;
+  transition: 0.2s;
+}
+
+.summary_counter {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 20px;
+}
+
+.summary_bubble img {
+  width: 69px;
+  height: 69px;
+}
+
+.summary_grid {
+  padding-left: 100px;
+  padding-top: 50px;
+  max-width: 560px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.summary_row_first {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+#all-deadlines-counter { 
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+.summary_row_last {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  text-align: center;
+  gap: 28px;
+}
+
+#todo_count {
+  font-size: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+#done_count {
+  font-size: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+#board_count {
+  font-size: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+#progress_count {
+  font-size: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+#feedback_count {
+  font-size: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+#urgent_count {
+  font-size: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+#deadline {
+  font-size: 21px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #2a3647;
+}
+
+.summary_bubble .line {
+  background: linear-gradient(to bottom, #d1d1d1, #d1d1d1);
+  width: 2px;
+  height: 100px;
+  border-radius: 100px;
+}
+
+.summary_main_content {
+  display: flex;
+  align-items: center;
+}
+
+.welcome_msg {
+  padding-left: 80px;
+}
+
+#greeting-msg {
+  font-size: 47px;
+  text-align: center;
+}
+
+.morning_msg {
+  font-size: 47px;
+  color: #2a3647;
+  font-weight: 500;
+}
+
+.welcome_name {
+  font-size: 64px;
+  color: #29abe2;
+  font-weight: bold;
+  text-align: center;
+}
