@@ -4,3 +4,12 @@ js/firebaseAuth.js
 /FirebaseRules.js
 /notes
 /docs
+/logs
+.claude
+CLAUDE.md
+
+
+# n8n Data
+.env
+.n8n/
+*.credentials.json

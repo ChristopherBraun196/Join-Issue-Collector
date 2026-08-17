@@ -1,8 +1,10 @@
 let currentEditTaskId = null;
 let tasks = [];
 
-const COLUMNS = ["toDo", "inProgress", "await", "done"];
+const COLUMNS = ["triage", "toDo", "inProgress", "await", "done"];
+
 const COLUMN_LABELS = {
+  triage: "Triage",
   toDo: "To-do",
   inProgress: "In progress",
   await: "Await feedback",
@@ -36,6 +38,7 @@ async function initTasks() {
  * @returns {Promise<void>}
  */
 async function renderAll() {
+  await renderSection("triage");
   await renderSection("toDo");
   await renderSection("inProgress");
   await renderSection("await");
@@ -335,7 +338,7 @@ async function findTask() {
 }
 
 async function renderFilteredTasks(filteredTasks) {
-  const sections = ["toDo", "inProgress", "await", "done"];
+  const sections = ["triage", "toDo", "inProgress", "await", "done"];
 
   for (const section of sections) {
     const container = document.getElementById(section);
