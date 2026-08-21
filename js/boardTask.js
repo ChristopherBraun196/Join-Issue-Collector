@@ -9,11 +9,26 @@ async function openDialogBoard(id) {
   await initTasks();
   const element = tasks.find((t) => t.id === id);
   const assignedContacts = await getAssignedContacts(element.assignedTo);
+  const contactsData = (await loadData("/contacts")) || {};
+  const contactsList = Object.entries(contactsData).map(([id, contact]) => ({
+    ...contact,
+    id,
+  }));
+
+  const matchedCreator = contactsList.find(
+    (c) =>
+      (c.email &&
+        (c.email === element.creatorEmail || c.email === element.creator)) ||
+      (c.name &&
+        (c.name === element.creator || c.name === element.creatorName)),
+  );
+
   const dialogBoard = document.getElementById("openDialogBoard");
   dialogBoard.innerHTML = getDialogBoardTemplate(
     element,
     assignedContacts,
     element.subtasks,
+    matchedCreator,
   );
   dialogBoard.showModal();
   document.querySelector("body > main").style.overflowY = "hidden";
@@ -44,7 +59,9 @@ async function deleteTask(id) {
     const data = await loadData("/tasks");
     tasks = Object.entries(data).map(([id, task]) => ({ ...task, id }));
     renderAll();
-  } catch (error) {}
+  } catch (error) {
+    console.error("Fehler beim Löschen des Tasks:", error);
+  }
 }
 
 /**
@@ -152,7 +169,7 @@ async function toggleSubtask(subtaskIndex, isSubtaskCompleted, taskID) {
 }
 
 /**
-  * Calculates the subtask progress as a percentage.
+ * Calculates the subtask progress as a percentage.
  * @param {number} solved - The number of completed subtasks
  * @param {number} total - The total number of subtasks
  * @returns {number} The progress percentage (0–100)
@@ -167,6 +184,7 @@ function calcSubtaskProgress(solved, total) {
  * @returns {string} The formatted date string in DD/MM/YYYY format
  */
 function formatDate(date) {
+  if (!date || date === "null") return "No due date";
   const [year, month, day] = date.split("-");
   return `${day}/${month}/${year}`;
 }
@@ -416,6 +434,11 @@ async function toggleAssignedContact(event, contactId) {
   const checkbox = getCheckboxState(event);
   const element = tasks.find((t) => t.id === currentEditTaskId);
   let assignedTo = getNormalizedAssignedTo(element);
-  assignedTo = updateAssignedList(checkbox, assignedTo, contactId, event.currentTarget);
+  assignedTo = updateAssignedList(
+    checkbox,
+    assignedTo,
+    contactId,
+    event.currentTarget,
+  );
   await saveAndRefreshAssigned(currentEditTaskId, assignedTo);
 }

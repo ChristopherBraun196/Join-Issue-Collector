@@ -1,7 +1,15 @@
 let mobileActiveContact = null;
+let contactsArray = [];
 
 const AVATAR_COLORS = [
-  "#FF7043",  "#E91E8C",  "#9C27B0",  "#3F51B5",  "#00BCD4",  "#4CAF50",  "#FF9800",  "#795548",
+  "#FF7043",
+  "#E91E8C",
+  "#9C27B0",
+  "#3F51B5",
+  "#00BCD4",
+  "#4CAF50",
+  "#FF9800",
+  "#795548",
 ];
 
 /**
@@ -10,16 +18,16 @@ const AVATAR_COLORS = [
  * @param {string} message - The message text to display
  */
 function showMessage(message) {
-    const box = document.getElementById('message-box');
-    box.textContent = message;
-    box.style.opacity = '1';
-    box.style.transform = 'translate(-50%, 0)';
-    box.style.zIndex = '999';
-    setTimeout(() => {
-        box.style.opacity = '0';
-        box.style.transform = 'translate(-50%, 200px)';
-        box.style.zIndex = '0';
-    }, 2500);
+  const box = document.getElementById("message-box");
+  box.textContent = message;
+  box.style.opacity = "1";
+  box.style.transform = "translate(-50%, 0)";
+  box.style.zIndex = "999";
+  setTimeout(() => {
+    box.style.opacity = "0";
+    box.style.transform = "translate(-50%, 200px)";
+    box.style.zIndex = "0";
+  }, 2500);
 }
 
 /**
@@ -126,7 +134,11 @@ function createContactItem(contact) {
   const initials = getInitials(contact.name);
   const item = document.createElement("div");
   item.className = "contact-item";
-  item.innerHTML = getContactItemTemplate(contact, initials, contact.avatarColor);
+  item.innerHTML = getContactItemTemplate(
+    contact,
+    initials,
+    contact.avatarColor,
+  );
   item.addEventListener("click", (event) => openContactDetail(contact, event));
   return item;
 }
@@ -159,7 +171,7 @@ function buildContactList(grouped) {
     .forEach((letter) => {
       list.appendChild(createLetterDivider(letter));
       grouped[letter].forEach((contact) =>
-        list.appendChild(createContactItem(contact))
+        list.appendChild(createContactItem(contact)),
       );
     });
   return list;
@@ -185,11 +197,13 @@ async function loadContacts() {
   try {
     const data = await loadData("/contacts");
     if (!data) return;
-    const contacts = Object.entries(data).map(([id, contact]) => ({
+    
+    contactsArray = Object.entries(data).map(([id, contact]) => ({
       ...contact,
       id,
     }));
-    renderContacts(contacts);
+
+    renderContacts(contactsArray);
   } catch (error) {
     console.error("Fehler beim Laden der Kontakte:", error);
   }
@@ -221,7 +235,11 @@ function appendContactDetail(contact) {
   const initials = getInitials(contact.name);
   const detail = document.createElement("div");
   detail.className = "contact-detail";
-  detail.innerHTML = getContactDetailTemplate(contact, initials, contact.avatarColor);
+  detail.innerHTML = getContactDetailTemplate(
+    contact,
+    initials,
+    contact.avatarColor,
+  );
   main.appendChild(detail);
 }
 
@@ -312,7 +330,9 @@ function fillEditDialogInputs(currentContact) {
   document.getElementById("input-name").value = currentContact?.name || "";
   document.getElementById("input-email").value = currentContact?.email || "";
   const phoneEl = document.getElementById("detail-phone");
-  document.getElementById("input-phone").value = phoneEl ? phoneEl.textContent : "";
+  document.getElementById("input-phone").value = phoneEl
+    ? phoneEl.textContent
+    : "";
 }
 
 /**
@@ -432,7 +452,7 @@ function showError(inputId, errorId, message) {
  */
 function clearErrors() {
   [
-    { inputId: "input-name",  errorId: "err-name"  },
+    { inputId: "input-name", errorId: "err-name" },
     { inputId: "input-email", errorId: "err-email" },
     { inputId: "input-phone", errorId: "err-phone" },
   ].forEach(({ inputId, errorId }) => {

@@ -361,12 +361,17 @@ async function getToDoTemplate(
  * @param {Object[]} subtasks - Array of subtask objects
  * @returns {string} HTML string of the task detail dialog
  */
-function getDialogBoardTemplate(element, assignedContacts, subtasks) {
+function getDialogBoardTemplate(
+  element,
+  assignedContacts,
+  subtasks,
+  matchedCreator,
+) {
   return `
     <header>
         <div class="flex-sb">
             <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
-            ${element.isAiGenerated ? '<span class="ai-badge">✨ Ai-generated ticket</span>' : ""}
+            ${element.isAiGenerated ? '<span class="ai-badge"><img src="./assets/icons/wand_stars.svg" alt="AI Icon"> Ai-generated</span>' : ""}
             <button onclick="closeDialogBoard('${element.status}')">✕</button>
         </div>
         <h2>${element.title}</h2>
@@ -374,11 +379,19 @@ function getDialogBoardTemplate(element, assignedContacts, subtasks) {
     <main>
         <p>${element.description}</p>
         <p class="creator-type-badge ${element.creatorType === "external" ? "creator-type-external" : "creator-type-internal"}">
-            ${element.creatorType === "external" ? "🌐 Extern" : "👥 Member"}
+           ${
+             element.creatorType === "external"
+               ? '<img src="./assets/icons/global.svg" alt="Global"> Extern'
+               : '<img src="./assets/icons/member.svg" alt="Member"> Member'
+           }
         </p>
         <p class="creator-row">
-            <span>Creator: ${element.creatorName || "Unknown"}</span>
-            ${element.creatorType === "external" ? `<a href="mailto:${element.creatorEmail || ""}" class="creator-action">📧 E-mail</a>` : `<a href="#" class="creator-action">👤 Profil</a>`}
+            <span>Creator: ${element.creatorName || element.creator || "Unknown"}</span>
+            ${
+              element.creatorType === "external"
+                ? `<a href="mailto:${element.creatorEmail || ""}" class="creator-action"><img src="./assets/icons/attach_email.svg" alt="Email"> E-mail</a>`
+                : `<a href="./contacts.html?id=${matchedCreator?.id || ""}" class="creator-action"><img src="./assets/icons/member.svg" alt="Member"> Profil</a>`
+            }
         </p>
         <p><span>Due date:</span><span>${formatDate(element.dueDate)}</span></p>
         <p>
