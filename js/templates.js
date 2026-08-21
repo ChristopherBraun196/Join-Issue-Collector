@@ -364,15 +364,23 @@ async function getToDoTemplate(
 function getDialogBoardTemplate(element, assignedContacts, subtasks) {
   return `
     <header>
-        <div class="flex-sb">     
+        <div class="flex-sb">
             <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
+            ${element.isAiGenerated ? '<span class="ai-badge">✨ Ai-generated ticket</span>' : ""}
             <button onclick="closeDialogBoard('${element.status}')">✕</button>
-        </div> 
+        </div>
         <h2>${element.title}</h2>
     </header>
     <main>
         <p>${element.description}</p>
-        <p><span>Due date:</span><span>${formatDate(element.dueDate)}</span></p>      
+        <p class="creator-type-badge ${element.creatorType === "external" ? "creator-type-external" : "creator-type-internal"}">
+            ${element.creatorType === "external" ? "🌐 Extern" : "👥 Member"}
+        </p>
+        <p class="creator-row">
+            <span>Creator: ${element.creatorName || "Unknown"}</span>
+            ${element.creatorType === "external" ? `<a href="mailto:${element.creatorEmail || ""}" class="creator-action">📧 E-mail</a>` : `<a href="#" class="creator-action">👤 Profil</a>`}
+        </p>
+        <p><span>Due date:</span><span>${formatDate(element.dueDate)}</span></p>
         <p>
             <span>Priority:</span>
             <span>${capitalize(element["priority"])} <img src="./assets/icons/priority-${element["priority"]}.svg" /></span>
@@ -385,7 +393,7 @@ function getDialogBoardTemplate(element, assignedContacts, subtasks) {
             <p>Subtasks</p>
             <ul id="subtasks">
                 ${checkIfSubtasksAvaiable(subtasks, element.id)}
-            </ul>        
+            </ul>
         </div>
     </main>
     <footer>
@@ -394,14 +402,13 @@ function getDialogBoardTemplate(element, assignedContacts, subtasks) {
                 <img src="./assets/icons/delete.svg" alt="delete Button">Delete
             </button>
             <div class="dialog-actions-divider"></div>
-           <button class="delete-edit-button" onclick="openEditTask('${element.id}')">
-    <img src="./assets/icons/edit.svg" alt="edit Button">Edit
-</button>
+            <button class="delete-edit-button" onclick="openEditTask('${element.id}')">
+                <img src="./assets/icons/edit.svg" alt="edit Button">Edit
+            </button>
         </div>
     </footer>
   `;
 }
-
 
 /**
  * Returns the HTML template for an assigned contact in the task dialog.
@@ -670,7 +677,7 @@ function getSubtaskEditingStateTemplate(currentText) {
  * @returns {string} HTML string with delete and confirm action buttons
  */
 function getSubtaskEditActionsTemplate() {
-    return `
+  return `
         <button class="subtask-icon-btn" onclick="removeSubtask(this)" type="button">
             <img src="./assets/icons/delete.svg" alt="Delete">
         </button>

@@ -30,32 +30,6 @@
   }
 }
 
-.stakeholder-top-bar {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-bottom: 80px;
-
-  @media (max-width: 768px) {
-    margin-bottom: 40px;
-  }
-
-  .back-link img {
-    height: 20px;
-    filter: brightness(0);
-  }
-  #requestCounter {
-    font-size: 22px;
-    color: #177da8;
-    font-weight: 600;
-    margin: 0;
-
-    @media (max-width: 480px) {
-      font-size: 16px;
-    }
-  }
-}
-
 #stakeholderMain {
   position: static;
   right: auto;
@@ -71,79 +45,167 @@
   @media (max-width: 480px) {
     padding: 24px 20px;
   }
+}
 
-  h1 {
-    text-align: center;
-    font-size: 64px;
-    margin-bottom: 40px;
+.stakeholder-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "arrow    counter"
+    "heading  heading"
+    "intro    image"
+    "rest     image";
+  align-items: center;
+  gap: 24px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
 
-    @media (max-width: 768px) {
-      font-size: 40px;
-    }
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "heading arrow"
+      "counter counter"
+      "intro   intro"
+      "image   image"
+      "rest    rest";
+    align-items: start;
+    gap: 16px;
+  }
+}
+
+.area-heading {
+  grid-area: heading;
+  text-align: center;
+  font-size: 64px;
+  margin: 0;
+
+  @media (max-width: 768px) {
+    text-align: left;
+    font-size: 40px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 32px;
+  }
+}
+
+.area-arrow {
+  grid-area: arrow;
+  justify-self: start;
+
+  @media (max-width: 768px) {
+    justify-self: end;
+    align-self: center;
+  }
+
+  img {
+    height: 20px;
+    filter: brightness(0);
+  }
+}
+
+.area-counter {
+  grid-area: counter;
+  justify-self: end;
+  font-size: 22px;
+  font-weight: 400;
+  color: #177da8;
+  margin: 0;
+
+  .counter-number {
+    font-family: OpenSansBold;
+  }
+
+  @media (max-width: 768px) {
+    justify-self: start;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
+}
+
+.stakeholder-layout.limit-reached .area-counter {
+  color: #c0392b;
+}
+
+.area-intro {
+  grid-area: intro;
+  font-size: 24px;
+  margin: 0;
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
+}
+
+.area-image {
+  grid-area: image;
+  max-width: 520px;
+  width: 100%;
+  height: auto;
+  justify-self: center;
+
+  @media (max-width: 768px) {
+    max-width: 320px;
+  }
+
+  @media (max-width: 480px) {
+    max-width: 240px;
+  }
+}
+
+.area-rest {
+  grid-area: rest;
+
+  p {
+    font-size: 18px;
+    margin: 0 0 20px;
+    line-height: 1.5;
 
     @media (max-width: 480px) {
-      font-size: 28px;
-      margin-bottom: 24px;
-    }
-  }
-
-  section {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 48px;
-    max-width: 1200px;
-    margin: 0 auto;
-
-    @media (max-width: 768px) {
-      flex-direction: column-reverse;
-      text-align: center;
-      gap: 32px;
-    }
-  }
-
-  .stakeholder-text {
-    max-width: 560px;
-
-    p:first-child {
-      font-size: 24px;
-
-      @media (max-width: 480px) {
-        font-size: 20px;
-      }
-    }
-
-    p {
-      font-size: 18px;
-      margin-bottom: 20px;
-      line-height: 1.5;
-
-      @media (max-width: 480px) {
-        font-size: 16px;
-      }
-    }
-  }
-
-  #stakeholderIllustration {
-    max-width: 520px;
-    width: 100%;
-    height: auto;
-
-    @media (max-width: 768px) {
-      max-width: 320px;
-    }
-
-    @media (max-width: 480px) {
-      max-width: 240px;
+      font-size: 14px;
     }
   }
 }
 
-#createRequestBtn {
+.state-limit {
+  display: none;
+}
+
+.stakeholder-layout.limit-reached {
+  .state-normal {
+    display: none;
+  }
+
+  .state-limit {
+    display: block;
+  }
+}
+
+.area-warning {
+  background-color: #fde2e1;
+  color: black;
+  font-weight: 600;
+  padding: 16px 20px;
+  border-radius: var(--border-radius);
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+    padding: 12px 16px;
+  }
+}
+
+#createRequestBtn,
+#sendEmailBtn {
   margin-top: 32px;
   font-weight: 400;
 
   @media (max-width: 480px) {
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
     font-size: 18px;
     height: 44px;
     line-height: 44px;
@@ -153,6 +215,10 @@
     height: 12px;
     margin-left: 8px;
     vertical-align: middle;
+
+    @media (max-width: 480px) {
+      display: none;
+    }
   }
 }
 

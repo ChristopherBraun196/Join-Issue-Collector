@@ -22,3 +22,18 @@
   font-family: OpenSansRegular;
   src: url("../assets/fonts/Open_Sans/static/OpenSans-Regular.ttf");
 }
+
+@font-face {
+  font-family: OpenSansBold;
+  src: url("../assets/fonts/Open_Sans/static/OpenSans-Bold.ttf");
+}
+
+@font-face {
+  font-family: OpenSansExtraBold;
+  src: url("../assets/fonts/Open_Sans/static/OpenSans-ExtraBold.ttf");
+}
+
+@font-face {
+  font-family: OpenSansMedium;
+  src: url("../assets/fonts/Open_Sans/static/OpenSans-Medium.ttf");
+}

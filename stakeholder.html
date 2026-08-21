@@ -16,18 +16,30 @@
       <img src="./assets/img/logo-dark.svg" alt="Join logo" class="logo" />
     </header>
     <main id="stakeholderMain">
-      <div class="stakeholder-top-bar">
-        <a href="./welcome.html" class="back-link">
+      <section
+        class="stakeholder-layout"
+        id="stakeholderLayout"
+        aria-labelledby="stakeholderHeading"
+      >
+        <h1 id="stakeholderHeading" class="area-heading">Welcome</h1>
+        <a href="./welcome.html" class="back-link area-arrow">
           <img src="./assets/icons/arrow-back.svg" alt="Back to welcome page" />
         </a>
-        <p id="requestCounter">0 of 10 requests used today</p>
-      </div>
-      <h1 id="stakeholderHeading">Welcome</h1>
-      <section aria-labelledby="stakeholderHeading">
-        <div class="stakeholder-text">
-          <p>
-            Easily create a ticket by sending an email — no extra steps needed.
-          </p>
+        <p id="requestCounter" class="area-counter">
+          <span class="counter-number"><strong>0</strong></span> of
+          <span class="counter-number"><strong>10</strong></span> requests used
+        </p>
+
+        <p class="area-intro state-normal">
+          Easily create a ticket by sending an email — no extra steps needed.
+        </p>
+        <img
+          src="./assets/img/img_person_0.png"
+          alt=""
+          id="stakeholderIllustration"
+          class="area-image state-normal"
+        />
+        <div class="area-rest state-normal">
           <p>
             On this platform, you can submit your feature requests via email.
             Our AI system will automatically generate a ticket with a deadline
@@ -46,11 +58,25 @@
             <img src="./assets/icons/check.svg" alt="" />
           </a>
         </div>
+
+        <div class="area-intro area-warning state-limit">
+          The daily 10-request limit has been reached!
+        </div>
         <img
-          src="./assets/img/img_person_0.png"
+          src="./assets/img/img_person_10.png"
           alt=""
-          id="stakeholderIllustration"
+          class="area-image state-limit"
         />
+        <div class="area-rest state-limit">
+          <p>
+            Need more? No worries — you can still send emails, but our team will
+            review them manually instead of using AI to create tickets.
+          </p>
+          <a href="#" id="sendEmailBtn" class="welcome-btn welcome-btn-primary"
+            >Send an email
+            <img src="./assets/icons/check.svg" alt="" />
+          </a>
+        </div>
       </section>
     </main>
 

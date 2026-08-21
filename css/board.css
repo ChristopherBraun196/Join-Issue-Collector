@@ -2,7 +2,6 @@
   max-height: calc(100% - 100px);
 }
 
-
 .board-bar {
   display: flex;
   align-items: center;
@@ -135,7 +134,6 @@ input.find-task {
   padding-bottom: 12px;
 }
 
-
 .task-card {
   background: #fff;
   border-radius: 16px;
@@ -160,14 +158,51 @@ input.find-task {
   margin-bottom: 16px;
 }
 
-.category-badge {
-  display: inline-block;
-  color: #fff;
-  font-size: 16px;
+.ai-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
   font-weight: 600;
-  width: 160px;
+  color: #7b5fe0;
+}
+
+.creator-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
   border-radius: var(--border-radius);
   padding: 4px 12px;
+  width: fit-content;
+}
+
+.creator-type-external {
+  background-color: #e8ecb0;
+  color: #6b6b2e;
+}
+
+.creator-type-internal {
+  background-color: #b8e8c4;
+  color: #1f6b3a;
+}
+
+.creator-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.creator-action {
+  font-size: 14px;
+  color: var(--highligted-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.creator-action:hover {
+  text-decoration: underline;
 }
 
 .task-title {
@@ -330,7 +365,7 @@ dialog#openDialogBoard {
   top: 50%;
   left: calc(240px + min(100vw - 240px, 1440px) / 2);
   padding: 32px;
-  width: 100%;  
+  width: 100%;
   max-width: 500px;
   max-height: min(800px, calc(100vh - 120px));
   overflow-y: auto;
