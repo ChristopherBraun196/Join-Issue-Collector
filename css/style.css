@@ -545,8 +545,6 @@ main {
 @media (max-width: 575px) {
   .summary_row_first,
   .summary_row_last {
-    display: flex;
-    flex-direction: column;
     gap: 16px;
   }
 }
@@ -558,21 +556,6 @@ main {
 
   .add-task-form {
     padding: 20px;
-  }
-
-  .summary_row_first {
-    flex-direction: column;
-  }
-
-  #all-deadlines-counter {
-    flex-direction: row;
-  }
-
-  #deadline-bubble {
-    flex-direction: column;
-  }
-  #deadline-bubble .line {
-    display: none;
   }
 }
 

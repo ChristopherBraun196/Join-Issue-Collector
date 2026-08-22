@@ -7,6 +7,12 @@
   justify-content: center;
   gap: 20px;
   min-width: 0;
+
+  @media (max-width: 750px) {
+    padding: 12px 14px;
+    gap: 10px;
+    border-radius: 20px;
+  }
 }
 
 .summary_bubble:hover {
@@ -69,6 +75,14 @@
   display: flex;
   flex-direction: column;
   gap: 28px;
+
+  @media (max-width: 750px) {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 24px;
+    max-width: 100%;
+    gap: 16px;
+  }
 }
 
 .summary_row_first {
@@ -205,4 +219,38 @@
   -webkit-background-clip: unset;
   background-clip: unset;
   color: white;
+}
+
+@media (max-width: 750px) {
+  #todo_count,
+  #done_count,
+  #board_count,
+  #progress_count,
+  #feedback_count,
+  #urgent_count,
+  #email_requests_count {
+    font-size: 32px;
+  }
+
+  #deadline,
+  .summary_counter {
+    font-size: 14px;
+  }
+
+  .summary_bubble img,
+  .summary_bubble svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .summary_bubble .line {
+    height: 50px;
+  }
+}
+
+@media (max-width: 400px) {
+  .summary_row_second {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
 }

@@ -2,6 +2,7 @@
  * Live-updates the stakeholder landing page's daily request counter.
  * Listens to Firebase's /emailRequestCount/{today} (written by the n8n workflow)
  * and toggles the "limit-reached" state once today's count hits the daily cap of 10.
+ * @module stakeholder
  */
 import {
   onValue,
@@ -23,7 +24,7 @@ const currentCount = document
 const stakeholderLayout = document.querySelector("#stakeholderLayout");
 
 /**
- * @param {import("firebase/database").DataSnapshot} snapshot - Snapshot of today's /emailRequestCount/{today} node
+ * @param {Object} snapshot - Firebase DataSnapshot of today's /emailRequestCount/{today} node
  */
 onValue(counterReference, (snapshot) => {
   const count = snapshot.val()?.count ?? 0;
