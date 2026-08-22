@@ -76,7 +76,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCRA1gnrLr8YZWf4V5pwVXQ2zJEHKTOn-g",
+        "url": "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=YOUR_FIREBASE_API_KEY",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "{\"returnSecureToken\": true}",
@@ -94,7 +94,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCRA1gnrLr8YZWf4V5pwVXQ2zJEHKTOn-g",
+        "url": "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=YOUR_FIREBASE_API_KEY",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "{\"returnSecureToken\": true}",
