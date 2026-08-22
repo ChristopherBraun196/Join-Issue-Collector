@@ -4,7 +4,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=You are an assistant that analyzes incoming feature request or bug report emails for a Kanban board tool called \"Join\".\n\nAnalyze the following email and extract the following information. Respond with ONLY a valid JSON object (no markdown, no explanation), in this exact format:\n\n{\n  \"category\": \"Technical Task\" or \"User Story\",\n  \"title\": \"a short, concise ticket title\",\n  \"priority\": \"urgent\" or \"medium\" or \"low\",\n  \"deadline\": \"YYYY-MM-DD\" or null if no deadline is mentioned\n}\n\nRules for priority: use \"urgent\" if the email mentions urgency, blocking issues, or critical bugs. Use \"low\" if the request seems minor or nice-to-have. Otherwise use \"medium\".\n\nEmail subject: {{ $('Email Trigger (IMAP)').first().json.subject }}\nEmail sender: {{ $('Email Trigger (IMAP)').first().json.from }}\nEmail body:\n{{ $('Email Trigger (IMAP)').first().json.textPlain }}",
+        "text": "=You are an assistant that analyzes incoming feature request or bug report emails for a Kanban board tool called \"Join\".\n\nAnalyze the following email and extract the following information. Respond with ONLY a valid JSON object (no markdown, no explanation), in this exact format:\n\n{\n  \"category\": \"Technical Task\" or \"User Story\",\n  \"title\": \"a short, concise ticket title\",\n  \"priority\": \"urgent\" or \"medium\" or \"low\",\n  \"deadline\": \"YYYY-MM-DD\" or null if no deadline is mentioned,\n  \"subtasks\": [\"short subtask 1\", \"short subtask 2\"] or [] if none are mentioned,\n  \"description\": \"a short, factual summary (2-4 sentences) of what is being requested or reported, written in your own words\"\n}\n\nRules for priority: use \"urgent\" if the email mentions urgency, blocking issues, or critical bugs. Use \"low\" if the request seems minor or nice-to-have. Otherwise use \"medium\".\n\nRules for subtasks: extract any explicitly mentioned steps, items, or sub-tasks from the email as short strings. If none are mentioned, use an empty array.\n\nRules for description: summarize the email in your own words, focusing only on the relevant facts (what is broken, what is requested, important context). Keep it concise — do not copy large chunks of the original email text.\n\nImportant: Write the title, description, and subtasks in the same language the email itself is written in. Do not translate to English.\n\nEmail subject: {{ $('Email Trigger (IMAP)').first().json.subject }}\nEmail sender: {{ $('Email Trigger (IMAP)').first().json.from }}\nEmail body:\n{{ $('Email Trigger (IMAP)').first().json.textPlain }}\n",
         "batching": {}
       },
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
@@ -24,7 +24,7 @@
       "typeVersion": 1.1,
       "position": [
         848,
-        320
+        256
       ],
       "id": "ff0e3128-da06-40b0-a124-7cd1adf60bb5",
       "name": "Google Gemini Chat Model",
@@ -37,31 +37,17 @@
     },
     {
       "parameters": {
-        "jsCode": "/**\n * Parses the AI's JSON-string response (from the Basic LLM Chain node) into a real object\n * so downstream nodes can access category/title/priority/deadline as fields instead of raw text.\n */\nconst parsed = JSON.parse($input.first().json.text);\nreturn [{ json: parsed }];\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        1152,
-        16
-      ],
-      "id": "43fb3c37-41f4-4915-a544-a426c04f4e6c",
-      "name": "Code in JavaScript",
-      "onError": "continueErrorOutput"
-    },
-    {
-      "parameters": {
         "method": "POST",
         "url": "=https://join-issue-collector-89dfb-default-rtdb.europe-west1.firebasedatabase.app/tasks.json?auth={{ $json.idToken }}\n",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"title\": {{ JSON.stringify($('Code in JavaScript').item.json.title) }},\n  \"description\": {{ JSON.stringify($('Email Trigger (IMAP)').item.json.textPlain) }},\n  \"dueDate\": {{ JSON.stringify($('Code in JavaScript').item.json.deadline) }},\n  \"priority\": {{ JSON.stringify($('Code in JavaScript').item.json.priority) }},\n  \"category\": {{ JSON.stringify($('Code in JavaScript').item.json.category) }},\n  \"categoryLabelColor\": {{ JSON.stringify($('Code in JavaScript').item.json.category === \"User Story\" ? \"#0038FF\" : \"#1FD7C1\") }},\n  \"assignedTo\": null,\n  \"subtasks\": null,\n  \"status\": \"triage\",\n  \"creatorType\": \"external\",\n  \"creatorName\": {{ JSON.stringify($('Email Trigger (IMAP)').item.json.from.split('<')[0].trim()) }},\n  \"creatorEmail\": {{ JSON.stringify($('Email Trigger (IMAP)').item.json.from.includes('<') ? $('Email Trigger (IMAP)').item.json.from.split('<')[1].replace('>','') : $('Email Trigger (IMAP)').item.json.from) }},\n  \"isAiGenerated\": true\n}\n",
+        "jsonBody": "={\n  \"title\": {{ JSON.stringify($('Parse AI Response into Task Fields').item.json.title) }},\n  \"description\": {{ JSON.stringify($('Parse AI Response into Task Fields').item.json.description) }},\n  \"dueDate\": {{ JSON.stringify($('Parse AI Response into Task Fields').item.json.deadline) }},\n  \"priority\": {{ JSON.stringify($('Parse AI Response into Task Fields').item.json.priority) }},\n  \"category\": {{ JSON.stringify($('Parse AI Response into Task Fields').item.json.category) }},\n  \"categoryLabelColor\": {{ JSON.stringify($('Parse AI Response into Task Fields').item.json.category === \"User Story\" ? \"#0038FF\" : \"#1FD7C1\") }},\n  \"assignedTo\": null,\n  \"subtasks\": {{ JSON.stringify($('Parse AI Response into Task Fields').item.json.subtasks) }},\n\n  \"status\": \"triage\",\n  \"creatorType\": \"external\",\n  \"creatorName\": {{ JSON.stringify($('Email Trigger (IMAP)').item.json.from.split('<')[0].trim()) }},\n  \"creatorEmail\": {{ JSON.stringify($('Email Trigger (IMAP)').item.json.from.includes('<') ? $('Email Trigger (IMAP)').item.json.from.split('<')[1].replace('>','') : $('Email Trigger (IMAP)').item.json.from) }},\n  \"isAiGenerated\": true\n}\n",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        1584,
+        1552,
         0
       ],
       "id": "2531b81d-c69b-4671-90ee-13445cdbd780",
@@ -90,7 +76,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=YOUR_FIREBASE_API_KEY",
+        "url": "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCRA1gnrLr8YZWf4V5pwVXQ2zJEHKTOn-g",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "{\"returnSecureToken\": true}",
@@ -108,7 +94,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=YOUR_FIREBASE_API_KEY",
+        "url": "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCRA1gnrLr8YZWf4V5pwVXQ2zJEHKTOn-g",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "{\"returnSecureToken\": true}",
@@ -182,36 +168,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        688,
-        240
+        608,
+        192
       ],
       "id": "f2d98e88-6798-472a-ab9b-ef1210a7c643",
       "name": "Increment Today’s Counter"
-    },
-    {
-      "parameters": {
-        "fromEmail": "join@christopher-braun-dev.de",
-        "toEmail": "={{ $('Email Trigger (IMAP)').item.json.from }}",
-        "subject": "Daily limit reached – your request will be reviewed manually",
-        "emailFormat": "text",
-        "text": "Hi,\nThanks for your message. Unfortunately, we've reached today's limit of 10 AI-processed requests. Your email has been received and will be reviewed manually by our team shortly.\n\nBest,\nThe Join Team",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.emailSend",
-      "typeVersion": 2.1,
-      "position": [
-        1072,
-        -176
-      ],
-      "id": "f8eac14c-c7f3-4e6d-9ca7-1b3fe39654f2",
-      "name": "Send an Email",
-      "webhookId": "a78eb578-c7a2-4232-8e26-6c943adef21e",
-      "credentials": {
-        "smtp": {
-          "id": "fUkD98Usr5zT9A46",
-          "name": "SMTP JOIN"
-        }
-      }
     },
     {
       "parameters": {
@@ -267,8 +228,8 @@
       "type": "n8n-nodes-imap.imap",
       "typeVersion": 1,
       "position": [
-        1808,
-        0
+        1760,
+        -112
       ],
       "id": "29861f37-1117-481b-b566-21c8185b02e4",
       "name": "MoveEmail done",
@@ -300,8 +261,8 @@
       "type": "n8n-nodes-imap.imap",
       "typeVersion": 1,
       "position": [
-        1456,
-        320
+        1728,
+        160
       ],
       "id": "cb865c60-8836-42b8-84a5-da8d6fe97fa0",
       "name": "MoveEmail to edit (Error)",
@@ -324,8 +285,8 @@
       "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2.1,
       "position": [
-        1776,
-        320
+        1968,
+        160
       ],
       "id": "a91a4a2b-47c0-44df-b77c-dc3ec4ec506d",
       "name": "Send Error Email",
@@ -348,12 +309,51 @@
       "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2.1,
       "position": [
-        2032,
-        0
+        1936,
+        -112
       ],
       "id": "374212cd-73c2-4957-a8bd-55ad6654c5eb",
       "name": "Send an Status Email",
       "webhookId": "52a783f3-d299-4374-b7f8-0e50d2ccf6ad",
+      "credentials": {
+        "smtp": {
+          "id": "fUkD98Usr5zT9A46",
+          "name": "SMTP JOIN"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Parses the AI's JSON-string response (from the Basic LLM Chain node) into a real object\n * so downstream nodes can access category/title/priority/deadline as fields instead of raw text.\n * Also converts the AI's plain subtask title strings into the {id, title, completed} shape\n * the Join frontend expects (see js/addTask.js's getSubtasks()).\n */\nfunction generateSubtaskId() {\n  return \"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx\".replace(/[xy]/g, (c) => {\n    const r = (Math.random() * 16) | 0;\n    const v = c === \"x\" ? r : (r & 0x3) | 0x8;\n    return v.toString(16);\n  });\n}\n\nconst parsed = JSON.parse($input.first().json.text);\n\nparsed.subtasks = (parsed.subtasks || []).map((title) => ({\n  id: \"subtask-\" + generateSubtaskId(),\n  title,\n  completed: false,\n}));\n\nreturn [{ json: parsed }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1152,
+        16
+      ],
+      "id": "43fb3c37-41f4-4915-a544-a426c04f4e6c",
+      "name": "Parse AI Response into Task Fields",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "fromEmail": "join@christopher-braun-dev.de",
+        "toEmail": "={{ $('Email Trigger (IMAP)').item.json.from }}",
+        "subject": "Daily limit reached – your request will be reviewed manually",
+        "emailFormat": "text",
+        "text": "Hi,\nThanks for your message. Unfortunately, we've reached today's limit of 10 AI-processed requests. Your email has been received and will be reviewed manually by our team shortly.\n\nBest,\nThe Join Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1072,
+        -176
+      ],
+      "id": "f8eac14c-c7f3-4e6d-9ca7-1b3fe39654f2",
+      "name": "Send Limit Reached Email",
+      "webhookId": "a78eb578-c7a2-4232-8e26-6c943adef21e",
       "credentials": {
         "smtp": {
           "id": "fUkD98Usr5zT9A46",
@@ -379,25 +379,7 @@
       "main": [
         [
           {
-            "node": "Code in JavaScript",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code in JavaScript": {
-      "main": [
-        [
-          {
-            "node": "Sign In Anonymously",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "MoveEmail to edit (Error)",
+            "node": "Parse AI Response into Task Fields",
             "type": "main",
             "index": 0
           }
@@ -499,7 +481,7 @@
       "main": [
         [
           {
-            "node": "Send an Email",
+            "node": "Send Limit Reached Email",
             "type": "main",
             "index": 0
           }
@@ -527,6 +509,24 @@
           }
         ]
       ]
+    },
+    "Parse AI Response into Task Fields": {
+      "main": [
+        [
+          {
+            "node": "Sign In Anonymously",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "MoveEmail to edit (Error)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -535,7 +535,7 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "6b03f02f-a35a-4b21-90bf-031cadd88224",
+  "versionId": "ba845148-11c1-4359-8f16-9cb5ca9dc0f1",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "2d8da6492907dc0f4689842f7d58b377573c48337e15c3608c030f42d8863e66"
