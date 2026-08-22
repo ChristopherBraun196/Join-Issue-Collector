@@ -1,0 +1,184 @@
+{
+  "name": "Status Change Notifications",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d8177db5-3b00-4baa-ada6-af23014e7136",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=YOUR_FIREBASE_API_KEY",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"returnSecureToken\": true}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "8597b1bb-0f83-4108-a0e9-ea80ec549f6e",
+      "name": "Sign In Anonymously"
+    },
+    {
+      "parameters": {
+        "url": "=https://join-issue-collector-89dfb-default-rtdb.europe-west1.firebasedatabase.app/tasks.json?auth={{ $json.idToken }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        448,
+        0
+      ],
+      "id": "d936ef60-0f14-44a4-a8b1-b01417d28210",
+      "name": "Get All Tasks"
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Converts the keyed /tasks object into an array and keeps only externally-created tasks\n * whose status has changed since the last notification (status !== lastNotifiedStatus).\n * Runs \"Once for All Items\" so this executes exactly once per schedule tick, not once per task.\n */\nconst tasksObj = $input.first().json;\nconst results = [];\n\nfor (const [id, task] of Object.entries(tasksObj || {})) {\n  if (task.creatorType === \"external\" && task.status !== task.lastNotifiedStatus) {\n    results.push({ json: { id, ...task } });\n  }\n}\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        0
+      ],
+      "id": "1f387dcd-7300-4364-875c-ecca45121b0b",
+      "name": "Filter Status Changes"
+    },
+    {
+      "parameters": {
+        "fromEmail": "join@christopher-braun-dev.de",
+        "toEmail": "={{ $json.creatorEmail }}",
+        "subject": "=Update on your request: {{ $json.title }}",
+        "emailFormat": "text",
+        "text": "=Hi,\n\nThe status of your ticket \"{{ $json.title }}\" has been updated to: {{ $json.status }}.\n\nBest,\nThe Join Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        896,
+        0
+      ],
+      "id": "ec7b77ef-e004-4d9b-8ee6-d254d4023982",
+      "name": "Send Status Update",
+      "webhookId": "5817dbbd-1782-470d-95a1-1b3265f2211c",
+      "credentials": {
+        "smtp": {
+          "id": "fUkD98Usr5zT9A46",
+          "name": "SMTP JOIN"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://join-issue-collector-89dfb-default-rtdb.europe-west1.firebasedatabase.app/tasks/{{ $('Filter Status Changes').first().json.id }}.json?auth={{ $('Sign In Anonymously').first().json.idToken }}\n\n",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ lastNotifiedStatus: $('Filter Status Changes').first().json.status }) }}\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1120,
+        0
+      ],
+      "id": "78252e35-4075-44ee-a4a2-dec7532fcccc",
+      "name": "Update Notified Status"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Sign In Anonymously",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sign In Anonymously": {
+      "main": [
+        [
+          {
+            "node": "Get All Tasks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get All Tasks": {
+      "main": [
+        [
+          {
+            "node": "Filter Status Changes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Status Changes": {
+      "main": [
+        [
+          {
+            "node": "Send Status Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Status Update": {
+      "main": [
+        [
+          {
+            "node": "Update Notified Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "b9ee4551-c2b5-4807-9dd4-4d46b05801bf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2d8da6492907dc0f4689842f7d58b377573c48337e15c3608c030f42d8863e66"
+  },
+  "nodeGroups": [],
+  "id": "e2Qx2bFgg5GqVANp",
+  "tags": []
+}

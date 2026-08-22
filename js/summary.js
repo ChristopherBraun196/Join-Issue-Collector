@@ -13,6 +13,7 @@ function getSummaryCounts(tasks) {
     boardCount: tasks.length,
     urgentCount: urgentTasks.length,
     deadline: getNextDeadline(urgentTasks),
+    emailRequestsCount: tasks.filter((t) => t.isAiGenerated).length,
   };
 }
 
@@ -28,6 +29,7 @@ function renderSummaryElements(counts) {
   document.getElementById("board_count").textContent = counts.boardCount;
   document.getElementById("urgent_count").textContent = counts.urgentCount;
   document.getElementById("deadline").textContent = counts.deadline;
+   document.getElementById("email_requests_count").textContent = counts.emailRequestsCount;
 }
 
 /**

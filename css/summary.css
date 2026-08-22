@@ -6,6 +6,7 @@
   align-items: center;
   justify-content: center;
   gap: 20px;
+  min-width: 0;
 }
 
 .summary_bubble:hover {
@@ -16,7 +17,7 @@
   transform: scale(1.05);
 }
 
-.summary_bubble:hover a{
+.summary_bubble:hover a {
   color: white;
 }
 
@@ -48,8 +49,11 @@
 .summary_counter {
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-direction: column;
   font-size: 20px;
+  text-align: center;
+  min-width: 0;
 }
 
 .summary_bubble img {
@@ -60,7 +64,7 @@
 .summary_grid {
   padding-left: 100px;
   padding-top: 50px;
-  max-width: 560px;
+  max-width: 720px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -73,11 +77,18 @@
   gap: 32px;
 }
 
-#all-deadlines-counter { 
-  display: flex; 
+.summary_row_second {
+  display: grid;
+  grid-template-columns: 4fr 2fr;
+  gap: 32px;
+}
+
+#all-deadlines-counter {
+  display: flex;
   justify-content: center;
   align-items: center;
   gap: 16px;
+  min-width: 0;
 }
 .summary_row_last {
   display: grid;
@@ -175,4 +186,23 @@
   color: #29abe2;
   font-weight: bold;
   text-align: center;
+}
+
+#email_requests_count {
+  font-size: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  background: linear-gradient(180deg, #8933fc 0%, #29abe2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.summary_bubble:hover #email_requests_count {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  color: white;
 }

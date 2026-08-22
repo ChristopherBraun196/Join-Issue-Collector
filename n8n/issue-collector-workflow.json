@@ -1,0 +1,546 @@
+{
+  "name": "Join-Issue-Collector",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an assistant that analyzes incoming feature request or bug report emails for a Kanban board tool called \"Join\".\n\nAnalyze the following email and extract the following information. Respond with ONLY a valid JSON object (no markdown, no explanation), in this exact format:\n\n{\n  \"category\": \"Technical Task\" or \"User Story\",\n  \"title\": \"a short, concise ticket title\",\n  \"priority\": \"urgent\" or \"medium\" or \"low\",\n  \"deadline\": \"YYYY-MM-DD\" or null if no deadline is mentioned\n}\n\nRules for priority: use \"urgent\" if the email mentions urgency, blocking issues, or critical bugs. Use \"low\" if the request seems minor or nice-to-have. Otherwise use \"medium\".\n\nEmail subject: {{ $('Email Trigger (IMAP)').first().json.subject }}\nEmail sender: {{ $('Email Trigger (IMAP)').first().json.from }}\nEmail body:\n{{ $('Email Trigger (IMAP)').first().json.textPlain }}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        848,
+        16
+      ],
+      "id": "f6f37bb5-250e-4179-9b46-8c335591f542",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        848,
+        320
+      ],
+      "id": "ff0e3128-da06-40b0-a124-7cd1adf60bb5",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Wq35DkNKVmSCX4My",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Parses the AI's JSON-string response (from the Basic LLM Chain node) into a real object\n * so downstream nodes can access category/title/priority/deadline as fields instead of raw text.\n */\nconst parsed = JSON.parse($input.first().json.text);\nreturn [{ json: parsed }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1152,
+        16
+      ],
+      "id": "43fb3c37-41f4-4915-a544-a426c04f4e6c",
+      "name": "Code in JavaScript",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://join-issue-collector-89dfb-default-rtdb.europe-west1.firebasedatabase.app/tasks.json?auth={{ $json.idToken }}\n",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"title\": {{ JSON.stringify($('Code in JavaScript').item.json.title) }},\n  \"description\": {{ JSON.stringify($('Email Trigger (IMAP)').item.json.textPlain) }},\n  \"dueDate\": {{ JSON.stringify($('Code in JavaScript').item.json.deadline) }},\n  \"priority\": {{ JSON.stringify($('Code in JavaScript').item.json.priority) }},\n  \"category\": {{ JSON.stringify($('Code in JavaScript').item.json.category) }},\n  \"categoryLabelColor\": {{ JSON.stringify($('Code in JavaScript').item.json.category === \"User Story\" ? \"#0038FF\" : \"#1FD7C1\") }},\n  \"assignedTo\": null,\n  \"subtasks\": null,\n  \"status\": \"triage\",\n  \"creatorType\": \"external\",\n  \"creatorName\": {{ JSON.stringify($('Email Trigger (IMAP)').item.json.from.split('<')[0].trim()) }},\n  \"creatorEmail\": {{ JSON.stringify($('Email Trigger (IMAP)').item.json.from.includes('<') ? $('Email Trigger (IMAP)').item.json.from.split('<')[1].replace('>','') : $('Email Trigger (IMAP)').item.json.from) }},\n  \"isAiGenerated\": true\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1584,
+        0
+      ],
+      "id": "2531b81d-c69b-4671-90ee-13445cdbd780",
+      "name": "Create Ticket in Firebase",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2.2,
+      "position": [
+        -112,
+        0
+      ],
+      "id": "df62c6f0-1ad1-4dfe-af1b-3fa265b484f1",
+      "name": "Email Trigger (IMAP)",
+      "credentials": {
+        "imap": {
+          "id": "9LPuyg18rJppsqj5",
+          "name": "IMAP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=YOUR_FIREBASE_API_KEY",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"returnSecureToken\": true}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1360,
+        0
+      ],
+      "id": "eefd1c91-f36d-44b4-9612-9f2b44b9b6bb",
+      "name": "Sign In Anonymously"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=YOUR_FIREBASE_API_KEY",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"returnSecureToken\": true}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        112,
+        0
+      ],
+      "id": "80a5ce3c-d420-4976-8aee-9ea5e9d47ed9",
+      "name": "Sign In Anonymously (Counter)"
+    },
+    {
+      "parameters": {
+        "url": "=https://join-issue-collector-89dfb-default-rtdb.europe-west1.firebasedatabase.app/emailRequestCount/{{ $now.toFormat('yyyy-MM-dd') }}.json?auth={{ $json.idToken }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        352,
+        0
+      ],
+      "id": "b019cbd4-4776-4040-9287-bc93d4c9e727",
+      "name": "Get Today's Counter"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4f52e8cb-9807-4f61-8d54-5293ebf34959",
+              "leftValue": "={{ $json.count || 0 }}",
+              "rightValue": 10,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        576,
+        0
+      ],
+      "id": "2c4002d8-5544-4bc5-bb51-d8f7f840bb13",
+      "name": "Is Limit Reached?"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://join-issue-collector-89dfb-default-rtdb.europe-west1.firebasedatabase.app/emailRequestCount/{{ $now.toFormat('yyyy-MM-dd') }}.json?auth={{ $('Sign In Anonymously (Counter)').item.json.idToken }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"count\": {{ ($json.count || 0) + 1 }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        688,
+        240
+      ],
+      "id": "f2d98e88-6798-472a-ab9b-ef1210a7c643",
+      "name": "Increment Today’s Counter"
+    },
+    {
+      "parameters": {
+        "fromEmail": "join@christopher-braun-dev.de",
+        "toEmail": "={{ $('Email Trigger (IMAP)').item.json.from }}",
+        "subject": "Daily limit reached – your request will be reviewed manually",
+        "emailFormat": "text",
+        "text": "Hi,\nThanks for your message. Unfortunately, we've reached today's limit of 10 AI-processed requests. Your email has been received and will be reviewed manually by our team shortly.\n\nBest,\nThe Join Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1072,
+        -176
+      ],
+      "id": "f8eac14c-c7f3-4e6d-9ca7-1b3fe39654f2",
+      "name": "Send an Email",
+      "webhookId": "a78eb578-c7a2-4232-8e26-6c943adef21e",
+      "credentials": {
+        "smtp": {
+          "id": "fUkD98Usr5zT9A46",
+          "name": "SMTP JOIN"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "coreImapAccount",
+        "resource": "email",
+        "operation": "moveEmail",
+        "sourceMailbox": {
+          "__rl": true,
+          "mode": "list",
+          "value": "INBOX"
+        },
+        "emailUid": "={{ $('Email Trigger (IMAP)').item.json.attributes.uid }}",
+        "destinationMailbox": {
+          "__rl": true,
+          "value": "Zu bearbeiten",
+          "mode": "list",
+          "cachedResultName": "Zu bearbeiten"
+        }
+      },
+      "type": "n8n-nodes-imap.imap",
+      "typeVersion": 1,
+      "position": [
+        848,
+        -176
+      ],
+      "id": "c85f2e4d-aeba-4b87-9425-120eaf87b7a4",
+      "name": "MoveEmail to edit",
+      "credentials": {
+        "imap": {
+          "id": "nWwV7uCyrvZBiPJb",
+          "name": "IMAP account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "coreImapAccount",
+        "resource": "email",
+        "operation": "moveEmail",
+        "sourceMailbox": {
+          "__rl": true,
+          "mode": "list",
+          "value": "INBOX"
+        },
+        "emailUid": "={{ $('Email Trigger (IMAP)').item.json.attributes.uid }}",
+        "destinationMailbox": {
+          "__rl": true,
+          "value": "Erledigt",
+          "mode": "list",
+          "cachedResultName": "Erledigt"
+        }
+      },
+      "type": "n8n-nodes-imap.imap",
+      "typeVersion": 1,
+      "position": [
+        1808,
+        0
+      ],
+      "id": "29861f37-1117-481b-b566-21c8185b02e4",
+      "name": "MoveEmail done",
+      "credentials": {
+        "imap": {
+          "id": "nWwV7uCyrvZBiPJb",
+          "name": "IMAP account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "coreImapAccount",
+        "resource": "email",
+        "operation": "moveEmail",
+        "sourceMailbox": {
+          "__rl": true,
+          "mode": "list",
+          "value": "INBOX"
+        },
+        "emailUid": "={{ $('Email Trigger (IMAP)').item.json.attributes.uid }}",
+        "destinationMailbox": {
+          "__rl": true,
+          "value": "Zu bearbeiten",
+          "mode": "list",
+          "cachedResultName": "Zu bearbeiten"
+        }
+      },
+      "type": "n8n-nodes-imap.imap",
+      "typeVersion": 1,
+      "position": [
+        1456,
+        320
+      ],
+      "id": "cb865c60-8836-42b8-84a5-da8d6fe97fa0",
+      "name": "MoveEmail to edit (Error)",
+      "credentials": {
+        "imap": {
+          "id": "nWwV7uCyrvZBiPJb",
+          "name": "IMAP account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "join@christopher-braun-dev.de",
+        "toEmail": "={{ $('Email Trigger (IMAP)').item.json.from }}",
+        "subject": "We received your request – our team will follow up",
+        "emailFormat": "text",
+        "text": "Danke für deine Nachricht. Es gab ein technisches Problem bei der automatischen Verarbeitung – unser Team hat deine E-Mail erhalten und meldet sich zeitnah persönlich.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1776,
+        320
+      ],
+      "id": "a91a4a2b-47c0-44df-b77c-dc3ec4ec506d",
+      "name": "Send Error Email",
+      "webhookId": "a78eb578-c7a2-4232-8e26-6c943adef21e",
+      "credentials": {
+        "smtp": {
+          "id": "fUkD98Usr5zT9A46",
+          "name": "SMTP JOIN"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "join@christopher-braun-dev.de",
+        "toEmail": "={{ $('Email Trigger (IMAP)').item.json.from }}",
+        "subject": "Your request has been received",
+        "html": "Thanks for your request! Our AI has automatically created a ticket for your feature request or bug report. Our team will review it shortly.\n\nBest,\nThe Join Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2032,
+        0
+      ],
+      "id": "374212cd-73c2-4957-a8bd-55ad6654c5eb",
+      "name": "Send an Status Email",
+      "webhookId": "52a783f3-d299-4374-b7f8-0e50d2ccf6ad",
+      "credentials": {
+        "smtp": {
+          "id": "fUkD98Usr5zT9A46",
+          "name": "SMTP JOIN"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Sign In Anonymously",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "MoveEmail to edit (Error)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Trigger (IMAP)": {
+      "main": [
+        [
+          {
+            "node": "Sign In Anonymously (Counter)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sign In Anonymously": {
+      "main": [
+        [
+          {
+            "node": "Create Ticket in Firebase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sign In Anonymously (Counter)": {
+      "main": [
+        [
+          {
+            "node": "Get Today's Counter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Today's Counter": {
+      "main": [
+        [
+          {
+            "node": "Is Limit Reached?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Limit Reached?": {
+      "main": [
+        [
+          {
+            "node": "MoveEmail to edit",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Increment Today’s Counter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Increment Today’s Counter": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Ticket in Firebase": {
+      "main": [
+        [
+          {
+            "node": "MoveEmail done",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "MoveEmail to edit (Error)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MoveEmail to edit": {
+      "main": [
+        [
+          {
+            "node": "Send an Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MoveEmail done": {
+      "main": [
+        [
+          {
+            "node": "Send an Status Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MoveEmail to edit (Error)": {
+      "main": [
+        [
+          {
+            "node": "Send Error Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "6b03f02f-a35a-4b21-90bf-031cadd88224",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2d8da6492907dc0f4689842f7d58b377573c48337e15c3608c030f42d8863e66"
+  },
+  "nodeGroups": [],
+  "id": "CqahMQT7fGs1RRBy",
+  "tags": []
+}

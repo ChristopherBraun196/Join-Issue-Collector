@@ -17,6 +17,7 @@ const publicPaths = [
   "help.html",
 ];
 const path = window.location.pathname;
+const cameFromWelcome = document.referrer.includes("welcome.html");
 
 /**
  * Loads the authenticated user's data from Firebase and sets the global current user.
@@ -54,7 +55,11 @@ async function handleAuthenticatedUser(user, path) {
 function handleUnauthenticatedUser(path) {
   if (publicPaths.includes(path)) {
     if (typeof switchToGuestSidebar === "function") switchToGuestSidebar();
-  } else if (!homePaths.includes(path)) {
+  } else if (homePaths.includes(path)) {
+    if (!cameFromWelcome) {
+      window.location.href = "./welcome.html";
+    }
+  } else {
     window.location.href = "./index.html";
   }
 }
@@ -72,7 +77,9 @@ onAuthStateChanged(auth, async (user) => {
       window.currentUser = { name: "Guest" };
       renderUserMenue();
       if (homePaths.includes(path)) {
-        window.location.href = "./summary.html";
+        if (!cameFromWelcome) {
+          window.location.href = "./welcome.html";
+        }
       } else if (publicPaths.includes(path)) {
         const page = path.includes("privacy")
           ? "privacy"

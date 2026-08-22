@@ -7,8 +7,8 @@ let contacts = [];
  * @returns {Promise<void>}
  */
 async function initAddTask(site) {
-    init(site);
-    await renderContacts()
+  init(site);
+  await renderContacts();
 }
 
 /**
@@ -16,14 +16,14 @@ async function initAddTask(site) {
  * @param {string} status - The initial status for the new task
  */
 function openAddTaskDialog(status) {
-    let main = document.querySelector('main');
-    let dialogSection = document.createElement("dialog");
-    dialogSection.id = "add-task-dialog";
-    main.appendChild(dialogSection);
-    dialogSection.innerHTML = getAddTaskDialogTemplate(status);
-    dialogSection.showModal();
-    addTaskDialog = dialogSection;
-    renderContacts();
+  let main = document.querySelector("main");
+  let dialogSection = document.createElement("dialog");
+  dialogSection.id = "add-task-dialog";
+  main.appendChild(dialogSection);
+  dialogSection.innerHTML = getAddTaskDialogTemplate(status);
+  dialogSection.showModal();
+  addTaskDialog = dialogSection;
+  renderContacts();
 }
 
 /**
@@ -31,8 +31,8 @@ function openAddTaskDialog(status) {
  */
 
 function closeAddTaskDialog() {
-    addTaskDialog.close();
-    addTaskDialog.remove();
+  addTaskDialog.close();
+  addTaskDialog.remove();
 }
 
 /**
@@ -40,32 +40,45 @@ function closeAddTaskDialog() {
  * @param {string} status - The initial status for the new task
  */
 function clearDialogAddTaskForm(status) {
-    const dialogSection = document.querySelector('#add-task-dialog');
-    dialogSection.innerHTML = '';
-    dialogSection.innerHTML = getAddTaskDialogTemplate(status);
-    renderContacts();
+  const dialogSection = document.querySelector("#add-task-dialog");
+  dialogSection.innerHTML = "";
+  dialogSection.innerHTML = getAddTaskDialogTemplate(status);
+  renderContacts();
 }
 
 /**
  * Resets the add task form in addtask.html including all custom dropdowns, priority buttons, and subtasks.
  */
 function clearAddTaskForm() {
-    document.getElementById('add-task-form').reset();
-    document.querySelectorAll('#assigned-dropdown .custom-option.selected').forEach(opt => {
-        opt.classList.remove('selected');
-        opt.querySelector('input[type="checkbox"]').checked = false;
+  document.getElementById("add-task-form").reset();
+  document
+    .querySelectorAll("#assigned-dropdown .custom-option.selected")
+    .forEach((opt) => {
+      opt.classList.remove("selected");
+      opt.querySelector('input[type="checkbox"]').checked = false;
     });
-    document.getElementById('assigned-badges').innerHTML = '';
-    document.querySelectorAll('#category-dropdown .custom-option.selected').forEach(opt => opt.classList.remove('selected'));
-    document.querySelector('#category-wrapper input[name="category"]').value = '';
-    document.getElementById('category-placeholder').textContent = 'Select task category';
-    document.getElementById('category-placeholder').style.color = '';
-    document.querySelectorAll('#task-priority-btns .priority-btn').forEach(btn => btn.classList.remove('set'));
-    document.querySelector('#task-priority-btns .priority-btn.medium').classList.add('set');
-    document.getElementById('subtask-list').innerHTML = '';
+  document.getElementById("assigned-badges").innerHTML = "";
+  document
+    .querySelectorAll("#category-dropdown .custom-option.selected")
+    .forEach((opt) => opt.classList.remove("selected"));
+  document.querySelector('#category-wrapper input[name="category"]').value = "";
+  document.getElementById("category-placeholder").textContent =
+    "Select task category";
+  document.getElementById("category-placeholder").style.color = "";
+  document
+    .querySelectorAll("#task-priority-btns .priority-btn")
+    .forEach((btn) => btn.classList.remove("set"));
+  document
+    .querySelector("#task-priority-btns .priority-btn.medium")
+    .classList.add("set");
+  document.getElementById("subtask-list").innerHTML = "";
 
-    document.querySelectorAll('#add-task-form .input-error').forEach(input => clearFieldError(input));
-    document.querySelectorAll('#add-task-form .field-error-msg').forEach(el => el.style.visibility = 'hidden');
+  document
+    .querySelectorAll("#add-task-form .input-error")
+    .forEach((input) => clearFieldError(input));
+  document
+    .querySelectorAll("#add-task-form .field-error-msg")
+    .forEach((el) => (el.style.visibility = "hidden"));
 }
 
 /**
@@ -73,11 +86,13 @@ function clearAddTaskForm() {
  * @param {HTMLElement} clickedButton - The priority button that was clicked
  */
 function setPriority(clickedButton) {
-    const buttons = document.querySelectorAll('#task-priority-btns .priority-btn');
-    buttons.forEach(btn => {
-        btn.classList.remove('set');
-    });
-    clickedButton.classList.add('set');
+  const buttons = document.querySelectorAll(
+    "#task-priority-btns .priority-btn",
+  );
+  buttons.forEach((btn) => {
+    btn.classList.remove("set");
+  });
+  clickedButton.classList.add("set");
 }
 
 /**
@@ -85,16 +100,16 @@ function setPriority(clickedButton) {
  * @returns {Promise<void>}
  */
 async function loadContacts() {
-    try {
-        const data = await loadData("/contacts");
-        contacts = Object.entries(data).map(([id, contact]) => ({
-            id,
-            name: contact.name,
-            color: contact.avatarColor
-        }));        
-    } catch (error) {
-        contacts = [];
-    }
+  try {
+    const data = await loadData("/contacts");
+    contacts = Object.entries(data).map(([id, contact]) => ({
+      id,
+      name: contact.name,
+      color: contact.avatarColor,
+    }));
+  } catch (error) {
+    contacts = [];
+  }
 }
 
 /**
@@ -102,10 +117,12 @@ async function loadContacts() {
  * @returns {Promise<void>}
  */
 async function renderContacts() {
-    await loadContacts();    
-    const container = document.getElementById('custom-select-dropdown-inner');
+  await loadContacts();
+  const container = document.getElementById("custom-select-dropdown-inner");
 
-    container.innerHTML = contacts.map(contact => `
+  container.innerHTML = contacts
+    .map(
+      (contact) => `
         <div class="custom-option" 
              onclick="toggleContact(this)" 
              data-id="${contact.id}">
@@ -115,7 +132,9 @@ async function renderContacts() {
             <span>${contact.name}</span>
             <input type="checkbox">
         </div>
-    `).join('');
+    `,
+    )
+    .join("");
 }
 
 /**
@@ -123,21 +142,25 @@ async function renderContacts() {
  * @param {string} id - The ID of the dropdown to toggle
  */
 function toggleDropdown(id) {
-    const wrapper = document.getElementById(`${id}-wrapper`);
-    const trigger = wrapper.querySelector('.custom-select-trigger');
-    const dropdown = document.getElementById(`${id}-dropdown`);
-    const isOpen = dropdown.classList.contains('open');
+  const wrapper = document.getElementById(`${id}-wrapper`);
+  const trigger = wrapper.querySelector(".custom-select-trigger");
+  const dropdown = document.getElementById(`${id}-dropdown`);
+  const isOpen = dropdown.classList.contains("open");
 
-    document.querySelectorAll('.custom-select-dropdown.open').forEach(d => d.classList.remove('open'));
-    document.querySelectorAll('.custom-select-trigger.open').forEach(t => t.classList.remove('open'));
+  document
+    .querySelectorAll(".custom-select-dropdown.open")
+    .forEach((d) => d.classList.remove("open"));
+  document
+    .querySelectorAll(".custom-select-trigger.open")
+    .forEach((t) => t.classList.remove("open"));
 
-    if (!isOpen) {
-        dropdown.classList.add('open');
-        trigger.classList.add('open');
-    } else if (id === 'category') {
-        const hiddenInput = wrapper.querySelector('input[name="category"]');
-        if (hiddenInput) validateOnBlur(hiddenInput, 'Please select a category');
-    }
+  if (!isOpen) {
+    dropdown.classList.add("open");
+    trigger.classList.add("open");
+  } else if (id === "category") {
+    const hiddenInput = wrapper.querySelector('input[name="category"]');
+    if (hiddenInput) validateOnBlur(hiddenInput, "Please select a category");
+  }
 }
 
 /**
@@ -145,19 +168,22 @@ function toggleDropdown(id) {
  * @param {HTMLElement} option - The selected category option element
  */
 function selectCategory(option) {
-    document.querySelectorAll('#category-dropdown .custom-option')
-        .forEach(o => o.classList.remove('selected'));
-    option.classList.add('selected');
+  document
+    .querySelectorAll("#category-dropdown .custom-option")
+    .forEach((o) => o.classList.remove("selected"));
+  option.classList.add("selected");
 
-    const placeholder = document.getElementById('category-placeholder');
-    placeholder.textContent = option.querySelector('span').textContent;
-    placeholder.style.color = '#2a3647';
+  const placeholder = document.getElementById("category-placeholder");
+  placeholder.textContent = option.querySelector("span").textContent;
+  placeholder.style.color = "#2a3647";
 
-    const hiddenInput = document.querySelector('#category-wrapper input[name="category"]');
-    hiddenInput.value = option.dataset.value;
-    clearFieldError(hiddenInput);
+  const hiddenInput = document.querySelector(
+    '#category-wrapper input[name="category"]',
+  );
+  hiddenInput.value = option.dataset.value;
+  clearFieldError(hiddenInput);
 
-    toggleDropdown('category');
+  toggleDropdown("category");
 }
 
 /**
@@ -165,64 +191,72 @@ function selectCategory(option) {
  * @param {HTMLElement} option - The selected contact option element
  */
 function toggleContact(option) {
-    const checkbox = option.querySelector('input[type="checkbox"]');
-    const isSelected = option.classList.toggle('selected');
-    checkbox.checked = isSelected;
-    updateAssignedBadges();
+  const checkbox = option.querySelector('input[type="checkbox"]');
+  const isSelected = option.classList.toggle("selected");
+  checkbox.checked = isSelected;
+  updateAssignedBadges();
 }
 
 /**
  * Updates the assigned contact badges based on the selected contacts.
  */
 function updateAssignedBadges() {
-    const badges = document.getElementById('assigned-badges');
-    badges.innerHTML = '';
-    const limit = 5;
-    const selected = document.querySelectorAll('#assigned-dropdown .custom-option.selected');
-    const total = selected.length;
+  const badges = document.getElementById("assigned-badges");
+  badges.innerHTML = "";
+  const limit = 5;
+  const selected = document.querySelectorAll(
+    "#assigned-dropdown .custom-option.selected",
+  );
+  const total = selected.length;
 
-    selected.forEach((opt, i) => {
-        if (i >= limit) return;
-        const avatar = opt.querySelector('.contact-avatar');
-        const badge = document.createElement('div');
-        badge.className = 'badge-avatar';
-        badge.style.background = avatar.style.background;
-        badge.textContent = avatar.textContent.trim();
-        badges.appendChild(badge);
-    });
+  selected.forEach((opt, i) => {
+    if (i >= limit) return;
+    const avatar = opt.querySelector(".contact-avatar");
+    const badge = document.createElement("div");
+    badge.className = "badge-avatar";
+    badge.style.background = avatar.style.background;
+    badge.textContent = avatar.textContent.trim();
+    badges.appendChild(badge);
+  });
 
-    if (total > limit) {
-        const overflow = document.createElement('div');
-        overflow.className = 'badge-avatar overflow-badge';
-        overflow.textContent = `+${total - limit}`;
-        badges.appendChild(overflow);
-    }
+  if (total > limit) {
+    const overflow = document.createElement("div");
+    overflow.className = "badge-avatar overflow-badge";
+    overflow.textContent = `+${total - limit}`;
+    badges.appendChild(overflow);
+  }
 }
 
 /**
  * Renders the avatar icons for all selected contacts.
  */
 function renderSelectedAvatars() {
-    const container = document.getElementById('selected-avatars');
-    if (!container) return;
-    container.innerHTML = selectedContacts.map(c => `
+  const container = document.getElementById("selected-avatars");
+  if (!container) return;
+  container.innerHTML = selectedContacts
+    .map(
+      (c) => `
         <div class="contact-avatar" style="background:${c.color}" title="${c.name}">
             ${getInitials(c.name)}
         </div>
-    `).join('');
+    `,
+    )
+    .join("");
 }
 
-document.addEventListener('click', (e) => {
-    if (!e.target.closest('.custom-select-wrapper')) {
-        document.querySelectorAll('.custom-select-dropdown.open').forEach(d => {
-            d.classList.remove('open');
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".custom-select-wrapper")) {
+    document.querySelectorAll(".custom-select-dropdown.open").forEach((d) => {
+      d.classList.remove("open");
 
-            const wrapper = d.closest('.custom-select-wrapper');
-            const hiddenInput = wrapper?.querySelector('input[name="category"]');
-            if (hiddenInput) validateOnBlur(hiddenInput, 'Please select a category');
-        });
-        document.querySelectorAll('.custom-select-trigger.open').forEach(t => t.classList.remove('open'));
-    }
+      const wrapper = d.closest(".custom-select-wrapper");
+      const hiddenInput = wrapper?.querySelector('input[name="category"]');
+      if (hiddenInput) validateOnBlur(hiddenInput, "Please select a category");
+    });
+    document
+      .querySelectorAll(".custom-select-trigger.open")
+      .forEach((t) => t.classList.remove("open"));
+  }
 });
 
 /**
@@ -231,19 +265,21 @@ document.addEventListener('click', (e) => {
  * @param {string} statusArg - The initial status of the task (default: "todo")
  * @returns {Object} The generated task object
  */
-function generateTaskJson(taskID, statusArg='todo') {
-    return {
-        id: taskID,
-        title: getTaskTitle(),
-        description: getTaskDescription(),
-        dueDate: getTaskDueDate(),
-        priority: getTaskPriority(),
-        category: getTaskCategory(),
-        categoryLabelColor: getTaskCategoryLabelColor(getTaskCategory()),
-        assignedTo: getAssignedTo(),
-        subtasks: getSubtasks(),
-        status: statusArg
-    };
+function generateTaskJson(taskID, statusArg = "todo") {
+  return {
+    id: taskID,
+    title: getTaskTitle(),
+    description: getTaskDescription(),
+    dueDate: getTaskDueDate(),
+    priority: getTaskPriority(),
+    category: getTaskCategory(),
+    categoryLabelColor: getTaskCategoryLabelColor(getTaskCategory()),
+    assignedTo: getAssignedTo(),
+    subtasks: getSubtasks(),
+    status: statusArg,
+    creatorName: window.currentUser.name,
+    creatorType: "internal",
+  };
 }
 
 /**
@@ -251,7 +287,7 @@ function generateTaskJson(taskID, statusArg='todo') {
  * @returns {string} The trimmed title input value
  */
 function getTaskTitle() {
-    return document.querySelector('input[name="title"]').value.trim();
+  return document.querySelector('input[name="title"]').value.trim();
 }
 
 /**
@@ -259,7 +295,7 @@ function getTaskTitle() {
  * @returns {string} The trimmed description input value
  */
 function getTaskDescription() {
-    return document.querySelector('textarea[name="description"]').value.trim();
+  return document.querySelector('textarea[name="description"]').value.trim();
 }
 
 /**
@@ -267,7 +303,7 @@ function getTaskDescription() {
  * @returns {string} The trimmed due date input value
  */
 function getTaskDueDate() {
-    return document.querySelector('input[name="due-date"]').value.trim();
+  return document.querySelector('input[name="due-date"]').value.trim();
 }
 
 /**
@@ -275,9 +311,11 @@ function getTaskDueDate() {
  * @returns {string} The active priority ("urgent", "medium" or "low")
  */
 function getTaskPriority() {
-    const priorityBtn = document.querySelector('.priority-btn.set');
-    const priority = ['urgent', 'medium', 'low'].find(p => priorityBtn.classList.contains(p));
-    return priority;
+  const priorityBtn = document.querySelector(".priority-btn.set");
+  const priority = ["urgent", "medium", "low"].find((p) =>
+    priorityBtn.classList.contains(p),
+  );
+  return priority;
 }
 
 /**
@@ -285,8 +323,10 @@ function getTaskPriority() {
  * @returns {string} The formatted category label
  */
 function getTaskCategory() {
-    const category = document.querySelector('input[name="category"]').value.trim();
-    return formatLabel(category);
+  const category = document
+    .querySelector('input[name="category"]')
+    .value.trim();
+  return formatLabel(category);
 }
 
 /**
@@ -295,12 +335,12 @@ function getTaskCategory() {
  * @returns {string} The hex color code for the category
  */
 function getTaskCategoryLabelColor(category) {
-    switch (category) {
-        case "User Story":
-            return "#0038FF";
-        case "Technical Task":
-            return "#1FD7C1";
-    }
+  switch (category) {
+    case "User Story":
+      return "#0038FF";
+    case "Technical Task":
+      return "#1FD7C1";
+  }
 }
 
 /**
@@ -308,10 +348,11 @@ function getTaskCategoryLabelColor(category) {
  * @returns {Object[]} Array of objects containing the contact ID
  */
 function getAssignedTo() {
-    return [...document.querySelectorAll('#assigned-dropdown .custom-option.selected')]
-        .map(opt => ({
-            id:    opt.dataset.id
-        }));
+  return [
+    ...document.querySelectorAll("#assigned-dropdown .custom-option.selected"),
+  ].map((opt) => ({
+    id: opt.dataset.id,
+  }));
 }
 
 /**
@@ -319,12 +360,11 @@ function getAssignedTo() {
  * @returns {Object[]} Array of subtask objects with id, title and completed state
  */
 function getSubtasks() {
-    return [...document.querySelectorAll('#subtask-list li')]
-        .map(li => ({
-            id:        "subtask-"+generateUUID(),
-            title:     li.querySelector('.subtask-text').textContent,
-            completed: false
-        }));
+  return [...document.querySelectorAll("#subtask-list li")].map((li) => ({
+    id: "subtask-" + generateUUID(),
+    title: li.querySelector(".subtask-text").textContent,
+    completed: false,
+  }));
 }
 
 /**
@@ -333,13 +373,13 @@ function getSubtasks() {
  * @returns {Promise<void>}
  */
 async function createTask(status) {
-    const form = document.getElementById('add-task-form');
-    if (!validateForm(form)) return;
+  const form = document.getElementById("add-task-form");
+  if (!validateForm(form)) return;
 
-    const taskID = generateUUID();
-    let task = generateTaskJson(taskID, status);
-    await putData("/tasks/task-"+taskID, task);
-    location.href = "./board.html";
+  const taskID = generateUUID();
+  let task = generateTaskJson(taskID, status);
+  await putData("/tasks/task-" + taskID, task);
+  location.href = "./board.html";
 }
 
 /**
@@ -349,7 +389,7 @@ async function createTask(status) {
  */
 function formatLabel(str) {
   return str
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }

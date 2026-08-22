@@ -134,6 +134,7 @@ function createContactItem(contact) {
   const initials = getInitials(contact.name);
   const item = document.createElement("div");
   item.className = "contact-item";
+  item.dataset.id = contact.id;
   item.innerHTML = getContactItemTemplate(
     contact,
     initials,
@@ -197,16 +198,31 @@ async function loadContacts() {
   try {
     const data = await loadData("/contacts");
     if (!data) return;
-    
+
     contactsArray = Object.entries(data).map(([id, contact]) => ({
       ...contact,
       id,
     }));
 
     renderContacts(contactsArray);
+    openContactFromUrl();
   } catch (error) {
     console.error("Fehler beim Laden der Kontakte:", error);
   }
+}
+
+/**
+ * Opens the contact detail view for a contact ID given in the URL (e.g. contacts.html?id=abc123).
+ */
+function openContactFromUrl() {
+  const id = new URLSearchParams(window.location.search).get("id");
+  if (!id) return;
+
+  const contact = contactsArray.find((c) => c.id === id);
+  const item = document.querySelector(`.contact-item[data-id="${id}"]`);
+  if (!contact || !item) return;
+
+  openContactDetail(contact, { currentTarget: item });
 }
 
 document.addEventListener("DOMContentLoaded", loadContacts);
