@@ -7,16 +7,11 @@ import {
   ref,
   get,
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
-const homePaths = ["/", "/index.html", "index.html"];
-const publicPaths = [
-  "/privacy.html",
-  "privacy.html",
-  "/legal.html",
-  "legal.html",
-  "/help.html",
-  "help.html",
-];
-const path = window.location.pathname;
+
+const homePaths = ["", "index.html"];
+const publicPaths = ["privacy.html", "legal.html", "help.html"];
+const path = window.location.pathname.split("/").pop();
+
 const cameFromWelcome = document.referrer.includes("welcome.html");
 
 /**
@@ -102,7 +97,7 @@ onAuthStateChanged(auth, async (user) => {
  */
 async function logout() {
   await signOut(auth);
-  window.location.href = "/";
+  window.location.href = "./index.html";
 }
 
 window.logout = logout;

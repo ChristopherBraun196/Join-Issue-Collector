@@ -181,7 +181,7 @@ function getTopbarTemplate() {
   return `
   <div id="topbar-content">
     <p id="slogan">Kanban Project Management Tool</p>
-    <img src="/assets/img/logo-dark.svg" class="topbar_logo">
+    <img src="./assets/img/logo-dark.svg" class="topbar_logo">
 
     <div class="right-topbar-side">
           <button id="help">
