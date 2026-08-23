@@ -76,9 +76,9 @@ function getNextDeadline(urgentTasks) {
   if (withDeadline.length === 0) return "No deadline";
 
   const date = new Date(withDeadline[0].dueDate);
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+return date.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: window.innerWidth <= 380 ? "short" : "long",
+  day: "numeric",
+});
 }
