@@ -263,7 +263,7 @@
   .summary_bubble .line {
     height: 50px;
 
-      @media (max-width: 468px) {
+    @media (max-width: 468px) {
       height: 65px;
     }
   }
