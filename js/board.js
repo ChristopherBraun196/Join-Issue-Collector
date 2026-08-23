@@ -87,28 +87,17 @@ async function reRenderColumns(...columns) {
    ========================================================= */
 
 /**
- * Returns the neighbor columns a task can move to.
+ * Returns all other columns a task can move to (excluding its current column).
  * @param {string} currentStatus - The current column ID
  * @returns {Object[]} Array of {id, label, direction}
  */
 function getMoveTargets(currentStatus) {
   const idx = COLUMNS.indexOf(currentStatus);
-  const targets = [];
-  if (idx > 0) {
-    targets.push({
-      id: COLUMNS[idx - 1],
-      label: COLUMN_LABELS[COLUMNS[idx - 1]],
-      direction: "up",
-    });
-  }
-  if (idx < COLUMNS.length - 1) {
-    targets.push({
-      id: COLUMNS[idx + 1],
-      label: COLUMN_LABELS[COLUMNS[idx + 1]],
-      direction: "down",
-    });
-  }
-  return targets;
+  return COLUMNS.filter((col) => col !== currentStatus).map((col) => ({
+    id: col,
+    label: COLUMN_LABELS[col],
+    direction: COLUMNS.indexOf(col) < idx ? "up" : "down",
+  }));
 }
 
 /**

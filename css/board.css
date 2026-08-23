@@ -87,7 +87,14 @@ input.find-task {
   margin-top: 80px;
   height: 80%;
   max-width: 1440px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.progress-board::-webkit-scrollbar {
+  display: none;
 }
 
 .board-task {
@@ -149,6 +156,10 @@ input.find-task {
 
 .task-card:hover {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+}
+
+[draggable="true"]:active {
+  transform: rotate(3deg);
 }
 
 .task-card-topbar {
@@ -539,4 +550,9 @@ dialog#openDialogBoard p:has(img) {
   justify-content: flex-end;
   gap: 12px;
   margin-top: 24px;
+}
+
+.drag-area-highlight {
+  border: 2px dashed grey;
+  border-radius: 16px;
 }
