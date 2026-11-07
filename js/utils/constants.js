@@ -10,5 +10,3 @@ export const STATUS = {
   AWAIT: "await",
   DONE: "done",
 };
-
-window.STATUS = STATUS;

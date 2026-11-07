@@ -15,5 +15,3 @@ export function showMessage(message) {
     }
   }, 5000);
 }
-
-window.showMessage = showMessage;

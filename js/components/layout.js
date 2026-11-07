@@ -104,8 +104,3 @@ document.addEventListener("click", function () {
   const dropdown = document.getElementById("user-menue-dropdown");
   if (dropdown) dropdown.classList.remove("show");
 });
-
-window.init = init;
-window.loadSidebar = loadSidebar;
-window.switchToGuestSidebar = switchToGuestSidebar;
-window.renderUserMenue = renderUserMenue;

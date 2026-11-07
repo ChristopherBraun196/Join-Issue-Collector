@@ -1,5 +1,6 @@
 import { db } from "./firebaseAuth.js";
 import { ref, get, set, remove } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+import { showMessage } from "../components/toast.js";
 
 /**
  * Loads data from Firebase at the given path.
@@ -59,8 +60,3 @@ export async function deleteData(path = "") {
     throw error;
   }
 }
-
-window.loadData = loadData;
-window.postData = postData;
-window.putData = putData;
-window.deleteData = deleteData;

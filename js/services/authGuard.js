@@ -1,6 +1,7 @@
 import { auth, db } from "./firebaseAuth.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 import { ref, get } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+import { renderUserMenue, loadSidebar, switchToGuestSidebar } from "../components/layout.js";
 
 const homePaths = ["", "index.html"];
 const publicPaths = ["privacy.html", "legal.html", "help.html"];
@@ -27,7 +28,7 @@ async function handleAuthenticatedUser(user, path) {
     window.location.href = "./summary.html";
   } else if (publicPaths.includes(path)) {
     const page = path.includes("privacy") ? "privacy" : path.includes("legal") ? "legal" : "help";
-    if (typeof loadSidebar === "function") loadSidebar(page);
+    loadSidebar(page);
   }
 }
 
@@ -39,7 +40,7 @@ async function handleAuthenticatedUser(user, path) {
  */
 function handleUnauthenticatedUser(path) {
   if (publicPaths.includes(path)) {
-    if (typeof switchToGuestSidebar === "function") switchToGuestSidebar();
+    switchToGuestSidebar();
   } else if (homePaths.includes(path)) {
     if (!cameFromWelcome) {
       window.location.href = "./welcome.html";
@@ -67,7 +68,7 @@ onAuthStateChanged(auth, async (user) => {
         }
       } else if (publicPaths.includes(path)) {
         const page = path.includes("privacy") ? "privacy" : path.includes("legal") ? "legal" : "help";
-        if (typeof loadSidebar === "function") loadSidebar(page);
+        loadSidebar(page);
       }
       return;
     }

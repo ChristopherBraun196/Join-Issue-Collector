@@ -43,8 +43,3 @@ export function formatLabel(str) {
     .map((word) => capitalize(word))
     .join(" ");
 }
-
-window.getInitials = getInitials;
-window.formatDate = formatDate;
-window.capitalize = capitalize;
-window.formatLabel = formatLabel;
