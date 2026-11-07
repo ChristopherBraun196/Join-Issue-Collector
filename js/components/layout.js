@@ -1,4 +1,5 @@
 import { getInitials } from "../utils/format.js";
+import { getSidebarTemplate, getSidebarGuestTemplate, getTopbarTemplate } from "../templates/layoutTemplates.js";
 
 /**
  * Initializes the page by generating the topbar and loading the sidebar.
