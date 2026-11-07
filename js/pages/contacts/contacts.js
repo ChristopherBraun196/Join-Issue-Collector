@@ -2,6 +2,24 @@ let mobileActiveContact = null;
 let contactsArray = [];
 
 /**
+ * Handles all clicks on the contacts page via event delegation.
+ * @param {MouseEvent} event - The click event
+ */
+function handleContactsClick(event) {
+  const target = event.target.closest("[data-action]");
+  if (!target) return;
+  const { action, id } = target.dataset;
+  if (action === "open-dialog") openContactDialog();
+  if (action === "close-dialog") closeContactDialog();
+  if (action === "submit") submitContact();
+  if (action === "save") saveContact(id);
+  if (action === "edit") editContact(id);
+  if (action === "delete") deleteContact(id);
+  if (action === "delete") closeContactDialog();
+  if (action === "back") backToContacts();
+}
+
+/**
  * Groups an array of contacts alphabetically by their first name letter.
  * @param {Object[]} contacts - Array of contact objects
  * @returns {Object} An object with letters as keys and contact arrays as values
@@ -184,3 +202,5 @@ function getActiveContactData(contactId) {
   });
   return currentContact;
 }
+
+document.addEventListener("click", handleContactsClick);

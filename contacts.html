@@ -11,13 +11,13 @@
   <body onload="init('contact')">
     <aside id="sidebar"></aside>
     <aside id="sidebar_contacts">
-      <button class="primary-btn add_contact" onclick="openContactDialog()">
+      <button class="primary-btn add_contact" data-action="open-dialog">
         Add new contact <img src="./assets/icons/person_add.svg" />
       </button>
     </aside>
 
     <main class="main_contacts">
-      <button class="back-to-contacts" onclick="backToContacts()">
+      <button class="back-to-contacts" data-action="back">
         <img src="./assets/icons/arrow-back.svg" />
       </button>
       <div class="headline">
@@ -27,23 +27,20 @@
       </div>
     </main>
 
-    <button class="fab-add-contact" onclick="openContactDialog()">
+    <button class="fab-add-contact" data-action="open-dialog">
       <img src="./assets/icons/person_add.svg" class="nav-link-icon active" />
     </button>
 
     <div id="dialog-overlay" class="dialog-overlay">
       <div class="dialog-box">
-        <!-- Links -->
         <div class="dialog-left">
           <img src="./assets/img/logo-light.png" class="dialog-logo" />
           <h1>Add contact</h1>
           <p>Tasks are better with a team!</p>
           <div class="logo-underline"></div>
         </div>
-
-        <!-- Rechts -->
         <div class="dialog-right">
-          <button class="close-btn" onclick="closeContactDialog()">&#x2715;</button>
+          <button class="close-btn" data-action="close-dialog">&#x2715;</button>
 
           <div class="dialog-content">
             <img src="./assets/icons/contact_pb.svg" class="new-contact-avatar" />
@@ -80,8 +77,8 @@
               </div>
 
               <div class="dialog-actions">
-                <button class="btn-cancel" onclick="closeContactDialog()">Cancel &#x2715;</button>
-                <button class="btn-submit" onclick="submitContact()">Create contact &#x2713;</button>
+                <button class="btn-cancel" data-action="close-dialog">Cancel &#x2715;</button>
+                <button class="btn-submit" data-action="submit">Create contact &#x2713;</button>
               </div>
             </div>
           </div>

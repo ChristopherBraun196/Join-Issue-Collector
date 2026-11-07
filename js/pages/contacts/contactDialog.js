@@ -119,13 +119,11 @@ function setEditDialogButtons(contactId) {
   const cancelBtn = document.querySelector(".btn-cancel");
   const submitBtn = document.querySelector(".btn-submit");
   cancelBtn.textContent = "Delete ✕";
-  cancelBtn.onclick = () => {
-    deleteContact(contactId);
-    closeContactDialog();
-  };
+  cancelBtn.dataset.action = "delete";
+  cancelBtn.dataset.id = contactId;
   submitBtn.textContent = "Save ✓";
-  submitBtn.onclick = () => saveContact(contactId);
-  document.querySelector(".close-btn").onclick = () => closeContactDialog();
+  submitBtn.dataset.action = "save";
+  submitBtn.dataset.id = contactId;
   document.querySelector(".dialog-left h1").textContent = "Edit contact";
 }
 
@@ -172,10 +170,9 @@ function resetDialog() {
   const cancelBtn = document.querySelector(".btn-cancel");
   const submitBtn = document.querySelector(".btn-submit");
   cancelBtn.textContent = "Cancel ✕";
-  cancelBtn.onclick = closeContactDialog;
+  cancelBtn.dataset.action = "close-dialog";
   submitBtn.textContent = "Create contact ✓";
-  submitBtn.onclick = submitContact;
-  document.querySelector(".close-btn").onclick = closeContactDialog;
+  submitBtn.dataset.action = "submit";
   document.querySelector(".dialog-left h1").textContent = "Add contact";
 }
 
