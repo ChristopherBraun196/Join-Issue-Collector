@@ -1,52 +1,4 @@
-import { auth, db } from "../../services/firebaseAuth.js";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signInAnonymously,
-  signOut,
-} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-import { ref, set } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
-
-export const AVATAR_COLORS = ["#FF7043", "#E91E8C", "#9C27B0", "#3F51B5", "#00BCD4", "#4CAF50", "#FF9800", "#795548"];
-
-/**
- * Returns a randomly selected avatar color from the predefined color list.
- * @returns {string} A hex color code
- */
-export function selectRandomAvatarColor() {
-  return AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
-}
-
-/**
- * Creates a contact entry in the database for a newly registered user.
- * @param {string} uid - The Firebase user ID
- * @param {string} name - The full name of the user
- * @param {string} email - The email address of the user
- * @returns {Promise<string>} The generated contact ID
- */
-async function createContactEntry(uid, name, email) {
-  const contactId = `contact-${generateUUID()}`;
-  await set(ref(db, `contacts/${contactId}`), {
-    id: contactId,
-    name: name,
-    email: email,
-    avatarColor: selectRandomAvatarColor(),
-    uid: uid,
-  });
-  return contactId;
-}
-
-/**
- * Creates a user entry in the database linking the user to their contact.
- * @param {string} uid - The Firebase user ID
- * @param {string} contactId - The associated contact ID
- * @returns {Promise<void>}
- */
-async function createUserEntry(uid, contactId) {
-  await set(ref(db, `users/${uid}`), {
-    contactId: contactId,
-  });
-}
+import { registerUser, signInUser, signInGuest } from "../../services/authService.js";
 
 /**
  * Displays an error message at the relevant input field based on the Firebase signup error code.
@@ -85,10 +37,7 @@ function handleSignupError(error) {
  */
 async function signup(name, email, password) {
   try {
-    const { user } = await createUserWithEmailAndPassword(auth, email, password);
-    const contactId = await createContactEntry(user.uid, name, email);
-    await createUserEntry(user.uid, contactId);
-    await signOut(auth);
+    await registerUser(name, email, password);
     showMessage("Signup successful!");
     setTimeout(() => {
       switchToLogin();
@@ -129,7 +78,7 @@ function handleLoginError(error) {
  */
 async function login(email, password) {
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    await signInUser(email, password);
     showMessage("Login successful!");
     setTimeout(() => {
       window.location.href = "./summary.html";
@@ -389,7 +338,7 @@ async function handleSignup() {
  */
 async function guestLogin() {
   try {
-    await signInAnonymously(auth);
+    await signInGuest();
     window.location.href = "./summary.html";
   } catch (error) {
     showMessage("Gast-Login fehlgeschlagen: " + error.message);
