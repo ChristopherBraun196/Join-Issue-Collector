@@ -1,15 +1,4 @@
 let currentEditTaskId = null;
-let tasks = [];
-
-const COLUMNS = ["triage", "toDo", "inProgress", "await", "done"];
-
-const COLUMN_LABELS = {
-  triage: "Triage",
-  toDo: "To-do",
-  inProgress: "In progress",
-  await: "Await feedback",
-  done: "Done",
-};
 
 /**
  * Initializes the board by running setup, loading tasks and rendering.
@@ -64,15 +53,6 @@ function handleBoardInput(event) {
 }
 
 /**
- * Initializes the tasks by loading them from the database.
- * @returns {Promise<void>}
- */
-async function initTasks() {
-  const data = await loadData("/tasks");
-  tasks = Object.entries(data).map(([id, task]) => ({ ...task, id }));
-}
-
-/**
  * Renders all task sections on the board.
  * @returns {Promise<void>}
  */
@@ -118,90 +98,6 @@ async function reRenderColumns(...columns) {
   for (const col of columns) await renderSection(col);
   updateNoTaskPlaceholders();
   updateScrollArrows();
-}
-
-/**
- * Returns all other columns a task can move to (excluding its current column).
- * @param {string} currentStatus - The current column ID
- * @returns {Object[]} Array of {id, label, direction}
- */
-function getMoveTargets(currentStatus) {
-  const idx = COLUMNS.indexOf(currentStatus);
-  return COLUMNS.filter((col) => col !== currentStatus).map((col) => ({
-    id: col,
-    label: COLUMN_LABELS[col],
-    direction: COLUMNS.indexOf(col) < idx ? "up" : "down",
-  }));
-}
-
-/**
- * Toggles the move-to overlay on a task card.
- * @param {Event} event - The click event
- * @param {string} taskId - The task ID
- * @param {string} currentStatus - The current column of the task
- */
-function toggleMoveOverlay(event, taskId, currentStatus) {
-  event.stopPropagation();
-  const existingOverlay = document.getElementById("move-overlay-" + taskId);
-  closeAllOverlays();
-  if (existingOverlay) return;
-
-  const card = event.target.closest(".task-card");
-  const targets = getMoveTargets(currentStatus);
-  const overlay = document.createElement("div");
-  overlay.className = "move-overlay";
-  overlay.id = "move-overlay-" + taskId;
-  overlay.innerHTML = getMoveOverlayHTML(taskId, targets);
-  card.appendChild(overlay);
-}
-
-/**
- * Returns the HTML for the move overlay content.
- */
-function getMoveOverlayHTML(taskId, targets) {
-  let html = '<p class="move-overlay-title">Move to</p>';
-  for (const t of targets) {
-    const arrow = t.direction === "up" ? "↑" : "↓";
-    html += `<button class="move-overlay-option" data-action="move-task" data-id="${taskId}" data-status="${t.id}">
-      <span class="move-arrow">${arrow}</span> ${t.label}
-    </button>`;
-  }
-  return html;
-}
-
-/**
- * Moves a task to a new column via the overlay.
- */
-async function moveTaskTo(event, taskId, newStatus) {
-  event.stopPropagation();
-  const task = tasks.find((t) => t.id === taskId);
-  if (!task) return;
-  const oldStatus = task.status;
-  if (oldStatus === newStatus) return;
-
-  task.status = newStatus;
-  try {
-    await putData("/tasks/" + task.id, task);
-  } catch {
-    task.status = oldStatus;
-  }
-  await reRenderColumns(oldStatus, newStatus);
-}
-
-/**
- * Closes all open move overlays.
- */
-function closeAllOverlays() {
-  document.querySelectorAll(".move-overlay").forEach((el) => el.remove());
-}
-
-/**
- * Handles clicks outside overlays to close them.
- */
-function handleOutsideClick(event) {
-  if (!event.target.closest(".move-overlay") && !event.target.closest(".move-to-btn")) {
-    closeAllOverlays();
-  }
 }
 
 /**
@@ -302,19 +198,6 @@ function updateNoTaskPlaceholders() {
       placeholder.classList.add("hidden");
     }
   }
-}
-
-async function getAssignedContacts(assignedTo) {
-  const data = await loadData("/contacts");
-  if (!data || !assignedTo) return [];
-
-  const assignedArray = Array.isArray(assignedTo) ? assignedTo : Object.values(assignedTo);
-
-  const assignedIds = assignedArray.map((a) => a.id.trim());
-  const result = Object.entries(data)
-    .map(([id, contact]) => ({ ...contact, id }))
-    .filter((contact) => assignedIds.includes(contact.id.trim()));
-  return result;
 }
 
 async function findTask(input) {

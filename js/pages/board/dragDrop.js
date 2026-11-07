@@ -1,9 +1,11 @@
+import { moveTaskTo } from "./moveOverlay.js";
+
 let currentDraggedElement;
 
 /**
  * Registers the delegated drag and drop listeners on the board.
  */
-function initDragDrop() {
+export function initDragDrop() {
   const board = document.querySelector(".progress-board");
   board.addEventListener("dragover", handleDragOver);
   board.addEventListener("dragleave", handleDragLeave);
@@ -95,3 +97,5 @@ async function dropTask(ev, newStatus) {
   if (!currentDraggedElement) return;
   await moveTaskTo(ev, currentDraggedElement, newStatus);
 }
+
+window.initDragDrop = initDragDrop;
