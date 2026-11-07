@@ -162,11 +162,11 @@ export function getSubtaskEditingStateTemplate(currentText) {
  */
 export function getSubtaskEditActionsTemplate() {
   return `
-        <button class="subtask-icon-btn" onclick="removeSubtask(this)" type="button">
+        <button class="subtask-icon-btn" data-action="remove-subtask" type="button">
             <img src="./assets/icons/delete.svg" alt="Delete">
         </button>
         <div class="subtask-divider"></div>
-        <button class="subtask-icon-btn" onclick="confirmEditSubtask(this)" type="button">
+        <button class="subtask-icon-btn" data-action="confirm-subtask" type="button">
             <img src="./assets/icons/check-dark.svg" alt="Confirm">
         </button>
     `;
@@ -179,4 +179,3 @@ window.getContactBadgeTemplate = getContactBadgeTemplate;
 window.getAssignedContactsEditTemplate = getAssignedContactsEditTemplate;
 window.getSubtaskEditItemTemplate = getSubtaskEditItemTemplate;
 window.getSubtaskEditingStateTemplate = getSubtaskEditingStateTemplate;
-window.getSubtaskEditActionsTemplate = getSubtaskEditActionsTemplate;

@@ -8,7 +8,92 @@ let contacts = [];
  */
 async function initAddTask(site) {
   init(site);
+  initTaskForm(document.querySelector(".add-task"));
   await renderContacts();
+}
+
+/**
+ * Registers all event listeners of the add task form on the given container.
+ * @param {HTMLElement} container - The add task section or the add task dialog
+ */
+function initTaskForm(container) {
+  container.addEventListener("click", handleTaskFormClick);
+  container.addEventListener("submit", handleTaskFormSubmit);
+  container.addEventListener("focusout", handleTaskFormBlur);
+  container.addEventListener("change", handleTaskFormChange);
+  container.addEventListener("input", handleTaskFormInput);
+  container.addEventListener("keydown", handleTaskFormKey);
+}
+
+/**
+ * Handles all clicks inside the add task form via data-action.
+ * @param {MouseEvent} event - The click event
+ */
+function handleTaskFormClick(event) {
+  const target = event.target.closest("[data-action]");
+  if (!target) return;
+  const { action, dropdown } = target.dataset;
+  if (action === "set-priority") setPriority(target);
+  if (action === "toggle-dropdown") toggleDropdown(dropdown);
+  if (action === "select-category") selectCategory(target);
+  if (action === "clear-form") clearTaskForm(event.currentTarget);
+  if (action === "close-dialog") closeAddTaskDialog();
+  if (action === "toggle-contact") toggleContact(target);
+  handleSubtaskAction(action, target);
+}
+
+/**
+ * Validates a required field when it loses focus.
+ * @param {FocusEvent} event - The focusout event
+ */
+function handleTaskFormBlur(event) {
+  const input = event.target.closest("[data-error-msg]");
+  if (input) validateOnBlur(input, input.dataset.errorMsg);
+}
+
+/**
+ * Validates the due date when its value changes.
+ * @param {Event} event - The change event
+ */
+function handleTaskFormChange(event) {
+  if (event.target.matches("[data-validate-date]")) validateDate(event.target);
+}
+
+/**
+ * Shows or hides the subtask confirm buttons while typing.
+ * @param {InputEvent} event - The input event
+ */
+function handleTaskFormInput(event) {
+  if (event.target.matches("#subtask-input")) onSubtaskInput();
+}
+
+/**
+ * Handles Enter and Escape inside the subtask input.
+ * @param {KeyboardEvent} event - The keydown event
+ */
+function handleTaskFormKey(event) {
+  if (event.target.matches("#subtask-input")) handleSubtaskKey(event);
+}
+
+/**
+ * Prevents the native form submit and creates the task with the form's status.
+ * @param {SubmitEvent} event - The submit event
+ */
+function handleTaskFormSubmit(event) {
+  event.preventDefault();
+  createTask(event.target.dataset.status);
+}
+
+/**
+ * Clears the form, either inside the dialog or on the add task page.
+ * @param {HTMLElement} container - The container the listener is registered on
+ */
+function clearTaskForm(container) {
+  if (container.id === "add-task-dialog") {
+    clearDialogAddTaskForm(container.querySelector("form").dataset.status);
+  } else {
+    clearAddTaskForm();
+  }
 }
 
 /**
@@ -21,6 +106,7 @@ function openAddTaskDialog(status) {
   dialogSection.id = "add-task-dialog";
   main.appendChild(dialogSection);
   dialogSection.innerHTML = getAddTaskDialogTemplate(status);
+  initTaskForm(dialogSection);
   dialogSection.showModal();
   addTaskDialog = dialogSection;
   renderContacts();
@@ -111,7 +197,7 @@ async function renderContacts() {
     .map(
       (contact) => `
         <div class="custom-option" 
-             onclick="toggleContact(this)" 
+             data-action="toggle-contact" 
              data-id="${contact.id}">
             <div class="contact-avatar" style="background:${contact.color}">
                 ${getInitials(contact.name)}

@@ -8,13 +8,13 @@ export function getAddTaskDialogTemplate(status) {
     <section class="add-task" id="add-task-dialog-content">
       <header id="add-task-dialog-header">
         <h1>Add Task</h2>
-        <button onclick="closeAddTaskDialog()" id="close-dialog-btn" tabindex="1"><img src="../assets/icons/close.svg"></button>
+        <button data-action="close-dialog" id="close-dialog-btn" tabindex="1"><img src="../assets/icons/close.svg"></button>
       </header>
-      <form class="add-task-form" onsubmit="createTask('${status}'); return false;" id="add-task-form" novalidate>
+      <form class="add-task-form" data-status="${status}" id="add-task-form" novalidate>
           <div id="left-side-form">
               <div id="task-title">
                   <label for="title">Title<span class="required">*</span></label>
-                  <input type="text" name="title" placeholder="Enter a title" required onblur="validateOnBlur(this, 'Please enter a title')" />
+                  <input type="text" name="title" placeholder="Enter a title" required data-error-msg="Please enter a title"/>
                   <span class="field-error-msg"></span>
               </div>
               <div id="task-description">
@@ -23,7 +23,7 @@ export function getAddTaskDialogTemplate(status) {
               </div>
               <div id="task-due-date">
                   <label for="due-date">Due Date<span class="required">*</span></label>
-                  <input type="date" id="due-date" name="due-date" required onchange="validateDate(this)" />
+                  <input type="date" id="due-date" name="due-date" required data-validate-date />
                   <span class="field-error-msg"></span>
               </div>
           </div>
@@ -31,15 +31,15 @@ export function getAddTaskDialogTemplate(status) {
               <div id="task-priority">
                   <label for="priority">Priority</label>
                   <div id="task-priority-btns">
-                      <button class="priority-btn urgent" onclick="setPriority(this)" type="button">Urgent <span><img src="./assets/icons/priority-urgent.svg" alt="Urgent priority icon"></span></button>
-                      <button class="priority-btn medium set" onclick="setPriority(this)" type="button">Medium<span><img src="./assets/icons/priority-medium.svg" alt="Medium priority icon"></span></button>
-                      <button class="priority-btn low" onclick="setPriority(this)" type="button">Low<span><img src="./assets/icons/priority-low.svg" alt="Low priority icon"></span></button>
+                      <button class="priority-btn urgent" data-action="set-priority" type="button">Urgent <span><img src="./assets/icons/priority-urgent.svg" alt="Urgent priority icon"></span></button>
+                      <button class="priority-btn medium set" data-action="set-priority" type="button">Medium<span><img src="./assets/icons/priority-medium.svg" alt="Medium priority icon"></span></button>
+                      <button class="priority-btn low" data-action="set-priority" type="button">Low<span><img src="./assets/icons/priority-low.svg" alt="Low priority icon"></span></button>
                   </div>
               </div>
               <div id="task-assigned-to">
                   <label>Assigned to</label>
                   <div class="custom-select-wrapper" id="assigned-wrapper">
-                      <div class="custom-select-trigger" onclick="toggleDropdown('assigned')">
+                      <div class="custom-select-trigger" data-action="toggle-dropdown" data-dropdown="assigned">
                           <span id="assigned-placeholder">Select contacts to assign</span>
                           <img src="./assets/icons/arrow_drop_down.svg" class="select-arrow">
                       </div>
@@ -55,16 +55,16 @@ export function getAddTaskDialogTemplate(status) {
                   <div class="custom-select-wrapper" id="category-wrapper">
                       <input type="hidden" name="category" required data-error-msg="Please select a category" />
                       <span class="field-error-msg"></span>
-                      <div class="custom-select-trigger" onclick="toggleDropdown('category')">
+                      <div class="custom-select-trigger" data-action="toggle-dropdown" data-dropdown="category">
                           <span id="category-placeholder">Select task category</span>
                           <img src="./assets/icons/arrow_drop_down.svg" class="select-arrow">
                       </div>
                       <div class="custom-select-dropdown" id="category-dropdown">
                           <div class="custom-select-dropdown-inner">
-                              <div class="custom-option" onclick="selectCategory(this)" data-value="technical-task">
+                              <div class="custom-option" data-action="select-category" data-value="technical-task">
                                   <span>Technical Task</span>
                               </div>
-                              <div class="custom-option" onclick="selectCategory(this)" data-value="user-story">
+                              <div class="custom-option" data-action="select-category" data-value="user-story">
                                   <span>User Story</span>
                               </div>
                           </div>
@@ -78,16 +78,14 @@ export function getAddTaskDialogTemplate(status) {
                           type="text" 
                           id="subtask-input"
                           placeholder="Add new Subtask"
-                          oninput="onSubtaskInput()"
-                          onkeydown="handleSubtaskKey(event)"
                       />
                       <div class="subtask-actions" id="subtask-actions">
                           <div class="subtask-confirm-btns" id="subtask-confirm-btns">
-                              <button class="subtask-icon-btn" onclick="clearSubtaskInput()" type="button">
+                              <button class="subtask-icon-btn" data-action="clear-subtask" type="button">
                                   <img src="./assets/icons/close.svg" alt="Cancel">
                               </button>
                               <div class="subtask-divider"></div>
-                              <button class="subtask-icon-btn" onclick="addSubtask()" type="button">
+                              <button class="subtask-icon-btn" data-action="add-subtask" type="button">
                                   <img src="./assets/icons/check-dark.svg" alt="Confirm">
                               </button>
                           </div>
@@ -100,7 +98,7 @@ export function getAddTaskDialogTemplate(status) {
       <footer id="add-task-form-footer">
           <p><span class="required">*</span> This field is required</p>
           <div id="task-btns">
-              <button id="clear-task-form" type="button" onclick="clearDialogAddTaskForm('${status}')">Clear <img src="./assets/icons/close.svg" alt="Cross icon"></button>
+              <button id="clear-task-form" type="button" data-action="clear-form">Clear <img src="./assets/icons/close.svg" alt="Cross icon"></button>
               <button id="create-task" class="primary-btn" form="add-task-form" type="submit">Create Task <img src="./assets/icons/check.svg" alt="Check icon"></button>
           </div>
       </footer>
