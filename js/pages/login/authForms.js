@@ -25,6 +25,3 @@ export function switchToLogin() {
   document.getElementById("signupResponsiv").classList.remove("hidden");
   document.title = "Join | Log in";
 }
-
-window.switchToSignup = switchToSignup;
-window.switchToLogin = switchToLogin;

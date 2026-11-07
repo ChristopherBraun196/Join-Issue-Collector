@@ -7,5 +7,3 @@ const AVATAR_COLORS = ["#FF7043", "#E91E8C", "#9C27B0", "#3F51B5", "#00BCD4", "#
 export function selectRandomAvatarColor() {
   return AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 }
-
-window.selectRandomAvatarColor = selectRandomAvatarColor;

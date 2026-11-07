@@ -9,7 +9,7 @@
     <link rel="shortcut icon" href="./assets/img/logo-light.svg" type="image/x-icon" />
   </head>
 
-  <body onload="switchToLogin()">
+  <body>
     <div id="animated-img-wrapper" class="animated-img-wrapper">
       <img src="./assets/img/logo-dark.svg" class="animated-img" />
     </div>
@@ -19,7 +19,7 @@
         <img src="./assets/img/logo-dark.svg" id="navbar-logo" class="logo hide" />
         <div id="signup">
           <p>Not a Join user?</p>
-          <button class="primary-btn btn" onclick="switchToSignup()">Sign up</button>
+          <button class="primary-btn btn" data-action="show-signup">Sign up</button>
         </div>
       </nav>
     </header>
@@ -30,7 +30,7 @@
       <span id="message-box"></span>
       <div id="signupResponsiv">
         <p>Not a Join user?</p>
-        <button class="primary-btn btn" onclick="switchToSignup()">Sign up</button>
+        <button class="primary-btn btn" data-action="show-signup">Sign up</button>
       </div>
     </main>
 
@@ -41,12 +41,10 @@
       </div>
     </footer>
 
+    <script type="module" src="./js/pages/login/loginPage.js"></script>
     <script type="module" src="./js/components/dialogGuard.js"></script>
-    <script type="module" src="./js/pages/login/logoAnimation.js"></script>
-    <script type="module" src="./js/pages/login/authForms.js"></script>
     <script type="module" src="./js/components/toast.js"></script>
     <script type="module" src="./js/components/layout.js"></script>
     <script type="module" src="./js/utils/format.js"></script>
-    <script type="module" src="./js/pages/login/login.js"></script>
   </body>
 </html>

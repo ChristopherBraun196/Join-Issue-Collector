@@ -116,7 +116,7 @@ function clearFieldError(inputWrapper, errorEl) {
  * Shows or hides the password visibility toggle button based on input content.
  * @param {HTMLInputElement} input - The password input element
  */
-function togglePwdVisibilityBtn(input) {
+export function togglePwdVisibilityBtn(input) {
   const wrapper = input.parentElement;
   const btn = wrapper.querySelector(".pwd-toggle-btn");
   const lock = wrapper.querySelector(".pwd-lock-icon");
@@ -129,7 +129,7 @@ function togglePwdVisibilityBtn(input) {
  * Toggles the password input between plain text and password type.
  * @param {HTMLButtonElement} btn - The toggle button element
  */
-function togglePwdVisibility(btn) {
+export function togglePwdVisibility(btn) {
   const input = btn.parentElement.querySelector("input");
   const isHidden = input.type === "password";
   input.type = isHidden ? "text" : "password";
@@ -141,7 +141,7 @@ function togglePwdVisibility(btn) {
  * @param {HTMLInputElement} input - The input element
  * @param {string} errorId - The ID of the error span
  */
-function validateField(input, errorId) {
+export function validateField(input, errorId) {
   const errorEl = document.getElementById(errorId);
   const wrapper = input.parentElement;
   if (!input.value.trim()) {
@@ -155,7 +155,7 @@ function validateField(input, errorId) {
  * Validates the confirm password field on blur.
  * @param {HTMLInputElement} input - The confirm password input element
  */
-function validatePasswordConfirm(input) {
+export function validatePasswordConfirm(input) {
   const errorEl = document.getElementById("password-confirm-error");
   const wrapper = input.parentElement;
   const form = document.getElementById("login-signup-form");
@@ -213,7 +213,7 @@ function validateLoginInputs(emailInput, passwordInput) {
  * Reads the login form values and triggers the login process.
  * @returns {Promise<void>}
  */
-async function handleLogin() {
+export async function handleLogin() {
   const { emailInput, passwordInput } = getLoginFormInputs();
   if (!validateLoginInputs(emailInput, passwordInput)) return;
   await login(emailInput.value, passwordInput.value);
@@ -327,7 +327,7 @@ function validateSignupInputs({ nameInput, emailInput, passwordInput, passwordCo
  * Reads the signup form values, validates them and triggers the signup process.
  * @returns {Promise<void>}
  */
-async function handleSignup() {
+export async function handleSignup() {
   const inputs = getSignupFormInputs();
   if (!validateSignupInputs(inputs)) return;
   await signup(inputs.nameInput.value, inputs.emailInput.value, inputs.passwordInput.value);
@@ -337,7 +337,7 @@ async function handleSignup() {
  * Signs in the user anonymously as a guest and redirects to the summary page.
  * @returns {Promise<void>}
  */
-async function guestLogin() {
+export async function guestLogin() {
   try {
     await signInGuest();
     window.location.href = "./summary.html";
@@ -345,13 +345,3 @@ async function guestLogin() {
     showMessage("Gast-Login fehlgeschlagen: " + error.message);
   }
 }
-
-window.guestLogin = guestLogin;
-window.signup = signup;
-window.login = login;
-window.handleLogin = handleLogin;
-window.handleSignup = handleSignup;
-window.validateField = validateField;
-window.validatePasswordConfirm = validatePasswordConfirm;
-window.togglePwdVisibilityBtn = togglePwdVisibilityBtn;
-window.togglePwdVisibility = togglePwdVisibility;
