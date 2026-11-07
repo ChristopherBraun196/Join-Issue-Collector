@@ -4,11 +4,8 @@
  * and toggles the "limit-reached" state once today's count hits the daily cap of 10.
  * @module stakeholder
  */
-import {
-  onValue,
-  ref,
-} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
-import { db } from "./services/firebaseAuth.js";
+import { onValue, ref } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+import { db } from "../../services/firebaseAuth.js";
 
 // "sv-SE" locale formats as YYYY-MM-DD, matching the date keys n8n writes under /emailRequestCount
 const today = new Intl.DateTimeFormat("sv-SE", {
@@ -17,9 +14,7 @@ const today = new Intl.DateTimeFormat("sv-SE", {
 
 const counterReference = ref(db, `emailRequestCount/${today}`);
 
-const currentCount = document
-  .querySelector("#requestCounter")
-  .querySelector(".counter-number strong");
+const currentCount = document.querySelector("#requestCounter").querySelector(".counter-number strong");
 
 const stakeholderLayout = document.querySelector("#stakeholderLayout");
 

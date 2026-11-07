@@ -1,3 +1,4 @@
+import "./summaryAuth.js";
 import { init as initLayout } from "../../components/layout.js";
 import { loadData } from "../../services/database.js";
 import { STATUS } from "../../utils/constants.js";

@@ -1,9 +1,6 @@
-import { auth, db } from "./services/firebaseAuth.js";
+import { auth, db } from "../../services/firebaseAuth.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-import {
-  ref,
-  get,
-} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+import { ref, get } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
 const currentTime = new Date().toLocaleTimeString([], {
   hour: "2-digit",
