@@ -237,10 +237,10 @@ document.addEventListener("click", (e) => {
 /**
  * Generates a task object from the current form values.
  * @param {string} taskID - The ID for the new task
- * @param {string} statusArg - The initial status of the task (default: "todo")
+ * @param {string} statusArg - The initial status of the task (default: STATUS.TO_DO)
  * @returns {Object} The generated task object
  */
-function generateTaskJson(taskID, statusArg = "todo") {
+function generateTaskJson(taskID, statusArg = STATUS.TO_DO) {
   return {
     id: taskID,
     title: getTaskTitle(),
