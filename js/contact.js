@@ -2,24 +2,6 @@ let mobileActiveContact = null;
 let contactsArray = [];
 
 /**
- * Displays a temporary message box with the given text.
- * The box animates in, stays visible for 2.5 seconds, then animates out.
- * @param {string} message - The message text to display
- */
-function showMessage(message) {
-  const box = document.getElementById("message-box");
-  box.textContent = message;
-  box.style.opacity = "1";
-  box.style.transform = "translate(-50%, 0)";
-  box.style.zIndex = "999";
-  setTimeout(() => {
-    box.style.opacity = "0";
-    box.style.transform = "translate(-50%, 200px)";
-    box.style.zIndex = "0";
-  }, 2500);
-}
-
-/**
  * Opens the contact dialog overlay.
  */
 function openContactDialog() {
