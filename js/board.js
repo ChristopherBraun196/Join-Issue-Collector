@@ -45,7 +45,7 @@ function handleBoardClick(event) {
   const { action, status, target: columnId, direction } = target.dataset;
   if (action === "add-task") openAddTaskDialog(status);
   if (action === "scroll-column") scrollColumn(columnId, Number(direction));
-  if (action === "search-task") findTask();
+  if (action === "search-task") findTask(target.closest(".search-input-group").querySelector(".find-task"));
 }
 
 /**
@@ -53,7 +53,7 @@ function handleBoardClick(event) {
  * @param {InputEvent} event - The input event
  */
 function handleBoardInput(event) {
-  if (event.target.matches(".find-task")) findTask();
+  if (event.target.matches(".find-task")) findTask(event.target);
 }
 
 /**
@@ -326,8 +326,8 @@ async function getAssignedContacts(assignedTo) {
    SEARCH / FILTER
    ========================================================= */
 
-async function findTask() {
-  const query = document.getElementById("searchTask").value.toLowerCase();
+async function findTask(input) {
+  const query = input.value.toLowerCase();
 
   if (query.length < 1) {
     renderAll();
