@@ -9,11 +9,11 @@
  */
 export async function getToDoTemplate(element, solvedSubtasks, totalSubtasks, visibility = "", progress) {
   return `  
-<div class="task-card" draggable="true" ondragstart="startDragging('${element["id"]}')" onclick="openDialogBoard('${element["id"]}')">
+<div class="task-card" draggable="true" data-action="open-task" data-id="${element["id"]}">
 
   <div class="task-card-topbar">
     <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
-    <button class="move-to-btn" onclick="toggleMoveOverlay(event, '${element["id"]}', '${element["status"]}')" title="Move to">
+   <button class="move-to-btn" data-action="toggle-move" data-id="${element["id"]}" data-status="${element["status"]}" title="Move to">
       <img src="./assets/icons/move-task.svg" />
     </button>
   </div>
@@ -51,7 +51,7 @@ export function getDialogBoardTemplate(element, assignedContacts, subtasks, matc
         <div class="flex-sb">
             <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
             ${element.isAiGenerated ? '<span class="ai-badge"><img src="./assets/icons/wand_stars.svg" alt="AI Icon"> Ai-generated</span>' : ""}
-            <button onclick="closeDialogBoard('${element.status}')">✕</button>
+            <button data-action="close-task" data-status="${element.status}">✕</button>
         </div>
         <h2>${element.title}</h2>
     </header>
@@ -90,11 +90,11 @@ export function getDialogBoardTemplate(element, assignedContacts, subtasks, matc
     </main>
     <footer>
         <div class="dialog-board-actions">
-            <button class="delete-edit-button" onclick="deleteTask('${element.id}')">
+            <button class="delete-edit-button" data-action="delete-task" data-id="${element.id}">
                 <img src="./assets/icons/delete.svg" alt="delete Button">Delete
             </button>
             <div class="dialog-actions-divider"></div>
-            <button class="delete-edit-button" onclick="openEditTask('${element.id}')">
+            <button class="delete-edit-button" data-action="edit-task" data-id="${element.id}">
                 <img src="./assets/icons/edit.svg" alt="edit Button">Edit
             </button>
         </div>
@@ -117,19 +117,18 @@ function getAssignedContactTemplate(contact) {
 }
 
 /**
- * Returns the HTML template for a subtask list item with a configurable toggle function.
+ * Returns the HTML template for a subtask list item in the task detail dialog.
  * @param {Object} subtask - The subtask object
  * @param {string} taskID - The ID of the parent task
  * @param {number} subtaskIndex - The index of the subtask
- * @param {string} toggleFn - The toggle function name to call on click
  * @returns {string} HTML string of the subtask list item
  */
-export function getSubtasksTemplate(subtask, taskID, subtaskIndex, toggleFn = "toggleSubtask") {
+export function getSubtasksTemplate(subtask, taskID, subtaskIndex) {
   return `
     <li class="no-decoration board-subtask">
         <label for="${subtask.id}">
-            <input type="checkbox" id="${subtask.id}" 
-                   onclick="${toggleFn}('${subtaskIndex}', ${subtask.completed}, '${taskID}')" 
+            <input type="checkbox" id="${subtask.id}"
+                  data-action="toggle-subtask" data-index="${subtaskIndex}" data-completed="${subtask.completed}" data-id="${taskID}"
                    ${checkIfSubtaskActive(subtask.completed)}>
             ${subtask.title}
         </label>

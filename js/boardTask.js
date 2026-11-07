@@ -1,6 +1,20 @@
 let currentEditPriority = null;
 
 /**
+ * Handles all clicks inside the task detail dialog via data-action.
+ * @param {MouseEvent} event - The click event
+ */
+function handleDialogBoardClick(event) {
+  const target = event.target.closest("[data-action]");
+  if (!target) return;
+  const { action, id, status, index, completed } = target.dataset;
+  if (action === "close-task") closeDialogBoard(status);
+  if (action === "delete-task") deleteTask(id);
+  if (action === "edit-task") openEditTask(id);
+  if (action === "toggle-subtask") toggleSubtask(index, completed === "true", id);
+}
+
+/**
  * Opens the task detail dialog for a given task.
  * @param {string} id - The ID of the task to display
  * @returns {Promise<void>}

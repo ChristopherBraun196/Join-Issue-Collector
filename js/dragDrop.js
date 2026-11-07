@@ -8,6 +8,16 @@ function initDragDrop() {
   board.addEventListener("dragover", handleDragOver);
   board.addEventListener("dragleave", handleDragLeave);
   board.addEventListener("drop", handleDrop);
+  board.addEventListener("dragstart", handleDragStart);
+}
+
+/**
+ * Stores the ID of the task card that starts being dragged.
+ * @param {DragEvent} event - The dragstart event
+ */
+function handleDragStart(event) {
+  const card = event.target.closest(".task-card");
+  if (card) startDragging(card.dataset.id);
 }
 
 /**

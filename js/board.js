@@ -33,6 +33,7 @@ function initBoardListeners() {
   const main = document.querySelector("#board-main");
   main.addEventListener("click", handleBoardClick);
   main.addEventListener("input", handleBoardInput);
+  document.querySelector("#openDialogBoard").addEventListener("click", handleDialogBoardClick);
 }
 
 /**
@@ -42,10 +43,13 @@ function initBoardListeners() {
 function handleBoardClick(event) {
   const target = event.target.closest("[data-action]");
   if (!target) return;
-  const { action, status, target: columnId, direction } = target.dataset;
+  const { action, id, status, target: columnId, direction } = target.dataset;
   if (action === "add-task") openAddTaskDialog(status);
   if (action === "scroll-column") scrollColumn(columnId, Number(direction));
   if (action === "search-task") findTask(target.closest(".search-input-group").querySelector(".find-task"));
+  if (action === "open-task") openDialogBoard(id);
+  if (action === "toggle-move") toggleMoveOverlay(event, id, status);
+  if (action === "move-task") moveTaskTo(event, id, status);
 }
 
 /**
@@ -113,10 +117,6 @@ async function reRenderColumns(...columns) {
   updateScrollArrows();
 }
 
-/* =========================================================
-   MOVE-TO OVERLAY
-   ========================================================= */
-
 /**
  * Returns all other columns a task can move to (excluding its current column).
  * @param {string} currentStatus - The current column ID
@@ -143,7 +143,7 @@ function toggleMoveOverlay(event, taskId, currentStatus) {
   closeAllOverlays();
   if (existingOverlay) return;
 
-  const card = event.currentTarget.closest(".task-card");
+  const card = event.target.closest(".task-card");
   const targets = getMoveTargets(currentStatus);
   const overlay = document.createElement("div");
   overlay.className = "move-overlay";
@@ -159,7 +159,7 @@ function getMoveOverlayHTML(taskId, targets) {
   let html = '<p class="move-overlay-title">Move to</p>';
   for (const t of targets) {
     const arrow = t.direction === "up" ? "↑" : "↓";
-    html += `<button class="move-overlay-option" onclick="moveTaskTo(event, '${taskId}', '${t.id}')">
+    html += `<button class="move-overlay-option" data-action="move-task" data-id="${taskId}" data-status="${t.id}">
       <span class="move-arrow">${arrow}</span> ${t.label}
     </button>`;
   }
@@ -200,10 +200,6 @@ function handleOutsideClick(event) {
     closeAllOverlays();
   }
 }
-
-/* =========================================================
-   SCROLL ARROWS
-   ========================================================= */
 
 /**
  * Scrolls a column's task-cards container.
@@ -305,10 +301,6 @@ function updateNoTaskPlaceholders() {
   }
 }
 
-/* =========================================================
-   CONTACTS
-   ========================================================= */
-
 async function getAssignedContacts(assignedTo) {
   const data = await loadData("/contacts");
   if (!data || !assignedTo) return [];
@@ -321,10 +313,6 @@ async function getAssignedContacts(assignedTo) {
     .filter((contact) => assignedIds.includes(contact.id.trim()));
   return result;
 }
-
-/* =========================================================
-   SEARCH / FILTER
-   ========================================================= */
 
 async function findTask(input) {
   const query = input.value.toLowerCase();
@@ -361,26 +349,6 @@ async function renderFilteredTasks(filteredTasks) {
   }
   updateNoTaskPlaceholders();
   updateScrollArrows();
-}
-
-/* =========================================================
-   EDIT TASK (unchanged from original)
-   ========================================================= */
-
-async function toggleSubtaskEdit(subtaskIndex, isCompleted, taskId) {
-  await putData("/tasks/" + taskId + "/subtasks/" + subtaskIndex + "/completed", !isCompleted);
-  await initTasks();
-  const element = tasks.find((t) => t.id === taskId);
-  const assignedContacts = await getAssignedContacts(element.assignedTo);
-  openEditTask(taskId);
-}
-
-function checkIfSubtasksAvaiableEdit(subtasks, taskID) {
-  if (subtasks) {
-    return subtasks.map((s, index) => getSubtasksTemplate(s, taskID, index, "toggleSubtaskEdit")).join("");
-  } else {
-    return "<p>No Subtask available</p>";
-  }
 }
 
 function buildContactOptions(allContacts, assignedIds) {
