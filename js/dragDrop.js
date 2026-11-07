@@ -1,6 +1,45 @@
 let currentDraggedElement;
 
 /**
+ * Registers the delegated drag and drop listeners on the board.
+ */
+function initDragDrop() {
+  const board = document.querySelector(".progress-board");
+  board.addEventListener("dragover", handleDragOver);
+  board.addEventListener("dragleave", handleDragLeave);
+  board.addEventListener("drop", handleDrop);
+}
+
+/**
+ * Allows dropping and highlights the column the task is dragged over.
+ * @param {DragEvent} event - The dragover event
+ */
+function handleDragOver(event) {
+  const column = event.target.closest("[data-column]");
+  if (!column) return;
+  allowDrop(event);
+  highlight(column.dataset.column);
+}
+
+/**
+ * Removes the highlight from the column the task is dragged out of.
+ * @param {DragEvent} event - The dragleave event
+ */
+function handleDragLeave(event) {
+  const column = event.target.closest("[data-column]");
+  if (column) removeHighlight(column.dataset.column);
+}
+
+/**
+ * Drops the dragged task into the column it was released over.
+ * @param {DragEvent} event - The drop event
+ */
+function handleDrop(event) {
+  const column = event.target.closest("[data-column]");
+  if (column) dropTask(event, column.dataset.column);
+}
+
+/**
  * Starts dragging a task card. Stores which task is being dragged.
  * @param {string} id - The ID of the task being dragged
  */
@@ -21,9 +60,7 @@ function allowDrop(ev) {
  * @param {string} columnId - The column ID to highlight
  */
 function highlight(columnId) {
-  const dropzone = document.querySelector(
-    `.board-task-body[data-column="${columnId}"]`,
-  );
+  const dropzone = document.querySelector(`.board-task-body[data-column="${columnId}"]`);
   if (dropzone) dropzone.classList.add("drag-area-highlight");
 }
 
@@ -32,9 +69,7 @@ function highlight(columnId) {
  * @param {string} columnId - The column ID to unhighlight
  */
 function removeHighlight(columnId) {
-  const dropzone = document.querySelector(
-    `.board-task-body[data-column="${columnId}"]`,
-  );
+  const dropzone = document.querySelector(`.board-task-body[data-column="${columnId}"]`);
   if (dropzone) dropzone.classList.remove("drag-area-highlight");
 }
 

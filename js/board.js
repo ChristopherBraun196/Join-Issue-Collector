@@ -18,10 +18,42 @@ const COLUMN_LABELS = {
  */
 async function initBoard(site) {
   init(site);
+  initBoardListeners();
+  initDragDrop();
   await initTasks();
   await renderAll();
   document.addEventListener("click", handleOutsideClick);
   window.addEventListener("resize", updateScrollArrows);
+}
+
+/**
+ * Registers the delegated click listener for the board page.
+ */
+function initBoardListeners() {
+  const main = document.querySelector("#board-main");
+  main.addEventListener("click", handleBoardClick);
+  main.addEventListener("input", handleBoardInput);
+}
+
+/**
+ * Handles all clicks on the board page via data-action.
+ * @param {MouseEvent} event - The click event
+ */
+function handleBoardClick(event) {
+  const target = event.target.closest("[data-action]");
+  if (!target) return;
+  const { action, status, target: columnId, direction } = target.dataset;
+  if (action === "add-task") openAddTaskDialog(status);
+  if (action === "scroll-column") scrollColumn(columnId, Number(direction));
+  if (action === "search-task") findTask();
+}
+
+/**
+ * Filters the tasks while typing in one of the search inputs.
+ * @param {InputEvent} event - The input event
+ */
+function handleBoardInput(event) {
+  if (event.target.matches(".find-task")) findTask();
 }
 
 /**

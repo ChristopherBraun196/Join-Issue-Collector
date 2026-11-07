@@ -16,40 +16,26 @@
         <h1>Board</h1>
         <div class="search-wrapper">
           <div class="search-input-group">
-            <input
-              id="searchTask"
-              class="find-task"
-              type="text"
-              role="search"
-              placeholder="Find Task"
-              oninput="findTask()"
-            />
+            <input id="searchTask" class="find-task" type="text" role="search" placeholder="Find Task" />
             <div id="search-spacer"></div>
-            <button class="search-btn" onclick="findTask()">
+            <button class="search-btn" data-action="search-task">
               <img src="./assets/icons/search.svg" class="search-icon" />
             </button>
           </div>
-          <button class="primary-btn add-task-btn" onclick="openAddTaskDialog('toDo')">Add task +</button>
+          <button class="primary-btn add-task-btn" data-action="add-task" data-status="toDo">Add task +</button>
         </div>
       </section>
 
       <section class="board-bar-mobile">
         <div id="board-header">
           <h1>Board</h1>
-          <button class="add-task-btn-mobile" onclick="openAddTaskDialog('toDo')">+</button>
+          <button class="add-task-btn-mobile" data-action="add-task" data-status="toDo">+</button>
         </div>
         <div class="search-wrapper">
           <div class="search-input-group">
-            <input
-              id="searchTask"
-              class="find-task"
-              type="text"
-              role="search"
-              placeholder="Find Task"
-              oninput="findTask()"
-            />
+            <input id="searchTask" class="find-task" type="text" role="search" placeholder="Find Task" />
             <div id="search-spacer"></div>
-            <button class="search-btn" onclick="findTask()">
+            <button class="search-btn" data-action="search-task">
               <img src="./assets/icons/search.svg" class="search-icon" />
             </button>
           </div>
@@ -60,19 +46,15 @@
         <div class="board-task">
           <div class="board-task-header">
             <h4>Triage</h4>
-            <button class="plus-btn" onclick="openAddTaskDialog('triage')">+</button>
+            <button class="plus-btn" data-action="add-task" data-status="triage">+</button>
           </div>
-          <div
-            class="board-task-body"
-            data-column="triage"
-            ondrop="dropTask(event, 'triage')"
-            ondragover="
-              allowDrop(event);
-              highlight('triage');
-            "
-            ondragleave="removeHighlight('triage')"
-          >
-            <button class="scroll-arrow arrow-up hidden" data-target="triage" onclick="scrollColumn('triage', -1)">
+          <div class="board-task-body" data-column="triage">
+            <button
+              class="scroll-arrow arrow-up hidden"
+              data-target="triage"
+              data-action="scroll-column"
+              data-direction="-1"
+            >
               <svg width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,11 8,5 14,11"
@@ -89,7 +71,12 @@
             </div>
             <div id="triage" class="task-cards"></div>
 
-            <button class="scroll-arrow arrow-down hidden" data-target="triage" onclick="scrollColumn('triage', 1)">
+            <button
+              class="scroll-arrow arrow-down hidden"
+              data-target="triage"
+              data-action="scroll-column"
+              data-direction="1"
+            >
               <svg width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,5 8,11 14,5"
@@ -107,19 +94,15 @@
         <div class="board-task">
           <div class="board-task-header">
             <h4>To do</h4>
-            <button class="plus-btn" onclick="openAddTaskDialog('toDo')">+</button>
+            <button class="plus-btn" data-action="add-task" data-status="toDo">+</button>
           </div>
-          <div
-            class="board-task-body"
-            data-column="toDo"
-            ondrop="dropTask(event, 'toDo')"
-            ondragover="
-              allowDrop(event);
-              highlight('toDo');
-            "
-            ondragleave="removeHighlight('toDo')"
-          >
-            <button class="scroll-arrow arrow-up hidden" data-target="toDo" onclick="scrollColumn('toDo', -1)">
+          <div class="board-task-body" data-column="toDo">
+            <button
+              class="scroll-arrow arrow-up hidden"
+              data-target="toDo"
+              data-action="scroll-column"
+              data-direction="-1"
+            >
               <svg width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,11 8,5 14,11"
@@ -135,7 +118,12 @@
               <p class="p-no-task">No Tasks to do</p>
             </div>
             <div id="toDo" class="task-cards"></div>
-            <button class="scroll-arrow arrow-down hidden" data-target="toDo" onclick="scrollColumn('toDo', 1)">
+            <button
+              class="scroll-arrow arrow-down hidden"
+              data-target="toDo"
+              data-action="scroll-column"
+              data-direction="1"
+            >
               <svg width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,5 8,11 14,5"
@@ -153,22 +141,14 @@
         <div class="board-task">
           <div class="board-task-header">
             <h4>In progress</h4>
-            <button class="plus-btn" onclick="openAddTaskDialog('inProgress')">+</button>
+            <button class="plus-btn" data-action="add-task" data-status="inProgress">+</button>
           </div>
-          <div
-            class="board-task-body"
-            data-column="inProgress"
-            ondrop="dropTask(event, 'inProgress')"
-            ondragover="
-              allowDrop(event);
-              highlight('inProgress');
-            "
-            ondragleave="removeHighlight('inProgress')"
-          >
+          <div class="board-task-body" data-column="inProgress">
             <button
               class="scroll-arrow arrow-up hidden"
               data-target="inProgress"
-              onclick="scrollColumn('inProgress', -1)"
+              data-action="scroll-column"
+              data-direction="-1"
             >
               <svg width="16" height="16" viewBox="0 0 16 16">
                 <polyline
@@ -188,7 +168,8 @@
             <button
               class="scroll-arrow arrow-down hidden"
               data-target="inProgress"
-              onclick="scrollColumn('inProgress', 1)"
+              data-action="scroll-column"
+              data-direction="1"
             >
               <svg width="16" height="16" viewBox="0 0 16 16">
                 <polyline
@@ -207,19 +188,15 @@
         <div class="board-task">
           <div class="board-task-header">
             <h4>Await feedback</h4>
-            <button class="plus-btn" onclick="openAddTaskDialog('await')">+</button>
+            <button class="plus-btn" data-action="add-task" data-status="await">+</button>
           </div>
-          <div
-            class="board-task-body"
-            data-column="await"
-            ondrop="dropTask(event, 'await')"
-            ondragover="
-              allowDrop(event);
-              highlight('await');
-            "
-            ondragleave="removeHighlight('await')"
-          >
-            <button class="scroll-arrow arrow-up hidden" data-target="await" onclick="scrollColumn('await', -1)">
+          <div class="board-task-body" data-column="await">
+            <button
+              class="scroll-arrow arrow-up hidden"
+              data-target="await"
+              data-action="scroll-column"
+              data-direction="-1"
+            >
               <svg width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,11 8,5 14,11"
@@ -236,7 +213,12 @@
             </div>
             <div id="await" class="task-cards"></div>
 
-            <button class="scroll-arrow arrow-down hidden" data-target="await" onclick="scrollColumn('await', 1)">
+            <button
+              class="scroll-arrow arrow-down hidden"
+              data-target="await"
+              data-action="scroll-column"
+              data-direction="1"
+            >
               <svg width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,5 8,11 14,5"
@@ -255,17 +237,13 @@
           <div class="board-task-header">
             <h4>Done</h4>
           </div>
-          <div
-            class="board-task-body"
-            data-column="done"
-            ondrop="dropTask(event, 'done')"
-            ondragover="
-              allowDrop(event);
-              highlight('done');
-            "
-            ondragleave="removeHighlight('done')"
-          >
-            <button class="scroll-arrow arrow-up hidden" data-target="done" onclick="scrollColumn('done', -1)">
+          <div class="board-task-body" data-column="done">
+            <button
+              class="scroll-arrow arrow-up hidden"
+              data-target="done"
+              data-action="scroll-column"
+              data-direction="-1"
+            >
               <svg width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,11 8,5 14,11"
@@ -282,7 +260,12 @@
             </div>
             <div id="done" class="task-cards"></div>
 
-            <button class="scroll-arrow arrow-down hidden" data-target="done" onclick="scrollColumn('done', 1)">
+            <button
+              class="scroll-arrow arrow-down hidden"
+              data-target="done"
+              data-action="scroll-column"
+              data-direction="1"
+            >
               <svg width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,5 8,11 14,5"
