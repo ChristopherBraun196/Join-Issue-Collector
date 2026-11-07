@@ -1,3 +1,4 @@
+import "../../services/authGuard.js";
 import { switchToLogin, switchToSignup } from "./authForms.js";
 import {
   togglePwdVisibilityBtn,

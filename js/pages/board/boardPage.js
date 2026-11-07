@@ -1,3 +1,4 @@
+import "../../components/dialogGuard.js";
 import { init as initLayout } from "../../components/layout.js";
 import { openAddTaskDialog } from "../../components/taskForm.js";
 import { initTasks } from "./boardData.js";
