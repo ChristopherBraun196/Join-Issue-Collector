@@ -1,8 +1,6 @@
 const loginSignupSection = document.getElementById("login-signup-section");
 const signupBtn = document.getElementById("signup");
-const messageElement = document.getElementById("message-box");
 const sidebar = document.getElementById("sidebar");
-
 const animatedImgWrapper = document.getElementById("animated-img-wrapper");
 const navLogo = document.getElementById("navbar-logo");
 
@@ -110,23 +108,6 @@ function switchToLogin() {
   signupBtn.classList.remove("hidden");
   document.getElementById("signupResponsiv").classList.remove("hidden");
   document.title = "Join | Log in";
-}
-
-/**
- * Displays a temporary message in the message box for 5 seconds.
- * @param {string} message - The message to display
- */
-function showMessage(message) {
-  messageElement.classList.add("visible");
-  const msgNode = document.createElement("p");
-  msgNode.textContent = message.toString();
-  messageElement.appendChild(msgNode);
-  setTimeout(() => {
-    msgNode.remove();
-    if (messageElement.children.length === 0) {
-      messageElement.classList.remove("visible");
-    }
-  }, 5000);
 }
 
 /**
