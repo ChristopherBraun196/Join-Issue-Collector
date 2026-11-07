@@ -1,5 +1,6 @@
 import { getInitials } from "../utils/format.js";
 import { getSidebarTemplate, getSidebarGuestTemplate, getTopbarTemplate } from "../templates/layoutTemplates.js";
+import { logout } from "../services/authGuard.js";
 
 /**
  * Initializes the page by generating the topbar and loading the sidebar.
@@ -18,6 +19,8 @@ function generateTopbar() {
   let header = document.createElement("header");
   header.id = "topbar";
   body.appendChild(header);
+  header.addEventListener("click", handleTopbarClick);
+
   setTopbar();
 }
 
@@ -78,6 +81,17 @@ export function renderUserMenue() {
 }
 
 /**
+ * Handles all clicks inside the topbar via event delegation.
+ * @param {MouseEvent} event - The click event
+ */
+function handleTopbarClick(event) {
+  const target = event.target.closest("[data-action]");
+  if (!target) return;
+  if (target.dataset.action === "toggle-user-menu") toggleUserMenue(event);
+  if (target.dataset.action === "logout") logout();
+}
+
+/**
  * Toggles the visibility of the user menu dropdown.
  */
 export function toggleUserMenue(event) {
@@ -95,4 +109,3 @@ window.init = init;
 window.loadSidebar = loadSidebar;
 window.switchToGuestSidebar = switchToGuestSidebar;
 window.renderUserMenue = renderUserMenue;
-window.toggleUserMenue = toggleUserMenue;

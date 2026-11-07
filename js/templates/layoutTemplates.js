@@ -78,12 +78,12 @@ export function getTopbarTemplate() {
           <button id="help">
               <a href="help.html"><img src="./assets/icons/help.svg" /></a>
           </button>
-          <div id="user-menue" onclick="toggleUserMenue(event)">
+          <div id="user-menue" data-action="toggle-user-menu">
           </div>
           <div id="user-menue-dropdown">
             <a href="./legal.html">Legal Notice</a>
             <a href="./privacy.html">Privacy Policy</a>
-            <a href="#" onclick="logout()">Log Out</a>
+            <a href="#" data-action="logout">Log Out</a>
           </div>
     </div>
   </div>
