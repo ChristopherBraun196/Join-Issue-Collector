@@ -8,7 +8,7 @@ import {
   onValue,
   ref,
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
-import { db } from "./firebaseAuth.js";
+import { db } from "./services/firebaseAuth.js";
 
 // "sv-SE" locale formats as YYYY-MM-DD, matching the date keys n8n writes under /emailRequestCount
 const today = new Intl.DateTimeFormat("sv-SE", {

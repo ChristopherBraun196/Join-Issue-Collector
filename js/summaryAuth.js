@@ -1,9 +1,16 @@
-import { auth, db } from "./firebaseAuth.js";
+import { auth, db } from "./services/firebaseAuth.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-import { ref, get } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+import {
+  ref,
+  get,
+} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
-const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });   
-const greetingElement = document.getElementById('greeting-msg');
+const currentTime = new Date().toLocaleTimeString([], {
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+});
+const greetingElement = document.getElementById("greeting-msg");
 const nameElement = document.querySelector(".welcome_name");
 
 onAuthStateChanged(auth, async (user) => {
@@ -28,17 +35,17 @@ onAuthStateChanged(auth, async (user) => {
  * @returns {string} A greeting string (e.g. "Good morning,")
  */
 function getGreeting(timeString) {
-  const hour = parseInt(timeString.split(':')[0], 10);
+  const hour = parseInt(timeString.split(":")[0], 10);
   let greetingPart;
 
   switch (true) {
-    case (hour >= 5 && hour < 12):
+    case hour >= 5 && hour < 12:
       greetingPart = "Good morning,";
       break;
-    case (hour >= 12 && hour < 18):
+    case hour >= 12 && hour < 18:
       greetingPart = "Good afternoon,";
       break;
-    case (hour >= 18 || hour < 5):
+    case hour >= 18 || hour < 5:
       greetingPart = "Good evening,";
       break;
     default:

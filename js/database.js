@@ -1,5 +1,10 @@
-import { db } from "./firebaseAuth.js";
-import { ref, get, set, remove } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+import { db } from "./services/firebaseAuth.js";
+import {
+  ref,
+  get,
+  set,
+  remove,
+} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
 /**
  * Loads data from Firebase at the given path.
@@ -55,7 +60,7 @@ async function deleteData(path = "") {
   try {
     await remove(ref(db, path));
   } catch (error) {
-     showMessage("No permission for this action.");
+    showMessage("No permission for this action.");
     throw error;
   }
 }
