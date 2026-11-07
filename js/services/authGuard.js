@@ -1,12 +1,6 @@
-import { auth, db } from "./services/firebaseAuth.js";
-import {
-  onAuthStateChanged,
-  signOut,
-} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-import {
-  ref,
-  get,
-} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+import { auth, db } from "./firebaseAuth.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+import { ref, get } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
 const homePaths = ["", "index.html"];
 const publicPaths = ["privacy.html", "legal.html", "help.html"];
@@ -32,11 +26,7 @@ async function handleAuthenticatedUser(user, path) {
   if (homePaths.includes(path)) {
     window.location.href = "./summary.html";
   } else if (publicPaths.includes(path)) {
-    const page = path.includes("privacy")
-      ? "privacy"
-      : path.includes("legal")
-        ? "legal"
-        : "help";
+    const page = path.includes("privacy") ? "privacy" : path.includes("legal") ? "legal" : "help";
     if (typeof loadSidebar === "function") loadSidebar(page);
   }
 }
@@ -76,11 +66,7 @@ onAuthStateChanged(auth, async (user) => {
           window.location.href = "./welcome.html";
         }
       } else if (publicPaths.includes(path)) {
-        const page = path.includes("privacy")
-          ? "privacy"
-          : path.includes("legal")
-            ? "legal"
-            : "help";
+        const page = path.includes("privacy") ? "privacy" : path.includes("legal") ? "legal" : "help";
         if (typeof loadSidebar === "function") loadSidebar(page);
       }
       return;
