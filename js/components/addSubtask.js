@@ -137,6 +137,14 @@ function confirmEditSubtask(btn) {
  * @param {HTMLElement} input - The subtask input element
  * @param {string} originalText - The original subtask text to restore
  */
+function cancelEditSubtask(input, originalText) {
+  input.closest("li").replaceWith(createSubtaskItem(originalText));
+}
+
+/**
+ * Removes the subtask list item of the clicked button.
+ * @param {HTMLElement} btn - The delete button that was clicked
+ */
 function removeSubtask(btn) {
   btn.closest("li").remove();
 }
