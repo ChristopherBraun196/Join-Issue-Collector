@@ -148,7 +148,3 @@ function cancelEditSubtask(input, originalText) {
 function removeSubtask(btn) {
   btn.closest("li").remove();
 }
-
-window.handleSubtaskAction = handleSubtaskAction;
-window.handleSubtaskKey = handleSubtaskKey;
-window.onSubtaskInput = onSubtaskInput;

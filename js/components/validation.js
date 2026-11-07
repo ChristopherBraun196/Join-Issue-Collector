@@ -107,8 +107,3 @@ function getErrorElement(input) {
   const next = input.nextElementSibling;
   return next?.classList.contains("field-error-msg") ? next : null;
 }
-
-window.validateOnBlur = validateOnBlur;
-window.validateForm = validateForm;
-window.validateDate = validateDate;
-window.clearFieldError = clearFieldError;

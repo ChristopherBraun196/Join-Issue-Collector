@@ -105,5 +105,3 @@ export function getAddTaskDialogTemplate(status) {
     </section>
   `;
 }
-
-window.getAddTaskDialogTemplate = getAddTaskDialogTemplate;
