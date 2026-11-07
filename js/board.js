@@ -31,9 +31,12 @@ async function initBoard(site) {
  */
 function initBoardListeners() {
   const main = document.querySelector("#board-main");
+  const dialog = document.querySelector("#openDialogBoard");
   main.addEventListener("click", handleBoardClick);
   main.addEventListener("input", handleBoardInput);
-  document.querySelector("#openDialogBoard").addEventListener("click", handleDialogBoardClick);
+  dialog.addEventListener("click", handleDialogBoardClick);
+  dialog.addEventListener("input", handleDialogBoardInput);
+  dialog.addEventListener("keydown", handleDialogBoardKey);
 }
 
 /**

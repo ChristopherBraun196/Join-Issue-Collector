@@ -11,7 +11,7 @@ export function getDialogBoardEditTemplate(element, priorityButtons, assignedHTM
     <header>
         <div class="flex-sb">
             <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
-            <button onclick="closeDialogBoard('${element.status}')">✕</button>
+            <button data-action="close-task" data-status="${element.status}">✕</button>
         </div>
     </header>
     <main>
@@ -27,15 +27,14 @@ export function getDialogBoardEditTemplate(element, priorityButtons, assignedHTM
         <div class="contacts-edit-list">${assignedHTML}</div>
         <label class="edit-margin">Subtasks</label>
         <div class="subtask-input-wrapper">
-            <input type="text" id="new-subtask-input" placeholder="Add new subtask"
-                   oninput="onSubtaskInputEdit()"
-                   onkeydown="handleSubtaskKeyEdit(event, '${element.id}')">
+           <input type="text" id="new-subtask-input" placeholder="Add new subtask"
+              data-id="${element.id}">
             <div id="subtask-confirm-btns-edit" class="subtask-confirm-btns">
-                <button class="subtask-icon-btn" type="button" onclick="clearSubtaskInputEdit()">
+                <button class="subtask-icon-btn" type="button" data-action="clear-subtask-edit">
                     <img src="./assets/icons/close.svg">
                 </button>
                 <div class="subtask-divider-edit"></div>
-                <button class="subtask-icon-btn" type="button" onclick="addSubtaskEdit('${element.id}')">
+                <button class="subtask-icon-btn" type="button" data-action="add-subtask-edit" data-id="${element.id}">
                     <img src="./assets/icons/check-dark.svg">
                 </button>
             </div>
@@ -44,7 +43,7 @@ export function getDialogBoardEditTemplate(element, priorityButtons, assignedHTM
     </main>
     <footer>
         <div class="dialog-actions">
-            <button class="save-edit-button" onclick="saveEditTask('${element.id}')">
+            <button class="save-edit-button" data-action="save-task" data-id="${element.id}">
                 Ok <img src="./assets/icons/check.svg" alt="save Button">
             </button>
         </div>
@@ -60,7 +59,7 @@ export function getDialogBoardEditTemplate(element, priorityButtons, assignedHTM
  */
 export function getPriorityButtonTemplate(priority, currentPriority) {
   const active = getPriorityActiveClass(priority, currentPriority);
-  return `<button class="prio-btn ${active}" data-priority="${priority}" onclick="setEditPriority(event, '${priority}')">
+  return `<button class="prio-btn ${active}" data-priority="${priority}" data-action="set-edit-priority">
     ${capitalize(priority)} <span><img src="./assets/icons/priority-${priority}.svg" /></span>
   </button>`;
 }
@@ -74,7 +73,7 @@ export function getPriorityButtonTemplate(priority, currentPriority) {
  */
 export function getContactOptionTemplate(id, contact, checked) {
   return `
-    <div class="custom-option" onclick="toggleAssignedContact(event, '${id}')">
+    <div class="custom-option" data-action="toggle-edit-contact" data-id="${id}">
       <span class="avatar" style="background:${contact.avatarColor}">${getInitials(contact.name)}</span>
       <span>${contact.name}</span>
       <input type="checkbox" value="${id}" ${checked} style="margin-left:auto" />
@@ -99,7 +98,7 @@ export function getContactBadgeTemplate(contact) {
 export function getAssignedContactsEditTemplate(optionsHTML, badgesHTML) {
   return `
     <div class="custom-select-wrapper">
-      <div class="custom-select-trigger" onclick="toggleEditDropdown()">
+      <div class="custom-select-trigger" data-action="toggle-edit-dropdown">
         <span>Select contacts to assign</span>
         <img src="./assets/icons/arrow_drop_down.svg" class="select-arrow">
       </div>
@@ -121,13 +120,13 @@ export function getAssignedContactsEditTemplate(optionsHTML, badgesHTML) {
 export function getSubtaskEditItemTemplate(subtask, taskId, index) {
   return `
     <li class="subtask-edit-item" data-task-id="${taskId}" data-index="${index}">
-      <span class="subtask-text" onclick="editSubtaskEditMode(this)">${subtask.title}</span>
+      <span class="subtask-text" data-action="edit-subtask-edit">${subtask.title}</span>
       <div class="subtask-item-actions">
-        <button class="subtask-icon-btn" type="button" onclick="editSubtaskEditMode(this.closest('li').querySelector('.subtask-text'))">
+        <button class="subtask-icon-btn" type="button" data-action="edit-subtask-edit">
           <img src="./assets/icons/edit.svg">
         </button>
         <div class="subtask-divider"></div>
-        <button class="subtask-icon-btn" type="button" onclick="deleteSubtaskEdit('${taskId}', ${index})">
+        <button class="subtask-icon-btn" type="button" data-action="delete-subtask-edit" data-id="${taskId}" data-index="${index}">
           <img src="./assets/icons/delete.svg">
         </button>
       </div>
@@ -144,11 +143,11 @@ export function getSubtaskEditingStateTemplate(currentText) {
   return `
     <input class="subtask-edit-input" type="text" value="${currentText}">
     <div class="subtask-item-actions">
-      <button class="subtask-icon-btn" type="button" onclick="this.closest('li').remove()">
+      <button class="subtask-icon-btn" type="button" data-action="remove-subtask-edit">
         <img src="./assets/icons/delete.svg">
       </button>
       <div class="subtask-divider"></div>
-      <button class="subtask-icon-btn" type="button" onclick="confirmSubtaskEditMode(this)">
+      <button class="subtask-icon-btn" type="button" data-action="confirm-subtask-edit">
         <img src="./assets/icons/check-dark.svg">
       </button>
     </div>

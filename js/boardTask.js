@@ -12,6 +12,53 @@ function handleDialogBoardClick(event) {
   if (action === "delete-task") deleteTask(id);
   if (action === "edit-task") openEditTask(id);
   if (action === "toggle-subtask") toggleSubtask(index, completed === "true", id);
+  handleEditTaskAction(event, target, action);
+  handleEditSubtaskAction(target, action);
+}
+
+/**
+ * Runs the edit dialog action that belongs to the clicked data-action.
+ * @param {MouseEvent} event - The click event
+ * @param {HTMLElement} target - The clicked element with the data-action
+ * @param {string} action - The data-action value
+ */
+function handleEditTaskAction(event, target, action) {
+  const { id, priority } = target.dataset;
+  if (action === "set-edit-priority") setEditPriority(target, priority);
+  if (action === "toggle-edit-dropdown") toggleEditDropdown();
+  if (action === "toggle-edit-contact") toggleAssignedContact(event, target, id);
+  if (action === "save-task") saveEditTask(id);
+}
+
+/**
+ * Runs the edit dialog subtask action that belongs to the clicked data-action.
+ * @param {HTMLElement} target - The clicked element with the data-action
+ * @param {string} action - The data-action value
+ */
+function handleEditSubtaskAction(target, action) {
+  const { id, index } = target.dataset;
+  if (action === "clear-subtask-edit") clearSubtaskInputEdit();
+  if (action === "add-subtask-edit") addSubtaskEdit(id);
+  if (action === "edit-subtask-edit") editSubtaskEditMode(target.closest("li").querySelector(".subtask-text"));
+  if (action === "delete-subtask-edit") deleteSubtaskEdit(id, Number(index));
+  if (action === "remove-subtask-edit") target.closest("li").remove();
+  if (action === "confirm-subtask-edit") confirmSubtaskEditMode(target);
+}
+
+/**
+ * Shows or hides the edit subtask confirm buttons while typing.
+ * @param {InputEvent} event - The input event
+ */
+function handleDialogBoardInput(event) {
+  if (event.target.matches("#new-subtask-input")) onSubtaskInputEdit();
+}
+
+/**
+ * Handles Enter and Escape inside the edit subtask input.
+ * @param {KeyboardEvent} event - The keydown event
+ */
+function handleDialogBoardKey(event) {
+  if (event.target.matches("#new-subtask-input")) handleSubtaskKeyEdit(event, event.target.dataset.id);
 }
 
 /**
@@ -257,13 +304,13 @@ async function saveEditTask(taskId) {
 
 /**
  * Sets the active priority for the edit dialog and updates the button styles.
- * @param {MouseEvent} event - The click event from the priority button
+ * @param {HTMLElement} button - The clicked priority button
  * @param {string} priority - The selected priority (e.g. "urgent", "medium", "low")
  */
-function setEditPriority(event, priority) {
+function setEditPriority(button, priority) {
   currentEditPriority = priority;
   document.querySelectorAll(".prio-btn").forEach((btn) => btn.classList.remove("active"));
-  event.currentTarget.classList.add("active");
+  button.classList.add("active");
 }
 
 /**
@@ -339,10 +386,11 @@ function toggleEditDropdown() {
 /**
  * Retrieves the checkbox from a contact option and toggles it if the click was outside the checkbox.
  * @param {MouseEvent} event - The click event from the contact option
+ * @param {HTMLElement} option - The clicked contact option element
  * @returns {HTMLInputElement} The checkbox element
  */
-function getCheckboxState(event) {
-  const checkbox = event.currentTarget.querySelector("input[type='checkbox']");
+function getCheckboxState(event, option) {
+  const checkbox = option.querySelector("input[type='checkbox']");
   if (event.target !== checkbox) checkbox.checked = !checkbox.checked;
   return checkbox;
 }
@@ -395,13 +443,14 @@ async function saveAndRefreshAssigned(taskId, assignedTo) {
 /**
  * Toggles a contact's assignment on a task and updates the UI.
  * @param {MouseEvent} event - The click event from the contact option
+ * @param {HTMLElement} option - The clicked contact option element
  * @param {string} contactId - The ID of the contact to toggle
  * @returns {Promise<void>}
  */
-async function toggleAssignedContact(event, contactId) {
-  const checkbox = getCheckboxState(event);
+async function toggleAssignedContact(event, option, contactId) {
+  const checkbox = getCheckboxState(event, option);
   const element = tasks.find((t) => t.id === currentEditTaskId);
   let assignedTo = getNormalizedAssignedTo(element);
-  assignedTo = updateAssignedList(checkbox, assignedTo, contactId, event.currentTarget);
+  assignedTo = updateAssignedList(checkbox, assignedTo, contactId, option);
   await saveAndRefreshAssigned(currentEditTaskId, assignedTo);
 }
