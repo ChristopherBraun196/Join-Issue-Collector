@@ -7,7 +7,7 @@ export function getAddTaskDialogTemplate(status) {
   return `
     <section class="add-task" id="add-task-dialog-content">
       <header id="add-task-dialog-header">
-        <h1>Add Task</h2>
+        <h1>Add Task</h1>
         <button data-action="close-dialog" id="close-dialog-btn"><img src="../assets/icons/close.svg"></button>
       </header>
       <form class="add-task-form" data-status="${status}" id="add-task-form" novalidate>
