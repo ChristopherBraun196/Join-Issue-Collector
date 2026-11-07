@@ -1,3 +1,24 @@
+import { init as initLayout } from "../../components/layout.js";
+import { loadData } from "../../services/database.js";
+import { STATUS } from "../../utils/constants.js";
+
+/**
+ * Entry point for the summary page.
+ */
+function init() {
+  initLayout("summary");
+  initSummary();
+  document.querySelector("#summary-main").addEventListener("click", handleBubbleClick);
+}
+
+/**
+ * Opens the board when a summary bubble is clicked.
+ * @param {MouseEvent} event - The click event
+ */
+function handleBubbleClick(event) {
+  if (event.target.closest(".summary_bubble")) window.location.href = "./board.html";
+}
+
 /**
  * Calculates the summary counts for all task statuses and priorities.
  * @param {Object[]} tasks - Array of task objects
@@ -78,3 +99,5 @@ function getNextDeadline(urgentTasks) {
     day: "numeric",
   });
 }
+
+document.addEventListener("DOMContentLoaded", init);

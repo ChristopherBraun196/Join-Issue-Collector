@@ -6,7 +6,7 @@ import { ref, get, set, remove } from "https://www.gstatic.com/firebasejs/12.11.
  * @param {string} path - The database path to read from
  * @returns {Promise<Object|null>} The data at the given path or null
  */
-async function loadData(path = "") {
+export async function loadData(path = "") {
   try {
     const snapshot = await get(ref(db, path));
     return snapshot.val();
