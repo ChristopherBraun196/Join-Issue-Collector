@@ -164,27 +164,6 @@ function calcSubtaskProgress(solved, total) {
 }
 
 /**
- * Formats a date string from YYYY-MM-DD to DD/MM/YYYY.
- * @param {string} date - The date string in YYYY-MM-DD format
- * @returns {string} The formatted date string in DD/MM/YYYY format
- */
-function formatDate(date) {
-  if (!date || date === "null") return "No due date";
-  const [year, month, day] = date.split("-");
-  return `${day}/${month}/${year}`;
-}
-
-/**
- * Capitalizes the first letter of a string.
- * @param {string} fletter - The string to capitalize
- * @returns {string} The string with the first letter capitalized
- */
-function capitalize(fletter) {
-  if (!fletter) return "";
-  return fletter.charAt(0).toUpperCase() + fletter.slice(1);
-}
-
-/**
  * Returns "checked" if the subtask is completed, otherwise an empty string.
  * @param {boolean} subtaskCompleted - The completed state of the subtask
  * @returns {string} "checked" or empty string

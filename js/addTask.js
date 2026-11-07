@@ -350,15 +350,3 @@ async function createTask(status) {
   await putData("/tasks/task-" + taskID, task);
   location.href = "./board.html";
 }
-
-/**
- * Formats a kebab-case string into a capitalized label.
- * @param {string} str - The kebab-case string to format (e.g. "user-story")
- * @returns {string} The formatted label (e.g. "User Story")
- */
-function formatLabel(str) {
-  return str
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
