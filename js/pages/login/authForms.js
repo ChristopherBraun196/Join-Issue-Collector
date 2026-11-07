@@ -1,3 +1,5 @@
+import { getLoginTemplate, getSignupTemplate } from "../../templates/loginTemplates.js";
+
 /**
  * Switches the login/signup section to the signup form.
  */
