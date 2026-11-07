@@ -4,11 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join | Board</title>
-    <link
-      rel="shortcut icon"
-      href="./assets/img/logo-light.svg"
-      type="image/x-icon"
-    />
+    <link rel="shortcut icon" href="./assets/img/logo-light.svg" type="image/x-icon" />
     <link rel="stylesheet" href="./main.css" />
   </head>
 
@@ -33,24 +29,14 @@
               <img src="./assets/icons/search.svg" class="search-icon" />
             </button>
           </div>
-          <button
-            class="primary-btn add-task-btn"
-            onclick="openAddTaskDialog('toDo')"
-          >
-            Add task +
-          </button>
+          <button class="primary-btn add-task-btn" onclick="openAddTaskDialog('toDo')">Add task +</button>
         </div>
       </section>
 
       <section class="board-bar-mobile">
         <div id="board-header">
           <h1>Board</h1>
-          <button
-            class="add-task-btn-mobile"
-            onclick="openAddTaskDialog('toDo')"
-          >
-            +
-          </button>
+          <button class="add-task-btn-mobile" onclick="openAddTaskDialog('toDo')">+</button>
         </div>
         <div class="search-wrapper">
           <div class="search-input-group">
@@ -74,9 +60,7 @@
         <div class="board-task">
           <div class="board-task-header">
             <h4>Triage</h4>
-            <button class="plus-btn" onclick="openAddTaskDialog('triage')">
-              +
-            </button>
+            <button class="plus-btn" onclick="openAddTaskDialog('triage')">+</button>
           </div>
           <div
             class="board-task-body"
@@ -88,11 +72,7 @@
             "
             ondragleave="removeHighlight('triage')"
           >
-            <button
-              class="scroll-arrow arrow-up hidden"
-              data-target="triage"
-              onclick="scrollColumn('triage', -1)"
-            >
+            <button class="scroll-arrow arrow-up hidden" data-target="triage" onclick="scrollColumn('triage', -1)">
               <svg width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,11 8,5 14,11"
@@ -109,11 +89,7 @@
             </div>
             <div id="triage" class="task-cards"></div>
 
-            <button
-              class="scroll-arrow arrow-down hidden"
-              data-target="triage"
-              onclick="scrollColumn('triage', 1)"
-            >
+            <button class="scroll-arrow arrow-down hidden" data-target="triage" onclick="scrollColumn('triage', 1)">
               <svg width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,5 8,11 14,5"
@@ -131,9 +107,7 @@
         <div class="board-task">
           <div class="board-task-header">
             <h4>To do</h4>
-            <button class="plus-btn" onclick="openAddTaskDialog('toDo')">
-              +
-            </button>
+            <button class="plus-btn" onclick="openAddTaskDialog('toDo')">+</button>
           </div>
           <div
             class="board-task-body"
@@ -145,11 +119,7 @@
             "
             ondragleave="removeHighlight('toDo')"
           >
-            <button
-              class="scroll-arrow arrow-up hidden"
-              data-target="toDo"
-              onclick="scrollColumn('toDo', -1)"
-            >
+            <button class="scroll-arrow arrow-up hidden" data-target="toDo" onclick="scrollColumn('toDo', -1)">
               <svg width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,11 8,5 14,11"
@@ -165,11 +135,7 @@
               <p class="p-no-task">No Tasks to do</p>
             </div>
             <div id="toDo" class="task-cards"></div>
-            <button
-              class="scroll-arrow arrow-down hidden"
-              data-target="toDo"
-              onclick="scrollColumn('toDo', 1)"
-            >
+            <button class="scroll-arrow arrow-down hidden" data-target="toDo" onclick="scrollColumn('toDo', 1)">
               <svg width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,5 8,11 14,5"
@@ -187,9 +153,7 @@
         <div class="board-task">
           <div class="board-task-header">
             <h4>In progress</h4>
-            <button class="plus-btn" onclick="openAddTaskDialog('inProgress')">
-              +
-            </button>
+            <button class="plus-btn" onclick="openAddTaskDialog('inProgress')">+</button>
           </div>
           <div
             class="board-task-body"
@@ -217,10 +181,7 @@
                 />
               </svg>
             </button>
-            <div
-              class="no-tasks-placeholder hidden"
-              id="placeholder-inProgress"
-            >
+            <div class="no-tasks-placeholder hidden" id="placeholder-inProgress">
               <p class="p-no-task">No Tasks in Progress</p>
             </div>
             <div id="inProgress" class="task-cards"></div>
@@ -246,9 +207,7 @@
         <div class="board-task">
           <div class="board-task-header">
             <h4>Await feedback</h4>
-            <button class="plus-btn" onclick="openAddTaskDialog('await')">
-              +
-            </button>
+            <button class="plus-btn" onclick="openAddTaskDialog('await')">+</button>
           </div>
           <div
             class="board-task-body"
@@ -260,11 +219,7 @@
             "
             ondragleave="removeHighlight('await')"
           >
-            <button
-              class="scroll-arrow arrow-up hidden"
-              data-target="await"
-              onclick="scrollColumn('await', -1)"
-            >
+            <button class="scroll-arrow arrow-up hidden" data-target="await" onclick="scrollColumn('await', -1)">
               <svg width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,11 8,5 14,11"
@@ -281,11 +236,7 @@
             </div>
             <div id="await" class="task-cards"></div>
 
-            <button
-              class="scroll-arrow arrow-down hidden"
-              data-target="await"
-              onclick="scrollColumn('await', 1)"
-            >
+            <button class="scroll-arrow arrow-down hidden" data-target="await" onclick="scrollColumn('await', 1)">
               <svg width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,5 8,11 14,5"
@@ -314,11 +265,7 @@
             "
             ondragleave="removeHighlight('done')"
           >
-            <button
-              class="scroll-arrow arrow-up hidden"
-              data-target="done"
-              onclick="scrollColumn('done', -1)"
-            >
+            <button class="scroll-arrow arrow-up hidden" data-target="done" onclick="scrollColumn('done', -1)">
               <svg width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,11 8,5 14,11"
@@ -335,11 +282,7 @@
             </div>
             <div id="done" class="task-cards"></div>
 
-            <button
-              class="scroll-arrow arrow-down hidden"
-              data-target="done"
-              onclick="scrollColumn('done', 1)"
-            >
+            <button class="scroll-arrow arrow-down hidden" data-target="done" onclick="scrollColumn('done', 1)">
               <svg width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,5 8,11 14,5"
@@ -360,7 +303,7 @@
 
     <script type="module" src="./js/authGuard.js"></script>
     <script src="./script.js"></script>
-    <script type="module" src="./js/database.js"></script>
+    <script type="module" src="./js/services/database.js"></script>
     <script src="./js/validation.js"></script>
     <script src="./js/templates.js"></script>
     <script src="./js/addTask.js"></script>

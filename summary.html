@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join | Summary</title>
     <link rel="stylesheet" href="./main.css" />
-    <link
-      rel="shortcut icon"
-      href="./assets/img/logo-light.svg"
-      type="image/x-icon"
-    />
+    <link rel="shortcut icon" href="./assets/img/logo-light.svg" type="image/x-icon" />
   </head>
 
   <body
@@ -30,25 +26,10 @@
       <div class="summary_main_content">
         <div class="summary_grid">
           <div class="summary_row_first">
-            <div
-              class="summary_bubble"
-              onclick="window.location.href = './board.html'"
-            >
+            <div class="summary_bubble" onclick="window.location.href = './board.html'">
               <div class="icon-wrapper">
-                <svg
-                  width="69"
-                  height="69"
-                  viewBox="0 0 69 69"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle
-                    class="icon-bg"
-                    cx="34.5"
-                    cy="34.5"
-                    r="34.5"
-                    fill="#2A3647"
-                  />
+                <svg width="69" height="69" viewBox="0 0 69 69" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle class="icon-bg" cx="34.5" cy="34.5" r="34.5" fill="#2A3647" />
                   <mask
                     id="mask0_446529_6089"
                     style="mask-type: alpha"
@@ -58,13 +39,7 @@
                     width="33"
                     height="33"
                   >
-                    <rect
-                      x="18.5"
-                      y="18.5"
-                      width="32"
-                      height="32"
-                      fill="#D9D9D9"
-                    />
+                    <rect x="18.5" y="18.5" width="32" height="32" fill="#D9D9D9" />
                   </mask>
                   <g mask="url(#mask0_446529_6089)">
                     <path
@@ -80,25 +55,10 @@
                 <a>To-do</a>
               </div>
             </div>
-            <div
-              class="summary_bubble"
-              onclick="window.location.href = './board.html'"
-            >
+            <div class="summary_bubble" onclick="window.location.href = './board.html'">
               <div class="icon-wrapper">
-                <svg
-                  width="69"
-                  height="69"
-                  viewBox="0 0 69 69"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle
-                    class="icon-bg"
-                    cx="34.5"
-                    cy="34.5"
-                    r="34.5"
-                    fill="#2A3647"
-                  />
+                <svg width="69" height="69" viewBox="0 0 69 69" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle class="icon-bg" cx="34.5" cy="34.5" r="34.5" fill="#2A3647" />
                   <path
                     class="icon-symbol-done"
                     d="M19.5283 34.5001L30.7571 45.5662L49.4717 23.4341"
@@ -117,11 +77,7 @@
           </div>
 
           <div class="summary_row_second">
-            <div
-              class="summary_bubble"
-              id="deadline-bubble"
-              onclick="window.location.href = './board.html'"
-            >
+            <div class="summary_bubble" id="deadline-bubble" onclick="window.location.href = './board.html'">
               <div id="all-deadlines-counter">
                 <img src="./assets/icons/urgent_icon.svg" />
                 <div class="summary_counter">
@@ -136,11 +92,7 @@
               </div>
             </div>
 
-            <div
-              class="summary_bubble"
-              id="email-requests-bubble"
-              onclick="window.location.href = './board.html'"
-            >
+            <div class="summary_bubble" id="email-requests-bubble" onclick="window.location.href = './board.html'">
               <div class="summary_counter">
                 <div id="email_requests_count"></div>
                 <a>Email requests</a>
@@ -149,28 +101,19 @@
           </div>
 
           <div class="summary_row_last">
-            <div
-              class="summary_bubble"
-              onclick="window.location.href = './board.html'"
-            >
+            <div class="summary_bubble" onclick="window.location.href = './board.html'">
               <div class="summary_counter">
                 <div id="board_count"></div>
                 <a>Tasks in Board </a>
               </div>
             </div>
-            <div
-              class="summary_bubble"
-              onclick="window.location.href = './board.html'"
-            >
+            <div class="summary_bubble" onclick="window.location.href = './board.html'">
               <div class="summary_counter">
                 <div id="progress_count"></div>
                 <a>Tasks in Progress</a>
               </div>
             </div>
-            <div
-              class="summary_bubble"
-              onclick="window.location.href = './board.html'"
-            >
+            <div class="summary_bubble" onclick="window.location.href = './board.html'">
               <div class="summary_counter">
                 <div id="feedback_count"></div>
                 <a>Awaiting Feedback</a>
@@ -190,7 +133,7 @@
     <script type="module" src="./js/summaryAuth.js"></script>
 
     <script src="./script.js"></script>
-    <script type="module" src="./js/database.js"></script>
+    <script type="module" src="./js/services/database.js"></script>
     <script src="./js/templates.js"></script>
     <script src="./js/summary.js"></script>
   </body>
