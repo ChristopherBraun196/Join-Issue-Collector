@@ -1,3 +1,6 @@
+import { getInitials, formatDate, capitalize } from "../utils/format.js";
+import { getAssignedToAvatars } from "../pages/board/boardRender.js";
+
 /**
  * Returns the HTML template for a task card on the board.
  * @param {Object} element - The task object
@@ -117,13 +120,40 @@ function getAssignedContactTemplate(contact) {
 }
 
 /**
+ * Returns "checked" if the subtask is completed, otherwise an empty string.
+ * @param {boolean} subtaskCompleted - The completed state of the subtask
+ * @returns {string} "checked" or empty string
+ */
+function checkIfSubtaskActive(subtaskCompleted) {
+  if (subtaskCompleted == true) {
+    return "checked";
+  } else {
+    return "";
+  }
+}
+
+/**
+ * Returns the subtask HTML for the task card, or a fallback message.
+ * @param {Object[]} subtasks - Array of subtask objects
+ * @param {string} taskID - The ID of the parent task
+ * @returns {string} HTML string of all subtasks or fallback message
+ */
+function checkIfSubtasksAvaiable(subtasks, taskID) {
+  if (subtasks) {
+    return subtasks.map((s, index) => getSubtasksTemplate(s, taskID, index)).join("");
+  } else {
+    return "<p>No Subtask avaiable in this Task</p>";
+  }
+}
+
+/**
  * Returns the HTML template for a subtask list item in the task detail dialog.
  * @param {Object} subtask - The subtask object
  * @param {string} taskID - The ID of the parent task
  * @param {number} subtaskIndex - The index of the subtask
  * @returns {string} HTML string of the subtask list item
  */
-export function getSubtasksTemplate(subtask, taskID, subtaskIndex) {
+function getSubtasksTemplate(subtask, taskID, subtaskIndex) {
   return `
     <li class="no-decoration board-subtask">
         <label for="${subtask.id}">
@@ -135,7 +165,3 @@ export function getSubtasksTemplate(subtask, taskID, subtaskIndex) {
     </li>
   `;
 }
-
-window.getToDoTemplate = getToDoTemplate;
-window.getDialogBoardTemplate = getDialogBoardTemplate;
-window.getSubtasksTemplate = getSubtasksTemplate;

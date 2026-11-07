@@ -272,5 +272,3 @@ async function getMemberAvatar(id) {
 
   return htmlTemplate;
 }
-
-window.getAssignedToAvatars = getAssignedToAvatars;

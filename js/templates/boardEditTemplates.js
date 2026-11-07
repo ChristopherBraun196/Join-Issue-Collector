@@ -1,3 +1,5 @@
+import { getInitials, capitalize } from "../utils/format.js";
+
 /**
  * Returns the HTML template for the task edit dialog.
  * @param {Object} element - The task object
@@ -49,6 +51,16 @@ export function getDialogBoardEditTemplate(element, priorityButtons, assignedHTM
         </div>
     </footer>
   `;
+}
+
+/**
+ * Returns the active CSS class for a priority button.
+ * @param {string} priority - The priority to check
+ * @param {string} currentPriority - The currently active priority
+ * @returns {string} "active" or empty string
+ */
+function getPriorityActiveClass(priority, currentPriority) {
+  return currentPriority === priority ? "active" : "";
 }
 
 /**
@@ -170,11 +182,3 @@ export function getSubtaskEditActionsTemplate() {
         </button>
     `;
 }
-
-window.getDialogBoardEditTemplate = getDialogBoardEditTemplate;
-window.getPriorityButtonTemplate = getPriorityButtonTemplate;
-window.getContactOptionTemplate = getContactOptionTemplate;
-window.getContactBadgeTemplate = getContactBadgeTemplate;
-window.getAssignedContactsEditTemplate = getAssignedContactsEditTemplate;
-window.getSubtaskEditItemTemplate = getSubtaskEditItemTemplate;
-window.getSubtaskEditingStateTemplate = getSubtaskEditingStateTemplate;
