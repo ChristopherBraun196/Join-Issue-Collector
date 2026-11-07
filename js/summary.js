@@ -6,10 +6,10 @@
 function getSummaryCounts(tasks) {
   const urgentTasks = tasks.filter((t) => t.priority === "urgent");
   return {
-    toDoCount: tasks.filter((t) => t.status === "toDo").length,
-    doneCount: tasks.filter((t) => t.status === "done").length,
-    progressCount: tasks.filter((t) => t.status === "inProgress").length,
-    feedbackCount: tasks.filter((t) => t.status === "await").length,
+    toDoCount: tasks.filter((t) => t.status === STATUS.TO_DO).length,
+    doneCount: tasks.filter((t) => t.status === STATUS.DONE).length,
+    progressCount: tasks.filter((t) => t.status === STATUS.IN_PROGRESS).length,
+    feedbackCount: tasks.filter((t) => t.status === STATUS.AWAIT).length,
     boardCount: tasks.length,
     urgentCount: urgentTasks.length,
     deadline: getNextDeadline(urgentTasks),
@@ -29,7 +29,7 @@ function renderSummaryElements(counts) {
   document.getElementById("board_count").textContent = counts.boardCount;
   document.getElementById("urgent_count").textContent = counts.urgentCount;
   document.getElementById("deadline").textContent = counts.deadline;
-   document.getElementById("email_requests_count").textContent = counts.emailRequestsCount;
+  document.getElementById("email_requests_count").textContent = counts.emailRequestsCount;
 }
 
 /**
@@ -39,9 +39,7 @@ function renderSummaryElements(counts) {
 async function initSummary() {
   const data = await loadData("/tasks");
 
-  const tasks = data
-    ? Object.entries(data).map(([id, task]) => ({ ...task, id }))
-    : [];
+  const tasks = data ? Object.entries(data).map(([id, task]) => ({ ...task, id })) : [];
 
   renderSummaryElements(getSummaryCounts(tasks));
 
@@ -69,16 +67,14 @@ async function initSummary() {
  * @returns {string} The formatted deadline date or "No deadline"
  */
 function getNextDeadline(urgentTasks) {
-  const withDeadline = urgentTasks
-    .filter((t) => t.dueDate)
-    .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+  const withDeadline = urgentTasks.filter((t) => t.dueDate).sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
 
   if (withDeadline.length === 0) return "No deadline";
 
   const date = new Date(withDeadline[0].dueDate);
-return date.toLocaleDateString("en-US", {
-  year: "numeric",
-  month: window.innerWidth <= 380 ? "short" : "long",
-  day: "numeric",
-});
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: window.innerWidth <= 380 ? "short" : "long",
+    day: "numeric",
+  });
 }

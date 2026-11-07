@@ -38,11 +38,10 @@ async function initTasks() {
  * @returns {Promise<void>}
  */
 async function renderAll() {
-  await renderSection("triage");
-  await renderSection("toDo");
-  await renderSection("inProgress");
-  await renderSection("await");
-  await renderSection("done");
+  for (const column of COLUMNS) {
+    await renderSection(column);
+  }
+
   updateNoTaskPlaceholders();
   updateScrollArrows();
 }
@@ -165,10 +164,7 @@ function closeAllOverlays() {
  * Handles clicks outside overlays to close them.
  */
 function handleOutsideClick(event) {
-  if (
-    !event.target.closest(".move-overlay") &&
-    !event.target.closest(".move-to-btn")
-  ) {
+  if (!event.target.closest(".move-overlay") && !event.target.closest(".move-to-btn")) {
     closeAllOverlays();
   }
 }
@@ -205,9 +201,7 @@ function scrollColumn(columnId, direction) {
 function updateScrollArrows() {
   for (const col of COLUMNS) {
     const container = document.getElementById(col);
-    const body = document.querySelector(
-      `.board-task-body[data-column="${col}"]`,
-    );
+    const body = document.querySelector(`.board-task-body[data-column="${col}"]`);
     if (!container || !body) continue;
 
     const arrowUp = body.querySelector(".arrow-up");
@@ -238,10 +232,7 @@ function handleMobileArrows(container, arrowUp, arrowDown) {
     arrowDown.classList.add("hidden");
   } else {
     arrowUp.classList.toggle("hidden", container.scrollLeft <= 2);
-    arrowDown.classList.toggle(
-      "hidden",
-      container.scrollLeft + container.clientWidth >= container.scrollWidth - 2,
-    );
+    arrowDown.classList.toggle("hidden", container.scrollLeft + container.clientWidth >= container.scrollWidth - 2);
   }
 }
 /**
@@ -258,11 +249,7 @@ function handleDesktopArrows(container, arrowUp, arrowDown) {
     arrowDown.classList.add("hidden");
   } else {
     arrowUp.classList.toggle("hidden", container.scrollTop <= 2);
-    arrowDown.classList.toggle(
-      "hidden",
-      container.scrollTop + container.clientHeight >=
-        container.scrollHeight - 2,
-    );
+    arrowDown.classList.toggle("hidden", container.scrollTop + container.clientHeight >= container.scrollHeight - 2);
   }
 }
 
@@ -294,9 +281,7 @@ async function getAssignedContacts(assignedTo) {
   const data = await loadData("/contacts");
   if (!data || !assignedTo) return [];
 
-  const assignedArray = Array.isArray(assignedTo)
-    ? assignedTo
-    : Object.values(assignedTo);
+  const assignedArray = Array.isArray(assignedTo) ? assignedTo : Object.values(assignedTo);
 
   const assignedIds = assignedArray.map((a) => a.id.trim());
   const result = Object.entries(data)
@@ -318,18 +303,14 @@ async function findTask() {
   }
 
   const matches = tasks.filter(
-    (t) =>
-      t.title.toLowerCase().includes(query) ||
-      t.description.toLowerCase().includes(query),
+    (t) => t.title.toLowerCase().includes(query) || t.description.toLowerCase().includes(query),
   );
 
   await renderFilteredTasks(matches);
 }
 
 async function renderFilteredTasks(filteredTasks) {
-  const sections = ["triage", "toDo", "inProgress", "await", "done"];
-
-  for (const section of sections) {
+  for (const section of COLUMNS) {
     const container = document.getElementById(section);
     container.innerHTML = "";
 
@@ -355,10 +336,7 @@ async function renderFilteredTasks(filteredTasks) {
    ========================================================= */
 
 async function toggleSubtaskEdit(subtaskIndex, isCompleted, taskId) {
-  await putData(
-    "/tasks/" + taskId + "/subtasks/" + subtaskIndex + "/completed",
-    !isCompleted,
-  );
+  await putData("/tasks/" + taskId + "/subtasks/" + subtaskIndex + "/completed", !isCompleted);
   await initTasks();
   const element = tasks.find((t) => t.id === taskId);
   const assignedContacts = await getAssignedContacts(element.assignedTo);
@@ -367,11 +345,7 @@ async function toggleSubtaskEdit(subtaskIndex, isCompleted, taskId) {
 
 function checkIfSubtasksAvaiableEdit(subtasks, taskID) {
   if (subtasks) {
-    return subtasks
-      .map((s, index) =>
-        getSubtasksTemplate(s, taskID, index, "toggleSubtaskEdit"),
-      )
-      .join("");
+    return subtasks.map((s, index) => getSubtasksTemplate(s, taskID, index, "toggleSubtaskEdit")).join("");
   } else {
     return "<p>No Subtask available</p>";
   }
@@ -420,11 +394,7 @@ function confirmSubtaskEditMode(btn) {
     li.remove();
     return;
   }
-  li.outerHTML = getSubtaskEditItemTemplate(
-    { title: text },
-    li.dataset.taskId,
-    li.dataset.index,
-  );
+  li.outerHTML = getSubtaskEditItemTemplate({ title: text }, li.dataset.taskId, li.dataset.index);
 }
 
 /**
@@ -443,7 +413,5 @@ function getPriorityActiveClass(priority, currentPriority) {
  * @returns {string} HTML string of all priority buttons
  */
 function getPriorityButtonsTemplate(currentPriority) {
-  return ["urgent", "medium", "low"]
-    .map((p) => getPriorityButtonTemplate(p, currentPriority))
-    .join("");
+  return ["urgent", "medium", "low"].map((p) => getPriorityButtonTemplate(p, currentPriority)).join("");
 }
