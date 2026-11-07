@@ -178,19 +178,6 @@ function switchToGuestSidebar() {
 }
 
 /**
- * Returns the initials of a full name.
- * @param {string} name - The full name to extract initials from
- * @returns {string} The uppercase initials
- */
-function getInitials(name) {
-  return name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase();
-}
-
-/**
  * Renders the user menu with the current user's initials and avatar color.
  */
 function renderUserMenue() {

@@ -21,4 +21,4 @@ export function generateUUID() {
   );
 }
 
-window.generateUUID = generateUUID; // bridge for classic scripts, remove in Phase 6
+window.generateUUID = generateUUID;
