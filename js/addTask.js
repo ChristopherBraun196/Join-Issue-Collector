@@ -51,34 +51,23 @@ function clearDialogAddTaskForm(status) {
  */
 function clearAddTaskForm() {
   document.getElementById("add-task-form").reset();
-  document
-    .querySelectorAll("#assigned-dropdown .custom-option.selected")
-    .forEach((opt) => {
-      opt.classList.remove("selected");
-      opt.querySelector('input[type="checkbox"]').checked = false;
-    });
+  document.querySelectorAll("#assigned-dropdown .custom-option.selected").forEach((opt) => {
+    opt.classList.remove("selected");
+    opt.querySelector('input[type="checkbox"]').checked = false;
+  });
   document.getElementById("assigned-badges").innerHTML = "";
   document
     .querySelectorAll("#category-dropdown .custom-option.selected")
     .forEach((opt) => opt.classList.remove("selected"));
   document.querySelector('#category-wrapper input[name="category"]').value = "";
-  document.getElementById("category-placeholder").textContent =
-    "Select task category";
+  document.getElementById("category-placeholder").textContent = "Select task category";
   document.getElementById("category-placeholder").style.color = "";
-  document
-    .querySelectorAll("#task-priority-btns .priority-btn")
-    .forEach((btn) => btn.classList.remove("set"));
-  document
-    .querySelector("#task-priority-btns .priority-btn.medium")
-    .classList.add("set");
+  document.querySelectorAll("#task-priority-btns .priority-btn").forEach((btn) => btn.classList.remove("set"));
+  document.querySelector("#task-priority-btns .priority-btn.medium").classList.add("set");
   document.getElementById("subtask-list").innerHTML = "";
 
-  document
-    .querySelectorAll("#add-task-form .input-error")
-    .forEach((input) => clearFieldError(input));
-  document
-    .querySelectorAll("#add-task-form .field-error-msg")
-    .forEach((el) => (el.style.visibility = "hidden"));
+  document.querySelectorAll("#add-task-form .input-error").forEach((input) => clearFieldError(input));
+  document.querySelectorAll("#add-task-form .field-error-msg").forEach((el) => (el.style.visibility = "hidden"));
 }
 
 /**
@@ -86,9 +75,7 @@ function clearAddTaskForm() {
  * @param {HTMLElement} clickedButton - The priority button that was clicked
  */
 function setPriority(clickedButton) {
-  const buttons = document.querySelectorAll(
-    "#task-priority-btns .priority-btn",
-  );
+  const buttons = document.querySelectorAll("#task-priority-btns .priority-btn");
   buttons.forEach((btn) => {
     btn.classList.remove("set");
   });
@@ -147,12 +134,8 @@ function toggleDropdown(id) {
   const dropdown = document.getElementById(`${id}-dropdown`);
   const isOpen = dropdown.classList.contains("open");
 
-  document
-    .querySelectorAll(".custom-select-dropdown.open")
-    .forEach((d) => d.classList.remove("open"));
-  document
-    .querySelectorAll(".custom-select-trigger.open")
-    .forEach((t) => t.classList.remove("open"));
+  document.querySelectorAll(".custom-select-dropdown.open").forEach((d) => d.classList.remove("open"));
+  document.querySelectorAll(".custom-select-trigger.open").forEach((t) => t.classList.remove("open"));
 
   if (!isOpen) {
     dropdown.classList.add("open");
@@ -168,18 +151,14 @@ function toggleDropdown(id) {
  * @param {HTMLElement} option - The selected category option element
  */
 function selectCategory(option) {
-  document
-    .querySelectorAll("#category-dropdown .custom-option")
-    .forEach((o) => o.classList.remove("selected"));
+  document.querySelectorAll("#category-dropdown .custom-option").forEach((o) => o.classList.remove("selected"));
   option.classList.add("selected");
 
   const placeholder = document.getElementById("category-placeholder");
   placeholder.textContent = option.querySelector("span").textContent;
   placeholder.style.color = "#2a3647";
 
-  const hiddenInput = document.querySelector(
-    '#category-wrapper input[name="category"]',
-  );
+  const hiddenInput = document.querySelector('#category-wrapper input[name="category"]');
   hiddenInput.value = option.dataset.value;
   clearFieldError(hiddenInput);
 
@@ -204,9 +183,7 @@ function updateAssignedBadges() {
   const badges = document.getElementById("assigned-badges");
   badges.innerHTML = "";
   const limit = 5;
-  const selected = document.querySelectorAll(
-    "#assigned-dropdown .custom-option.selected",
-  );
+  const selected = document.querySelectorAll("#assigned-dropdown .custom-option.selected");
   const total = selected.length;
 
   selected.forEach((opt, i) => {
@@ -253,9 +230,7 @@ document.addEventListener("click", (e) => {
       const hiddenInput = wrapper?.querySelector('input[name="category"]');
       if (hiddenInput) validateOnBlur(hiddenInput, "Please select a category");
     });
-    document
-      .querySelectorAll(".custom-select-trigger.open")
-      .forEach((t) => t.classList.remove("open"));
+    document.querySelectorAll(".custom-select-trigger.open").forEach((t) => t.classList.remove("open"));
   }
 });
 
@@ -312,9 +287,7 @@ function getTaskDueDate() {
  */
 function getTaskPriority() {
   const priorityBtn = document.querySelector(".priority-btn.set");
-  const priority = ["urgent", "medium", "low"].find((p) =>
-    priorityBtn.classList.contains(p),
-  );
+  const priority = ["urgent", "medium", "low"].find((p) => priorityBtn.classList.contains(p));
   return priority;
 }
 
@@ -323,9 +296,7 @@ function getTaskPriority() {
  * @returns {string} The formatted category label
  */
 function getTaskCategory() {
-  const category = document
-    .querySelector('input[name="category"]')
-    .value.trim();
+  const category = document.querySelector('input[name="category"]').value.trim();
   return formatLabel(category);
 }
 
@@ -348,9 +319,7 @@ function getTaskCategoryLabelColor(category) {
  * @returns {Object[]} Array of objects containing the contact ID
  */
 function getAssignedTo() {
-  return [
-    ...document.querySelectorAll("#assigned-dropdown .custom-option.selected"),
-  ].map((opt) => ({
+  return [...document.querySelectorAll("#assigned-dropdown .custom-option.selected")].map((opt) => ({
     id: opt.dataset.id,
   }));
 }

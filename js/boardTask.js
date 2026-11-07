@@ -17,19 +17,12 @@ async function openDialogBoard(id) {
 
   const matchedCreator = contactsList.find(
     (c) =>
-      (c.email &&
-        (c.email === element.creatorEmail || c.email === element.creator)) ||
-      (c.name &&
-        (c.name === element.creator || c.name === element.creatorName)),
+      (c.email && (c.email === element.creatorEmail || c.email === element.creator)) ||
+      (c.name && (c.name === element.creator || c.name === element.creatorName)),
   );
 
   const dialogBoard = document.getElementById("openDialogBoard");
-  dialogBoard.innerHTML = getDialogBoardTemplate(
-    element,
-    assignedContacts,
-    element.subtasks,
-    matchedCreator,
-  );
+  dialogBoard.innerHTML = getDialogBoardTemplate(element, assignedContacts, element.subtasks, matchedCreator);
   dialogBoard.showModal();
   document.querySelector("body > main").style.overflowY = "hidden";
 }
@@ -123,9 +116,7 @@ async function getAssignedToAvatars(allMembersOfThisTask) {
 
   if (totalMembers > limit) {
     const overflow = totalMembers - limit;
-    members.push(
-      `<div class="avatar overflow-badge" title="+${overflow} more">+${overflow}</div>`,
-    );
+    members.push(`<div class="avatar overflow-badge" title="+${overflow} more">+${overflow}</div>`);
   }
   return members.join("");
 }
@@ -154,16 +145,10 @@ async function getMemberAvatar(id) {
  */
 async function toggleSubtask(subtaskIndex, isSubtaskCompleted, taskID) {
   if (isSubtaskCompleted) {
-    await putData(
-      "/tasks/" + taskID + "/subtasks/" + subtaskIndex + "/completed",
-      false,
-    );
+    await putData("/tasks/" + taskID + "/subtasks/" + subtaskIndex + "/completed", false);
   }
   if (isSubtaskCompleted == false) {
-    await putData(
-      "/tasks/" + taskID + "/subtasks/" + subtaskIndex + "/completed",
-      true,
-    );
+    await putData("/tasks/" + taskID + "/subtasks/" + subtaskIndex + "/completed", true);
   }
   await openDialogBoard(taskID);
 }
@@ -220,9 +205,7 @@ function checkIfSubtaskActive(subtaskCompleted) {
  */
 function checkIfSubtasksAvaiable(subtasks, taskID) {
   if (subtasks) {
-    return subtasks
-      .map((s, index) => getSubtasksTemplate(s, taskID, index))
-      .join("");
+    return subtasks.map((s, index) => getSubtasksTemplate(s, taskID, index)).join("");
   } else {
     return "<p>No Subtask avaiable in this Task</p>";
   }
@@ -248,13 +231,12 @@ async function openEditTask(taskId) {
   const assignedHTML = buildAssignedContactsEdit(allContacts, assignedIds);
   const subtasksHTML = getSubtasksEditTemplate(element.subtasks, taskId);
 
-  document.getElementById("openDialogBoard").innerHTML =
-    getDialogBoardEditTemplate(
-      element,
-      priorityButtons,
-      assignedHTML,
-      subtasksHTML,
-    );
+  document.getElementById("openDialogBoard").innerHTML = getDialogBoardEditTemplate(
+    element,
+    priorityButtons,
+    assignedHTML,
+    subtasksHTML,
+  );
 }
 
 /**
@@ -287,9 +269,7 @@ async function saveEditTask(taskId) {
  */
 function setEditPriority(event, priority) {
   currentEditPriority = priority;
-  document
-    .querySelectorAll(".prio-btn")
-    .forEach((btn) => btn.classList.remove("active"));
+  document.querySelectorAll(".prio-btn").forEach((btn) => btn.classList.remove("active"));
   event.currentTarget.classList.add("active");
 }
 
@@ -301,9 +281,7 @@ function setEditPriority(event, priority) {
  */
 function getSubtasksEditTemplate(subtasks, taskId) {
   if (!subtasks) return "";
-  return subtasks
-    .map((s, i) => getSubtaskEditItemTemplate(s, taskId, i))
-    .join("");
+  return subtasks.map((s, i) => getSubtaskEditItemTemplate(s, taskId, i)).join("");
 }
 
 /**
@@ -384,9 +362,7 @@ function getCheckboxState(event) {
  */
 function getNormalizedAssignedTo(element) {
   if (!element.assignedTo) return [];
-  return Array.isArray(element.assignedTo)
-    ? [...element.assignedTo]
-    : Object.values(element.assignedTo);
+  return Array.isArray(element.assignedTo) ? [...element.assignedTo] : Object.values(element.assignedTo);
 }
 
 /**
@@ -420,8 +396,7 @@ async function saveAndRefreshAssigned(taskId, assignedTo) {
   await initTasks();
   const allContacts = await loadData("/contacts");
   const assignedIds = assignedTo.map((a) => a.id);
-  document.getElementById("edit-assigned-badges").innerHTML =
-    buildContactBadges(allContacts, assignedIds);
+  document.getElementById("edit-assigned-badges").innerHTML = buildContactBadges(allContacts, assignedIds);
 }
 
 /**
@@ -434,11 +409,6 @@ async function toggleAssignedContact(event, contactId) {
   const checkbox = getCheckboxState(event);
   const element = tasks.find((t) => t.id === currentEditTaskId);
   let assignedTo = getNormalizedAssignedTo(element);
-  assignedTo = updateAssignedList(
-    checkbox,
-    assignedTo,
-    contactId,
-    event.currentTarget,
-  );
+  assignedTo = updateAssignedList(checkbox, assignedTo, contactId, event.currentTarget);
   await saveAndRefreshAssigned(currentEditTaskId, assignedTo);
 }
