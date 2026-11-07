@@ -8,13 +8,13 @@ export function getAddTaskDialogTemplate(status) {
     <section class="add-task" id="add-task-dialog-content">
       <header id="add-task-dialog-header">
         <h1>Add Task</h2>
-        <button data-action="close-dialog" id="close-dialog-btn" tabindex="1"><img src="../assets/icons/close.svg"></button>
+        <button data-action="close-dialog" id="close-dialog-btn"><img src="../assets/icons/close.svg"></button>
       </header>
       <form class="add-task-form" data-status="${status}" id="add-task-form" novalidate>
           <div id="left-side-form">
               <div id="task-title">
                   <label for="title">Title<span class="required">*</span></label>
-                  <input type="text" name="title" placeholder="Enter a title" required data-error-msg="Please enter a title"/>
+                  <input type="text" name="title" placeholder="Enter a title" required data-error-msg="Please enter a title" autofocus />
                   <span class="field-error-msg"></span>
               </div>
               <div id="task-description">
