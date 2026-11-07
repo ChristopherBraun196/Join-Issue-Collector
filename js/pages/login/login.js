@@ -1,4 +1,5 @@
 import { registerUser, signInUser, signInGuest } from "../../services/authService.js";
+import { switchToLogin } from "./authForms.js";
 
 /**
  * Displays an error message at the relevant input field based on the Firebase signup error code.
