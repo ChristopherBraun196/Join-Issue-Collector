@@ -1,5 +1,6 @@
 import { putData } from "../../services/database.js";
 import { tasks, COLUMNS, COLUMN_LABELS } from "./boardData.js";
+import { reRenderColumns } from "./boardRender.js";
 
 /**
  * Returns all other columns a task can move to (excluding its current column).
@@ -84,7 +85,3 @@ export function handleOutsideClick(event) {
     closeAllOverlays();
   }
 }
-
-window.toggleMoveOverlay = toggleMoveOverlay;
-window.moveTaskTo = moveTaskTo;
-window.handleOutsideClick = handleOutsideClick;

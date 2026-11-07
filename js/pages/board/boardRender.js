@@ -1,62 +1,13 @@
-let currentEditTaskId = null;
-
-/**
- * Initializes the board by running setup, loading tasks and rendering.
- * @param {string} site - The current site/page identifier
- * @returns {Promise<void>}
- */
-async function initBoard(site) {
-  init(site);
-  initBoardListeners();
-  initDragDrop();
-  await initTasks();
-  await renderAll();
-  document.addEventListener("click", handleOutsideClick);
-  window.addEventListener("resize", updateScrollArrows);
-}
-
-/**
- * Registers the delegated click listener for the board page.
- */
-function initBoardListeners() {
-  const main = document.querySelector("#board-main");
-  const dialog = document.querySelector("#openDialogBoard");
-  main.addEventListener("click", handleBoardClick);
-  main.addEventListener("input", handleBoardInput);
-  dialog.addEventListener("click", handleDialogBoardClick);
-  dialog.addEventListener("input", handleDialogBoardInput);
-  dialog.addEventListener("keydown", handleDialogBoardKey);
-}
-
-/**
- * Handles all clicks on the board page via data-action.
- * @param {MouseEvent} event - The click event
- */
-function handleBoardClick(event) {
-  const target = event.target.closest("[data-action]");
-  if (!target) return;
-  const { action, id, status, target: columnId, direction } = target.dataset;
-  if (action === "add-task") openAddTaskDialog(status);
-  if (action === "scroll-column") scrollColumn(columnId, Number(direction));
-  if (action === "search-task") findTask(target.closest(".search-input-group").querySelector(".find-task"));
-  if (action === "open-task") openDialogBoard(id);
-  if (action === "toggle-move") toggleMoveOverlay(event, id, status);
-  if (action === "move-task") moveTaskTo(event, id, status);
-}
-
-/**
- * Filters the tasks while typing in one of the search inputs.
- * @param {InputEvent} event - The input event
- */
-function handleBoardInput(event) {
-  if (event.target.matches(".find-task")) findTask(event.target);
-}
+import { loadData } from "../../services/database.js";
+import { getInitials } from "../../utils/format.js";
+import { getToDoTemplate } from "../../templates/boardTemplates.js";
+import { tasks, COLUMNS } from "./boardData.js";
 
 /**
  * Renders all task sections on the board.
  * @returns {Promise<void>}
  */
-async function renderAll() {
+export async function renderAll() {
   for (const column of COLUMNS) {
     await renderSection(column);
   }
@@ -70,7 +21,7 @@ async function renderAll() {
  * @param {string} section - The column name (e.g. "toDo", "inProgress")
  * @returns {Promise<void>}
  */
-async function renderSection(section) {
+export async function renderSection(section) {
   const container = document.getElementById(section);
   container.innerHTML = "";
   const taskStatus = tasks.filter((t) => t["status"] == section);
@@ -94,7 +45,7 @@ async function renderSection(section) {
  * @param  {...string} columns - Column names to re-render
  * @returns {Promise<void>}
  */
-async function reRenderColumns(...columns) {
+export async function reRenderColumns(...columns) {
   for (const col of columns) await renderSection(col);
   updateNoTaskPlaceholders();
   updateScrollArrows();
@@ -106,7 +57,7 @@ async function reRenderColumns(...columns) {
  * @param {string} columnId - e.g. "toDo"
  * @param {number} direction - -1 = up/left, 1 = down/right
  */
-function scrollColumn(columnId, direction) {
+export function scrollColumn(columnId, direction) {
   const container = document.getElementById(columnId);
   if (!container) return;
   const isMobile = window.innerWidth <= 1200;
@@ -125,7 +76,7 @@ function scrollColumn(columnId, direction) {
  * Delegates to mobile or desktop handler depending on screen width.
  * @returns {void}
  */
-function updateScrollArrows() {
+export function updateScrollArrows() {
   for (const col of COLUMNS) {
     const container = document.getElementById(col);
     const body = document.querySelector(`.board-task-body[data-column="${col}"]`);
@@ -180,10 +131,6 @@ function handleDesktopArrows(container, arrowUp, arrowDown) {
   }
 }
 
-/* =========================================================
-   PLACEHOLDER
-   ========================================================= */
-
 /**
  * Shows or hides the "no tasks" placeholder for each column.
  */
@@ -200,7 +147,7 @@ function updateNoTaskPlaceholders() {
   }
 }
 
-async function findTask(input) {
+export async function findTask(input) {
   const query = input.value.toLowerCase();
 
   if (query.length < 1) {
@@ -237,67 +184,93 @@ async function renderFilteredTasks(filteredTasks) {
   updateScrollArrows();
 }
 
-function buildContactOptions(allContacts, assignedIds) {
-  return Object.entries(allContacts)
-    .map(([id, contact]) => {
-      const checked = assignedIds.includes(id) ? "checked" : "";
-      return getContactOptionTemplate(id, contact, checked);
-    })
-    .join("");
-}
-
-function buildContactBadges(allContacts, assignedIds) {
-  return Object.entries(allContacts)
-    .filter(([id]) => assignedIds.includes(id))
-    .map(([id, contact]) => getContactBadgeTemplate(contact))
-    .join("");
-}
-
-function buildAssignedContactsEdit(allContacts, assignedIds) {
-  const optionsHTML = buildContactOptions(allContacts, assignedIds);
-  const badgesHTML = buildContactBadges(allContacts, assignedIds);
-  return getAssignedContactsEditTemplate(optionsHTML, badgesHTML);
-}
-
-function handleSubtaskKeyEdit(event, taskId) {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    addSubtaskEdit(taskId);
-  }
-  if (event.key === "Escape") clearSubtaskInputEdit();
-}
-
-function editSubtaskEditMode(span) {
-  const li = span.closest("li");
-  li.innerHTML = getSubtaskEditingStateTemplate(span.textContent);
-  li.querySelector("input").focus();
-}
-
-function confirmSubtaskEditMode(btn) {
-  const li = btn.closest("li");
-  const text = li.querySelector(".subtask-edit-input").value.trim();
-  if (!text) {
-    li.remove();
-    return;
-  }
-  li.outerHTML = getSubtaskEditItemTemplate({ title: text }, li.dataset.taskId, li.dataset.index);
+/**
+ * Calculates the subtask progress as a percentage.
+ * @param {number} solved - The number of completed subtasks
+ * @param {number} total - The total number of subtasks
+ * @returns {number} The progress percentage (0–100)
+ */
+function calcSubtaskProgress(solved, total) {
+  return (solved / total) * 100;
 }
 
 /**
- * Returns the active CSS class for a priority button.
- * @param {string} priority - The priority to check
- * @param {string} currentPriority - The currently active priority
- * @returns {string} "active" or empty string
+ * Returns the subtask progress data for a given task.
+ * @param {Object} element - The task object
+ * @returns {Promise<Array>} Array of [solved, total, visibility]
  */
-function getPriorityActiveClass(priority, currentPriority) {
-  return currentPriority === priority ? "active" : "";
+async function getSubtaskData(element) {
+  const solved = await getAmountSolvedSubtasks(element["id"]);
+  const total = await getNumberOfSubtasks(element["id"]);
+  let visibility = "";
+  if (total != 0) visibility = "show";
+  return [solved, total, visibility];
 }
 
 /**
- * Returns the HTML template for all priority buttons in the edit dialog.
- * @param {string} currentPriority - The currently active priority (e.g. "urgent")
- * @returns {string} HTML string of all priority buttons
+ * Returns the number of completed subtasks for a given task.
+ * @param {string} taskID - The ID of the task
+ * @returns {Promise<string>} The amount of completed subtasks as a string
  */
-function getPriorityButtonsTemplate(currentPriority) {
-  return ["urgent", "medium", "low"].map((p) => getPriorityButtonTemplate(p, currentPriority)).join("");
+async function getAmountSolvedSubtasks(taskID) {
+  const task = await loadData("/tasks/" + taskID);
+  if (task.subtasks === undefined) return 0;
+  let amount = 0;
+  for (let i = 0; i < task.subtasks.length; i++) {
+    if (task.subtasks[i]["completed"] == true) amount++;
+  }
+  return String(amount);
 }
+
+/**
+ * Returns the total number of subtasks for a given task.
+ * @param {string} taskID - The ID of the task
+ * @returns {Promise<number>} The total number of subtasks
+ */
+async function getNumberOfSubtasks(taskID) {
+  const task = await loadData("/tasks/" + taskID);
+  if (task.subtasks === undefined) return 0;
+
+  return task.subtasks.length;
+}
+
+/**
+ * Returns the avatar HTML for all members assigned to a task.
+ * @param {Object[]} allMembersOfThisTask - Array of assigned member objects
+ * @returns {Promise<string>} HTML string of avatar elements
+ */
+export async function getAssignedToAvatars(allMembersOfThisTask) {
+  let members = [];
+  if (allMembersOfThisTask == undefined) return "";
+  const limit = 3;
+  const totalMembers = allMembersOfThisTask.length;
+  const displayCount = Math.min(totalMembers, limit);
+
+  for (let i = 0; i < displayCount; i++) {
+    const memberID = allMembersOfThisTask[i].id;
+    members.push(await getMemberAvatar(memberID));
+  }
+
+  if (totalMembers > limit) {
+    const overflow = totalMembers - limit;
+    members.push(`<div class="avatar overflow-badge" title="+${overflow} more">+${overflow}</div>`);
+  }
+  return members.join("");
+}
+
+/**
+ * Returns the avatar HTML for a single contact by ID.
+ * @param {string} id - The contact ID to load the avatar for
+ * @returns {Promise<string>} HTML string of the avatar element
+ */
+async function getMemberAvatar(id) {
+  const member = await loadData("/contacts/" + id);
+  if (!member) return "";
+
+  const name = member.name;
+  const htmlTemplate = `<div class="avatar" style="background:${member["avatarColor"]}">${getInitials(name)}</div>`;
+
+  return htmlTemplate;
+}
+
+window.getAssignedToAvatars = getAssignedToAvatars;

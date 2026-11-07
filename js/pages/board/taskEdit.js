@@ -1,20 +1,18 @@
-let currentEditPriority = null;
+import { loadData, putData } from "../../services/database.js";
+import {
+  getDialogBoardEditTemplate,
+  getPriorityButtonTemplate,
+  getContactOptionTemplate,
+  getContactBadgeTemplate,
+  getAssignedContactsEditTemplate,
+  getSubtaskEditItemTemplate,
+  getSubtaskEditingStateTemplate,
+} from "../../templates/boardEditTemplates.js";
+import { tasks, initTasks, getAssignedContacts } from "./boardData.js";
+import { closeDialogBoard } from "./taskDialog.js";
 
-/**
- * Handles all clicks inside the task detail dialog via data-action.
- * @param {MouseEvent} event - The click event
- */
-function handleDialogBoardClick(event) {
-  const target = event.target.closest("[data-action]");
-  if (!target) return;
-  const { action, id, status, index, completed } = target.dataset;
-  if (action === "close-task") closeDialogBoard(status);
-  if (action === "delete-task") deleteTask(id);
-  if (action === "edit-task") openEditTask(id);
-  if (action === "toggle-subtask") toggleSubtask(index, completed === "true", id);
-  handleEditTaskAction(event, target, action);
-  handleEditSubtaskAction(target, action);
-}
+let currentEditPriority = null;
+let currentEditTaskId = null;
 
 /**
  * Runs the edit dialog action that belongs to the clicked data-action.
@@ -22,7 +20,7 @@ function handleDialogBoardClick(event) {
  * @param {HTMLElement} target - The clicked element with the data-action
  * @param {string} action - The data-action value
  */
-function handleEditTaskAction(event, target, action) {
+export function handleEditTaskAction(event, target, action) {
   const { id, priority } = target.dataset;
   if (action === "set-edit-priority") setEditPriority(target, priority);
   if (action === "toggle-edit-dropdown") toggleEditDropdown();
@@ -35,7 +33,7 @@ function handleEditTaskAction(event, target, action) {
  * @param {HTMLElement} target - The clicked element with the data-action
  * @param {string} action - The data-action value
  */
-function handleEditSubtaskAction(target, action) {
+export function handleEditSubtaskAction(target, action) {
   const { id, index } = target.dataset;
   if (action === "clear-subtask-edit") clearSubtaskInputEdit();
   if (action === "add-subtask-edit") addSubtaskEdit(id);
@@ -46,216 +44,11 @@ function handleEditSubtaskAction(target, action) {
 }
 
 /**
- * Shows or hides the edit subtask confirm buttons while typing.
- * @param {InputEvent} event - The input event
- */
-function handleDialogBoardInput(event) {
-  if (event.target.matches("#new-subtask-input")) onSubtaskInputEdit();
-}
-
-/**
- * Handles Enter and Escape inside the edit subtask input.
- * @param {KeyboardEvent} event - The keydown event
- */
-function handleDialogBoardKey(event) {
-  if (event.target.matches("#new-subtask-input")) handleSubtaskKeyEdit(event, event.target.dataset.id);
-}
-
-/**
- * Opens the task detail dialog for a given task.
- * @param {string} id - The ID of the task to display
- * @returns {Promise<void>}
- */
-async function openDialogBoard(id) {
-  await initTasks();
-  const element = tasks.find((t) => t.id === id);
-  const assignedContacts = await getAssignedContacts(element.assignedTo);
-  const contactsData = (await loadData("/contacts")) || {};
-  const contactsList = Object.entries(contactsData).map(([id, contact]) => ({
-    ...contact,
-    id,
-  }));
-
-  const matchedCreator = contactsList.find(
-    (c) =>
-      (c.email && (c.email === element.creatorEmail || c.email === element.creator)) ||
-      (c.name && (c.name === element.creator || c.name === element.creatorName)),
-  );
-
-  const dialogBoard = document.getElementById("openDialogBoard");
-  dialogBoard.innerHTML = getDialogBoardTemplate(element, assignedContacts, element.subtasks, matchedCreator);
-  dialogBoard.showModal();
-  document.querySelector("body > main").style.overflowY = "hidden";
-}
-
-/**
- * Closes the task detail dialog and re-renders the section.
- * @param {string} section - The column name to re-render after closing
- * @returns {Promise<void>}
- */
-async function closeDialogBoard(section) {
-  const dialogBoard = document.getElementById("openDialogBoard");
-  dialogBoard.close();
-  document.querySelector("body > main").style.overflowY = "";
-  await renderSection(section);
-}
-
-/**
- * Deletes a task from the board and Firebase.
- * @param {string} id - The ID of the task to delete
- * @returns {Promise<void>}
- */
-async function deleteTask(id) {
-  try {
-    await deleteData(`/tasks/${id}`);
-    showMessage("Task wurde gelöscht");
-    document.getElementById("openDialogBoard").close();
-    await initTasks();
-    renderAll();
-  } catch (error) {
-    console.error("Fehler beim Löschen des Tasks:", error);
-  }
-}
-
-/**
- * Returns the subtask progress data for a given task.
- * @param {Object} element - The task object
- * @returns {Promise<Array>} Array of [solved, total, visibility]
- */
-async function getSubtaskData(element) {
-  const solved = await getAmountSolvedSubtasks(element["id"]);
-  const total = await getNumberOfSubtasks(element["id"]);
-  let visibility = "";
-  if (total != 0) visibility = "show";
-  return [solved, total, visibility];
-}
-
-/**
- * Returns the number of completed subtasks for a given task.
- * @param {string} taskID - The ID of the task
- * @returns {Promise<string>} The amount of completed subtasks as a string
- */
-async function getAmountSolvedSubtasks(taskID) {
-  const task = await loadData("/tasks/" + taskID);
-  if (task.subtasks === undefined) return 0;
-  let amount = 0;
-  for (let i = 0; i < task.subtasks.length; i++) {
-    if (task.subtasks[i]["completed"] == true) amount++;
-  }
-  return String(amount);
-}
-
-/**
- * Returns the total number of subtasks for a given task.
- * @param {string} taskID - The ID of the task
- * @returns {Promise<number>} The total number of subtasks
- */
-async function getNumberOfSubtasks(taskID) {
-  const task = await loadData("/tasks/" + taskID);
-  if (task.subtasks === undefined) return 0;
-
-  return task.subtasks.length;
-}
-
-/**
- * Returns the avatar HTML for all members assigned to a task.
- * @param {Object[]} allMembersOfThisTask - Array of assigned member objects
- * @returns {Promise<string>} HTML string of avatar elements
- */
-async function getAssignedToAvatars(allMembersOfThisTask) {
-  let members = [];
-  if (allMembersOfThisTask == undefined) return "";
-  const limit = 3;
-  const totalMembers = allMembersOfThisTask.length;
-  const displayCount = Math.min(totalMembers, limit);
-
-  for (let i = 0; i < displayCount; i++) {
-    const memberID = allMembersOfThisTask[i].id;
-    members.push(await getMemberAvatar(memberID));
-  }
-
-  if (totalMembers > limit) {
-    const overflow = totalMembers - limit;
-    members.push(`<div class="avatar overflow-badge" title="+${overflow} more">+${overflow}</div>`);
-  }
-  return members.join("");
-}
-
-/**
- * Returns the avatar HTML for a single contact by ID.
- * @param {string} id - The contact ID to load the avatar for
- * @returns {Promise<string>} HTML string of the avatar element
- */
-async function getMemberAvatar(id) {
-  const member = await loadData("/contacts/" + id);
-  if (!member) return "";
-
-  const name = member.name;
-  const htmlTemplate = `<div class="avatar" style="background:${member["avatarColor"]}">${getInitials(name)}</div>`;
-
-  return htmlTemplate;
-}
-
-/**
- * Toggles the completed state of a subtask and refreshes the task dialog.
- * @param {number} subtaskIndex - The index of the subtask in the subtasks array
- * @param {boolean} isSubtaskCompleted - The current completed state of the subtask
- * @param {string} taskID - The ID of the parent task
- * @returns {Promise<void>}
- */
-async function toggleSubtask(subtaskIndex, isSubtaskCompleted, taskID) {
-  if (isSubtaskCompleted) {
-    await putData("/tasks/" + taskID + "/subtasks/" + subtaskIndex + "/completed", false);
-  }
-  if (isSubtaskCompleted == false) {
-    await putData("/tasks/" + taskID + "/subtasks/" + subtaskIndex + "/completed", true);
-  }
-  await openDialogBoard(taskID);
-}
-
-/**
- * Calculates the subtask progress as a percentage.
- * @param {number} solved - The number of completed subtasks
- * @param {number} total - The total number of subtasks
- * @returns {number} The progress percentage (0–100)
- */
-function calcSubtaskProgress(solved, total) {
-  return (solved / total) * 100;
-}
-
-/**
- * Returns "checked" if the subtask is completed, otherwise an empty string.
- * @param {boolean} subtaskCompleted - The completed state of the subtask
- * @returns {string} "checked" or empty string
- */
-function checkIfSubtaskActive(subtaskCompleted) {
-  if (subtaskCompleted == true) {
-    return "checked";
-  } else {
-    return "";
-  }
-}
-
-/**
- * Returns the subtask HTML for the task card, or a fallback message.
- * @param {Object[]} subtasks - Array of subtask objects
- * @param {string} taskID - The ID of the parent task
- * @returns {string} HTML string of all subtasks or fallback message
- */
-function checkIfSubtasksAvaiable(subtasks, taskID) {
-  if (subtasks) {
-    return subtasks.map((s, index) => getSubtasksTemplate(s, taskID, index)).join("");
-  } else {
-    return "<p>No Subtask avaiable in this Task</p>";
-  }
-}
-
-/**
  * Opens the edit dialog for a given task.
  * @param {string} taskId - The ID of the task to edit
  * @returns {Promise<void>}
  */
-async function openEditTask(taskId) {
+export async function openEditTask(taskId) {
   currentEditTaskId = taskId;
   const element = tasks.find((t) => t.id === taskId);
   const assignedContacts = await getAssignedContacts(element.assignedTo);
@@ -326,7 +119,7 @@ function getSubtasksEditTemplate(subtasks, taskId) {
 /**
  * Toggles the visibility of the subtask confirm buttons based on the input value.
  */
-function onSubtaskInputEdit() {
+export function onSubtaskInputEdit() {
   const input = document.getElementById("new-subtask-input");
   const btns = document.getElementById("subtask-confirm-btns-edit");
   btns.classList.toggle("visible", input.value.trim().length > 0);
@@ -453,3 +246,70 @@ async function toggleAssignedContact(event, option, contactId) {
   assignedTo = updateAssignedList(checkbox, assignedTo, contactId, option);
   await saveAndRefreshAssigned(currentEditTaskId, assignedTo);
 }
+
+function buildContactOptions(allContacts, assignedIds) {
+  return Object.entries(allContacts)
+    .map(([id, contact]) => {
+      const checked = assignedIds.includes(id) ? "checked" : "";
+      return getContactOptionTemplate(id, contact, checked);
+    })
+    .join("");
+}
+
+function buildContactBadges(allContacts, assignedIds) {
+  return Object.entries(allContacts)
+    .filter(([id]) => assignedIds.includes(id))
+    .map(([id, contact]) => getContactBadgeTemplate(contact))
+    .join("");
+}
+
+function buildAssignedContactsEdit(allContacts, assignedIds) {
+  const optionsHTML = buildContactOptions(allContacts, assignedIds);
+  const badgesHTML = buildContactBadges(allContacts, assignedIds);
+  return getAssignedContactsEditTemplate(optionsHTML, badgesHTML);
+}
+
+export function handleSubtaskKeyEdit(event, taskId) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    addSubtaskEdit(taskId);
+  }
+  if (event.key === "Escape") clearSubtaskInputEdit();
+}
+
+function editSubtaskEditMode(span) {
+  const li = span.closest("li");
+  li.innerHTML = getSubtaskEditingStateTemplate(span.textContent);
+  li.querySelector("input").focus();
+}
+
+function confirmSubtaskEditMode(btn) {
+  const li = btn.closest("li");
+  const text = li.querySelector(".subtask-edit-input").value.trim();
+  if (!text) {
+    li.remove();
+    return;
+  }
+  li.outerHTML = getSubtaskEditItemTemplate({ title: text }, li.dataset.taskId, li.dataset.index);
+}
+
+/**
+ * Returns the active CSS class for a priority button.
+ * @param {string} priority - The priority to check
+ * @param {string} currentPriority - The currently active priority
+ * @returns {string} "active" or empty string
+ */
+export function getPriorityActiveClass(priority, currentPriority) {
+  return currentPriority === priority ? "active" : "";
+}
+
+/**
+ * Returns the HTML template for all priority buttons in the edit dialog.
+ * @param {string} currentPriority - The currently active priority (e.g. "urgent")
+ * @returns {string} HTML string of all priority buttons
+ */
+function getPriorityButtonsTemplate(currentPriority) {
+  return ["urgent", "medium", "low"].map((p) => getPriorityButtonTemplate(p, currentPriority)).join("");
+}
+
+window.getPriorityActiveClass = getPriorityActiveClass;

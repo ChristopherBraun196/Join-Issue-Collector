@@ -97,5 +97,3 @@ async function dropTask(ev, newStatus) {
   if (!currentDraggedElement) return;
   await moveTaskTo(ev, currentDraggedElement, newStatus);
 }
-
-window.initDragDrop = initDragDrop;

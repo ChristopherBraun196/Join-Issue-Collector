@@ -96,7 +96,7 @@ function clearTaskForm(container) {
  * Opens the add task dialog and renders the contact list.
  * @param {string} status - The initial status for the new task
  */
-function openAddTaskDialog(status) {
+export function openAddTaskDialog(status) {
   let main = document.querySelector("main");
   let dialogSection = document.createElement("dialog");
   dialogSection.id = "add-task-dialog";
@@ -315,5 +315,3 @@ document.addEventListener("click", (e) => {
     document.querySelectorAll(".custom-select-trigger.open").forEach((t) => t.classList.remove("open"));
   }
 });
-
-window.openAddTaskDialog = openAddTaskDialog;

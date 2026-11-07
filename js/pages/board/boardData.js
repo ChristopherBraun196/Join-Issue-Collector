@@ -37,9 +37,3 @@ export async function getAssignedContacts(assignedTo) {
     .map(([id, contact]) => ({ ...contact, id }))
     .filter((contact) => assignedIds.includes(contact.id.trim()));
 }
-
-window.tasks = tasks;
-window.COLUMNS = COLUMNS;
-window.COLUMN_LABELS = COLUMN_LABELS;
-window.initTasks = initTasks;
-window.getAssignedContacts = getAssignedContacts;

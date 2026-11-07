@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="./main.css" />
   </head>
 
-  <body onload="initBoard('board')">
+  <body>
     <aside id="sidebar"></aside>
 
     <main class="summary-add-task-board-main" id="board-main">
@@ -297,15 +297,14 @@
     <script type="module" src="./js/templates/boardTemplates.js"></script>
     <script type="module" src="./js/templates/boardEditTemplates.js"></script>
     <script type="module" src="./js/components/taskFormData.js"></script>
-
     <script type="module" src="./js/components/taskForm.js"></script>
-
     <script type="module" src="./js/components/addSubtask.js"></script>
     <script type="module" src="./js/pages/board/boardData.js"></script>
-
-    <script src="./js/board.js"></script>
+    <script type="module" src="./js/pages/board/boardRender.js"></script>
+    <script type="module" src="./js/pages/board/taskDialog.js"></script>
+    <script type="module" src="./js/pages/board/boardPage.js"></script>
     <script type="module" src="./js/pages/board/dragDrop.js"></script>
-    <script src="./js/boardTask.js"></script>
+    <script type="module" src="./js/pages/board/taskEdit.js"></script>
     <script type="module" src="./js/pages/board/moveOverlay.js"></script>
   </body>
 </html>
