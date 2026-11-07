@@ -56,6 +56,3 @@ export function getContactDetailTemplate(contact, initials, color) {
     </div>
   `;
 }
-
-window.getContactItemTemplate = getContactItemTemplate;
-window.getContactDetailTemplate = getContactDetailTemplate;

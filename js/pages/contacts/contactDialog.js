@@ -1,14 +1,35 @@
+import { generateUUID } from "../../utils/ids.js";
+import { selectRandomAvatarColor } from "../../utils/avatar.js";
+import { showMessage } from "../../components/toast.js";
+import { putData, deleteData } from "../../services/database.js";
+import { clearActiveContact, loadContacts, getActiveContactData } from "./contacts.js";
+
+/**
+ * Registers the listeners of the contact dialog.
+ */
+export function initContactDialog() {
+  document.getElementById("dialog-overlay").addEventListener("click", handleOverlayClick);
+}
+
+/**
+ * Closes the dialog when the dark overlay itself is clicked.
+ * @param {MouseEvent} event - The click event
+ */
+function handleOverlayClick(event) {
+  if (event.target === event.currentTarget) closeContactDialog();
+}
+
 /**
  * Opens the contact dialog overlay.
  */
-function openContactDialog() {
+export function openContactDialog() {
   document.getElementById("dialog-overlay").classList.add("active");
 }
 
 /**
  * Closes the contact dialog overlay
  */
-function closeContactDialog() {
+export function closeContactDialog() {
   document.getElementById("dialog-overlay").classList.remove("active");
   clearDialogInputs();
   clearErrors();
@@ -23,10 +44,6 @@ function clearDialogInputs() {
   document.getElementById("input-email").value = "";
   document.getElementById("input-phone").value = "";
 }
-
-document.getElementById("dialog-overlay").addEventListener("click", function (e) {
-  if (e.target === this) closeContactDialog();
-});
 
 /**
  * Generates a contact object from the current dialog input values.
@@ -71,7 +88,7 @@ function getContactPhone() {
  * Creates a new contact in Firebase and refreshes the contact list.
  * @returns {Promise<void>}
  */
-async function submitContact() {
+export async function submitContact() {
   if (!validateInputs()) return;
   try {
     const contactID = "contact-" + generateUUID();
@@ -89,7 +106,7 @@ async function submitContact() {
  * @param {string} contactId - The ID of the contact to delete
  * @returns {Promise<void>}
  */
-async function deleteContact(contactId) {
+export async function deleteContact(contactId) {
   try {
     await deleteData("/contacts/" + contactId);
     clearActiveContact();
@@ -131,7 +148,7 @@ function setEditDialogButtons(contactId) {
  * Opens the contact dialog in edit mode for the given contact.
  * @param {string} contactId - The ID of the contact to edit
  */
-function editContact(contactId) {
+export function editContact(contactId) {
   const currentContact = getActiveContactData(contactId);
   openContactDialog();
   fillEditDialogInputs(currentContact);
@@ -143,7 +160,7 @@ function editContact(contactId) {
  * @param {string} contactId - The ID of the contact to save
  * @returns {Promise<void>}
  */
-async function saveContact(contactId) {
+export async function saveContact(contactId) {
   if (!validateInputs()) return;
   const updatedContact = {
     id: contactId,

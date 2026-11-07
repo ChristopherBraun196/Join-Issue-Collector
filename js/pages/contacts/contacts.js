@@ -1,5 +1,29 @@
+import { init as initLayout } from "../../components/layout.js";
+import { getInitials } from "../../utils/format.js";
+import { loadData } from "../../services/database.js";
+import { getContactItemTemplate, getContactDetailTemplate } from "../../templates/contactTemplates.js";
+import {
+  initContactDialog,
+  openContactDialog,
+  closeContactDialog,
+  submitContact,
+  saveContact,
+  editContact,
+  deleteContact,
+} from "./contactDialog.js";
+
 let mobileActiveContact = null;
 let contactsArray = [];
+
+/**
+ * Entry point for the contacts page.
+ */
+function init() {
+  initLayout("contact");
+  initContactDialog();
+  loadContacts();
+  document.addEventListener("click", handleContactsClick);
+}
 
 /**
  * Handles all clicks on the contacts page via event delegation.
@@ -98,7 +122,7 @@ function renderContacts(contacts) {
  * Loads all contacts from Firebase and renders them into the sidebar.
  * @returns {Promise<void>}
  */
-async function loadContacts() {
+export async function loadContacts() {
   try {
     const data = await loadData("/contacts");
     if (!data) return;
@@ -129,12 +153,10 @@ function openContactFromUrl() {
   openContactDetail(contact, { currentTarget: item });
 }
 
-document.addEventListener("DOMContentLoaded", loadContacts);
-
 /**
  * Clears the active contact selection and removes the detail view.
  */
-function clearActiveContact() {
+export function clearActiveContact() {
   document.querySelectorAll(".contact-item").forEach((el) => el.classList.remove("active"));
   const existing = document.querySelector(".contact-detail");
   if (existing) existing.remove();
@@ -189,7 +211,7 @@ function backToContacts() {
  * @param {string} contactId - The ID of the contact
  * @returns {Object|null} The active contact data or null if none is active
  */
-function getActiveContactData(contactId) {
+export function getActiveContactData(contactId) {
   let currentContact = null;
   document.querySelectorAll(".contact-item").forEach((item) => {
     if (item.classList.contains("active")) {
@@ -203,4 +225,4 @@ function getActiveContactData(contactId) {
   return currentContact;
 }
 
-document.addEventListener("click", handleContactsClick);
+document.addEventListener("DOMContentLoaded", init);

@@ -37,7 +37,7 @@ async function postData(path = "", data = {}) {
  * @param {Object} data - The data to store
  * @returns {Promise<void>}
  */
-async function putData(path = "", data = {}) {
+export async function putData(path = "", data = {}) {
   try {
     await set(ref(db, path), data);
   } catch (error) {
@@ -51,7 +51,7 @@ async function putData(path = "", data = {}) {
  * @param {string} path - The database path to delete
  * @returns {Promise<void>}
  */
-async function deleteData(path = "") {
+export async function deleteData(path = "") {
   try {
     await remove(ref(db, path));
   } catch (error) {
