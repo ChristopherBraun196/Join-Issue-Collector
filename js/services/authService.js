@@ -6,6 +6,7 @@ import {
   signOut,
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 import { ref, set } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+import { generateUUID } from "../utils/ids.js";
 
 export const AVATAR_COLORS = ["#FF7043", "#E91E8C", "#9C27B0", "#3F51B5", "#00BCD4", "#4CAF50", "#FF9800", "#795548"];
 
