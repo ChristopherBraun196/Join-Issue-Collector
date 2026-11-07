@@ -1,17 +1,6 @@
 let mobileActiveContact = null;
 let contactsArray = [];
 
-const AVATAR_COLORS = [
-  "#FF7043",
-  "#E91E8C",
-  "#9C27B0",
-  "#3F51B5",
-  "#00BCD4",
-  "#4CAF50",
-  "#FF9800",
-  "#795548",
-];
-
 /**
  * Displays a temporary message box with the given text.
  * The box animates in, stays visible for 2.5 seconds, then animates out.
@@ -56,11 +45,9 @@ function clearDialogInputs() {
   document.getElementById("input-phone").value = "";
 }
 
-document
-  .getElementById("dialog-overlay")
-  .addEventListener("click", function (e) {
-    if (e.target === this) closeContactDialog();
-  });
+document.getElementById("dialog-overlay").addEventListener("click", function (e) {
+  if (e.target === this) closeContactDialog();
+});
 
 /**
  * Generates a contact object from the current dialog input values.
@@ -102,14 +89,6 @@ function getContactPhone() {
 }
 
 /**
- * Returns a randomly selected avatar color from the predefined color list.
- * @returns {string} A hex color code
- */
-function selectRandomAvatarColor() {
-  return AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
-}
-
-/**
  * Groups an array of contacts alphabetically by their first name letter.
  * @param {Object[]} contacts - Array of contact objects
  * @returns {Object} An object with letters as keys and contact arrays as values
@@ -135,11 +114,7 @@ function createContactItem(contact) {
   const item = document.createElement("div");
   item.className = "contact-item";
   item.dataset.id = contact.id;
-  item.innerHTML = getContactItemTemplate(
-    contact,
-    initials,
-    contact.avatarColor,
-  );
+  item.innerHTML = getContactItemTemplate(contact, initials, contact.avatarColor);
   item.addEventListener("click", (event) => openContactDetail(contact, event));
   return item;
 }
@@ -171,9 +146,7 @@ function buildContactList(grouped) {
     .sort()
     .forEach((letter) => {
       list.appendChild(createLetterDivider(letter));
-      grouped[letter].forEach((contact) =>
-        list.appendChild(createContactItem(contact)),
-      );
+      grouped[letter].forEach((contact) => list.appendChild(createContactItem(contact)));
     });
   return list;
 }
@@ -231,9 +204,7 @@ document.addEventListener("DOMContentLoaded", loadContacts);
  * Clears the active contact selection and removes the detail view.
  */
 function clearActiveContact() {
-  document
-    .querySelectorAll(".contact-item")
-    .forEach((el) => el.classList.remove("active"));
+  document.querySelectorAll(".contact-item").forEach((el) => el.classList.remove("active"));
   const existing = document.querySelector(".contact-detail");
   if (existing) existing.remove();
   document.querySelector(".main_contacts").classList.remove("contact-open");
@@ -251,11 +222,7 @@ function appendContactDetail(contact) {
   const initials = getInitials(contact.name);
   const detail = document.createElement("div");
   detail.className = "contact-detail";
-  detail.innerHTML = getContactDetailTemplate(
-    contact,
-    initials,
-    contact.avatarColor,
-  );
+  detail.innerHTML = getContactDetailTemplate(contact, initials, contact.avatarColor);
   main.appendChild(detail);
 }
 
@@ -346,9 +313,7 @@ function fillEditDialogInputs(currentContact) {
   document.getElementById("input-name").value = currentContact?.name || "";
   document.getElementById("input-email").value = currentContact?.email || "";
   const phoneEl = document.getElementById("detail-phone");
-  document.getElementById("input-phone").value = phoneEl
-    ? phoneEl.textContent
-    : "";
+  document.getElementById("input-phone").value = phoneEl ? phoneEl.textContent : "";
 }
 
 /**
