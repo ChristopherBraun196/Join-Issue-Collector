@@ -37,14 +37,6 @@ function setLogoAnimationTarget() {
 setLogoAnimationTarget();
 
 /**
- * Checks whether the current user is a guest.
- * @returns {boolean} True if the current user is a guest, false otherwise
- */
-function isGuest() {
-  return window.currentUser?.name === "Guest";
-}
-
-/**
  * Registers the animation end event on the logo wrapper element.
  * Hides the wrapper and reveals the nav logo after the animation completes.
  */
@@ -79,17 +71,6 @@ document.addEventListener("keydown", (e) => {
 function init(site, withSidebar = true) {
   generateTopbar();
   if (withSidebar) loadSidebar(site);
-}
-
-/**
- * Creates and appends an empty add task dialog element to the main content area.
- */
-function generateDialog() {
-  let main = document.querySelector("main");
-  let dialogSection = document.createElement("dialog");
-  dialogSection.id = "add-task-dialog";
-  main.appendChild(dialogSection);
-  addTaskDialog = dialogSection;
 }
 
 /**
