@@ -10,7 +10,7 @@ function init() {
   initLayout("summary");
   initGreeting();
   initSummary();
-  document.querySelector("#summary-main").addEventListener("click", handleBubbleClick);
+  document.querySelector(".summary").addEventListener("click", handleBubbleClick);
 }
 
 /**

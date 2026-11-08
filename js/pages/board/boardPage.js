@@ -25,7 +25,7 @@ async function init() {
  * Registers the delegated click listener for the board page.
  */
 function initBoardListeners() {
-  const main = document.querySelector("#board-main");
+  const main = document.querySelector(".board");
   const dialog = document.querySelector("#openDialogBoard");
   main.addEventListener("click", handleBoardClick);
   main.addEventListener("input", handleBoardInput);

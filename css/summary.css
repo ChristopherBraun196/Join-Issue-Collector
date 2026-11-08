@@ -1,5 +1,4 @@
-/* Overrides the shared main padding until the layout block is converted */
-#summary-main {
+.summary {
   @media (max-width: 1200px) {
     padding: 40px;
   }
