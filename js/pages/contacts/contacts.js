@@ -18,11 +18,12 @@ let contactsArray = [];
 /**
  * Entry point for the contacts page.
  */
-function init() {
+async function init() {
   initLayout("contact");
   initContactDialog();
-  loadContacts();
   document.addEventListener("click", handleContactsClick);
+  await loadContacts();
+  openContactFromUrl();
 }
 
 /**
@@ -122,20 +123,21 @@ function renderContacts(contacts) {
  * @returns {Promise<void>}
  */
 export async function loadContacts() {
-  try {
-    const data = await loadData("/contacts");
-    if (!data) return;
+  const data = await loadData("/contacts");
+  if (!data) return;
+  contactsArray = Object.entries(data).map(([id, contact]) => ({ ...contact, id }));
+  renderContacts(contactsArray);
+}
 
-    contactsArray = Object.entries(data).map(([id, contact]) => ({
-      ...contact,
-      id,
-    }));
-
-    renderContacts(contactsArray);
-    openContactFromUrl();
-  } catch (error) {
-    console.error("Fehler beim Laden der Kontakte:", error);
-  }
+/**
+ * Opens the detail view of the contact with the given ID.
+ * @param {string} id - The contact ID
+ */
+export function openContactById(id) {
+  const contact = contactsArray.find((c) => c.id === id);
+  const item = document.querySelector(`.contacts__item[data-id="${id}"]`);
+  if (!contact || !item) return;
+  openContactDetail(contact, { currentTarget: item });
 }
 
 /**
@@ -143,13 +145,7 @@ export async function loadContacts() {
  */
 function openContactFromUrl() {
   const id = new URLSearchParams(window.location.search).get("id");
-  if (!id) return;
-
-  const contact = contactsArray.find((c) => c.id === id);
-  const item = document.querySelector(`.contacts__item[data-id="${id}"]`);
-  if (!contact || !item) return;
-
-  openContactDetail(contact, { currentTarget: item });
+  if (id) openContactById(id);
 }
 
 /**

@@ -2,7 +2,7 @@ import { generateUUID } from "../../utils/ids.js";
 import { selectRandomAvatarColor } from "../../utils/avatar.js";
 import { showMessage } from "../../components/toast.js";
 import { loadData, putData, updateData, deleteData } from "../../services/database.js";
-import { clearActiveContact, loadContacts, getActiveContactData, isEmailTaken } from "./contacts.js";
+import { clearActiveContact, loadContacts, getActiveContactData, isEmailTaken, openContactById } from "./contacts.js";
 import { isValidEmail } from "../../utils/validators.js";
 import { confirmAction } from "../../components/confirmDialog.js";
 
@@ -111,15 +111,16 @@ function getContactPhone() {
  */
 export async function submitContact() {
   if (!validateInputs()) return;
+  const contactID = "contact-" + generateUUID();
   try {
-    const contactID = "contact-" + generateUUID();
     await putData("/contacts/" + contactID, generateContactJson(contactID));
-    closeContactDialog();
-    loadContacts();
-    showMessage("Contact successfully created");
-  } catch (error) {
-    console.error("Fehler beim Erstellen des Kontakts:", error);
+  } catch {
+    return;
   }
+  closeContactDialog();
+  await loadContacts();
+  openContactById(contactID);
+  showMessage("Contact successfully created");
 }
 
 /**
@@ -212,8 +213,8 @@ export async function saveContact(contactId) {
     return;
   }
   closeContactDialog();
-  clearActiveContact();
-  loadContacts();
+  await loadContacts();
+  openContactById(contactId);
   showMessage("Contact successfully updated");
 }
 
