@@ -183,7 +183,7 @@ function openContactDetail(contact, event) {
   const clickedItem = event.currentTarget;
   const isAlreadyActive = clickedItem.classList.contains("contacts__item--active");
   clearActiveContact();
-  if (isAlreadyActive) return;
+  if (isAlreadyActive && window.innerWidth > 1200) return;
   clickedItem.classList.add("contacts__item--active");
   mobileActiveContact = contact;
   appendContactDetail(contact);
