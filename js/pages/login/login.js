@@ -1,7 +1,7 @@
 import { registerUser, signInUser, signInGuest } from "../../services/authService.js";
 import { switchToLogin } from "./authForms.js";
 import { showMessage } from "../../components/toast.js";
-import { isValidEmail } from "../../utils/validators.js";
+import { isValidEmail, isValidName, isValidPassword } from "../../utils/validators.js";
 
 const SIGNUP_ERROR_MESSAGES = {
   "auth/email-already-in-use": { field: "email", text: "This email is already registered." },
@@ -145,8 +145,12 @@ export function validateField(input, errorId) {
  */
 function getFieldErrorMessage(input) {
   const value = input.value.trim();
+  const isSignup = input.form.dataset.form === "signup";
   if (!value) return "This field is required";
   if (input.type === "email" && !isValidEmail(value)) return "Not a valid email address";
+  if (input.name === "fullname" && !isValidName(value)) return "Please enter first and last name";
+  if (isSignup && input.name === "password" && !isValidPassword(input.value))
+    return "Password too weak (min. 6 characters).";
   return "";
 }
 
@@ -181,34 +185,14 @@ function getLoginFormInputs() {
 }
 
 /**
- * Validates a single login input field and shows or clears its error.
- * @param {HTMLElement} input - The input element to validate
- * @param {HTMLElement} errorEl - The error message element
- * @param {string} wrapperClass - The CSS class of the input wrapper
- * @returns {boolean} True if the input is valid
- */
-function validateLoginField(input, errorEl, wrapperClass) {
-  if (!input.value.trim()) {
-    showFieldError(input.closest(wrapperClass), errorEl, "This field is required");
-    return false;
-  }
-  clearFieldError(input.closest(wrapperClass), errorEl);
-  return true;
-}
-
-/**
  * Validates all login form inputs.
  * @param {HTMLElement} emailInput - The email input element
  * @param {HTMLElement} passwordInput - The password input element
  * @returns {boolean} True if all inputs are valid
  */
 function validateLoginInputs(emailInput, passwordInput) {
-  const emailValid = validateEmailField(emailInput);
-  const passwordValid = validateLoginField(
-    passwordInput,
-    document.getElementById("password-error"),
-    ".login__input--password",
-  );
+  const emailValid = validateInputField(emailInput, "email-error");
+  const passwordValid = validateInputField(passwordInput, "password-error");
   return emailValid && passwordValid;
 }
 
@@ -238,42 +222,14 @@ function getSignupFormInputs() {
 }
 
 /**
- * Validates the full name input field.
- * @param {HTMLElement} nameInput - The name input element
+ * Validates an input on submit with the same rules as on blur.
+ * @param {HTMLInputElement} input - The input element
+ * @param {string} errorId - The ID of the error span
  * @returns {boolean} True if the input is valid
  */
-function validateSignupName(nameInput) {
-  const error = document.getElementById("fullname-error");
-  return validateLoginField(nameInput, error, ".login__input--name");
-}
-
-/**
- * Validates the email input on submit, including the format check.
- * @param {HTMLInputElement} emailInput - The email input element
- * @returns {boolean} True if the email is valid
- */
-function validateEmailField(emailInput) {
-  validateField(emailInput, "email-error");
-  return !getFieldErrorMessage(emailInput);
-}
-
-/**
- * Validates the password input field including minimum length check.
- * @param {HTMLElement} passwordInput - The password input element
- * @returns {boolean} True if the input is valid
- */
-function validateSignupPassword(passwordInput) {
-  const error = document.getElementById("password-error");
-  if (!passwordInput.value.trim())
-    return !showFieldError(passwordInput.closest(".login__input--password"), error, "This field is required");
-  if (passwordInput.value.length < 6)
-    return !showFieldError(
-      passwordInput.closest(".login__input--password"),
-      error,
-      "Password too weak (min. 6 characters).",
-    );
-  clearFieldError(passwordInput.closest(".login__input--password"), error);
-  return true;
+function validateInputField(input, errorId) {
+  validateField(input, errorId);
+  return !getFieldErrorMessage(input);
 }
 
 /**
@@ -317,9 +273,9 @@ function validateAcceptCheckbox(acceptCheckbox) {
  * @returns {boolean} True if all inputs are valid
  */
 function validateSignupInputs({ nameInput, emailInput, passwordInput, passwordConfirmInput, acceptCheckbox }) {
-  const nameValid = validateSignupName(nameInput);
-  const emailValid = validateEmailField(emailInput);
-  const passwordValid = validateSignupPassword(passwordInput);
+  const nameValid = validateInputField(nameInput, "fullname-error");
+  const emailValid = validateInputField(emailInput, "email-error");
+  const passwordValid = validateInputField(passwordInput, "password-error");
   const confirmValid = validateSignupPasswordConfirm(passwordInput, passwordConfirmInput);
   const acceptValid = validateAcceptCheckbox(acceptCheckbox);
   return nameValid && emailValid && passwordValid && confirmValid && acceptValid;
