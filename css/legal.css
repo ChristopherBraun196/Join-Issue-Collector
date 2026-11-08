@@ -66,12 +66,3 @@
     gap: 20px;
   }
 }
-
-.privacy {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-}

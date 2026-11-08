@@ -17,7 +17,7 @@ export function init(site, withSidebar = true) {
 function generateTopbar() {
   let body = document.querySelector("body");
   let header = document.createElement("header");
-  header.id = "topbar";
+  header.classList.add("topbar");
   body.appendChild(header);
   header.addEventListener("click", handleTopbarClick);
 
@@ -28,7 +28,7 @@ function generateTopbar() {
  * Renders the topbar template into the topbar element.
  */
 function setTopbar() {
-  const topbar = document.getElementById("topbar");
+  const topbar = document.querySelector(".topbar");
   topbar.innerHTML = getTopbarTemplate();
 }
 
@@ -37,14 +37,14 @@ function setTopbar() {
  * @param {string} page - The current page identifier (e.g. "summary", "board")
  */
 export function loadSidebar(page) {
-  const sidebar = document.getElementById("sidebar");
+  const sidebar = document.querySelector(".sidebar");
   const map = {
-    summary: ["active", "", "", "", "", ""],
-    addtask: ["", "active", "", "", "", ""],
-    board: ["", "", "active", "", "", ""],
-    contact: ["", "", "", "active", "", ""],
-    privacy: ["", "", "", "", "active", ""],
-    legal: ["", "", "", "", "", "active"],
+    summary: ["sidebar__link--active", "", "", "", "", ""],
+    addtask: ["", "sidebar__link--active", "", "", "", ""],
+    board: ["", "", "sidebar__link--active", "", "", ""],
+    contact: ["", "", "", "sidebar__link--active", "", ""],
+    privacy: ["", "", "", "", "sidebar__link--active", ""],
+    legal: ["", "", "", "", "", "sidebar__link--active"],
   };
   const args = map[page] || ["", "", "", "", "", ""];
   sidebar.innerHTML = getSidebarTemplate(...args);
@@ -55,11 +55,11 @@ export function loadSidebar(page) {
  * and privacy/legal links. Called by authGuard for unauthenticated users on public pages.
  */
 export function switchToGuestSidebar() {
-  const sidebar = document.getElementById("sidebar");
+  const sidebar = document.querySelector(".sidebar");
   const path = window.location.pathname;
-  const privacy = path.includes("privacy") ? "active" : "";
-  const legal = path.includes("legal") ? "active" : "";
-  sidebar.classList.add("guest-sidebar");
+  const privacy = path.includes("privacy") ? "sidebar__link--active" : "";
+  const legal = path.includes("legal") ? "sidebar__link--active" : "";
+  sidebar.classList.add("sidebar--guest");
   sidebar.innerHTML = getSidebarGuestTemplate(privacy, legal);
 }
 
@@ -68,7 +68,7 @@ export function switchToGuestSidebar() {
  */
 export function renderUserMenue() {
   const user = window.currentUser;
-  const um = document.getElementById("user-menue");
+  const um = document.querySelector(".topbar__user");
   if (!um) return;
 
   if (!user) um.innerText = "G";
@@ -77,7 +77,7 @@ export function renderUserMenue() {
     um.style.backgroundColor = user.avatarColor;
     um.innerText = initials;
   }
-  um.classList.add("show");
+  um.classList.add("topbar__user--visible");
 }
 
 /**
@@ -96,11 +96,11 @@ function handleTopbarClick(event) {
  */
 export function toggleUserMenue(event) {
   event.stopPropagation();
-  const dropdown = document.getElementById("user-menue-dropdown");
-  dropdown.classList.toggle("show");
+  const dropdown = document.querySelector(".topbar__dropdown");
+  dropdown.classList.toggle("topbar__dropdown--open");
 }
 
 document.addEventListener("click", function () {
-  const dropdown = document.getElementById("user-menue-dropdown");
-  if (dropdown) dropdown.classList.remove("show");
+  const dropdown = document.querySelector(".topbar__dropdown");
+  if (dropdown) dropdown.classList.remove("topbar__dropdown--open");
 });
