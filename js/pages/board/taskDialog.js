@@ -2,7 +2,7 @@ import { loadData, putData, deleteData } from "../../services/database.js";
 import { showMessage } from "../../components/toast.js";
 import { getDialogBoardTemplate } from "../../templates/boardTemplates.js";
 import { tasks, initTasks, getAssignedContacts } from "./boardData.js";
-import { renderAll, renderSection } from "./boardRender.js";
+import { renderAll, renderTaskCard } from "./boardRender.js";
 import {
   handleEditTaskAction,
   handleEditSubtaskAction,
@@ -55,15 +55,15 @@ export async function openDialogBoard(id) {
 }
 
 /**
- * Closes the task detail dialog and re-renders the section.
- * @param {string} section - The column name to re-render after closing
+ * Closes the task detail dialog and updates only the card of this task.
+ * @param {string} taskId - The ID of the task whose card is updated
  * @returns {Promise<void>}
  */
-export async function closeDialogBoard(section) {
+export async function closeDialogBoard(taskId) {
   const dialogBoard = document.querySelector(".task-dialog");
   dialogBoard.close();
   document.querySelector("body > main").style.overflowY = "";
-  await renderSection(section);
+  await renderTaskCard(taskId);
 }
 
 /**
@@ -107,8 +107,8 @@ async function toggleSubtask(subtaskIndex, isSubtaskCompleted, taskID) {
 export function handleDialogBoardClick(event) {
   const target = event.target.closest("[data-action]");
   if (!target) return;
-  const { action, id, status, index, completed } = target.dataset;
-  if (action === "close-task") closeDialogBoard(status);
+  const { action, id, index, completed } = target.dataset;
+  if (action === "close-task") closeDialogBoard(id);
   if (action === "delete-task") deleteTask(id);
   if (action === "edit-task") openEditTask(id);
   if (action === "toggle-subtask") toggleSubtask(index, completed === "true", id);

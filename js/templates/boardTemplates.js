@@ -54,7 +54,7 @@ export function getDialogBoardTemplate(element, assignedContacts, subtasks, matc
         <div class="task-dialog__top">
             <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
             ${element.isAiGenerated ? '<span class="task-dialog__ai-badge"><img src="./assets/icons/wand_stars.svg" alt="AI Icon"> Ai-generated</span>' : ""}
-            <button class="task-dialog__close" data-action="close-task" data-status="${element.status}">✕</button>
+           <button class="task-dialog__close" data-action="close-task" data-id="${element.id}">✕</button>
         </div>
         <h2 class="task-dialog__title">${element.title}</h2>
     </header>

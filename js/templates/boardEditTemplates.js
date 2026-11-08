@@ -13,7 +13,7 @@ export function getDialogBoardEditTemplate(element, priorityButtons, assignedHTM
     <header class="task-dialog__header">
         <div class="task-dialog__top">
             <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
-            <button class="task-dialog__close" data-action="close-task" data-status="${element.status}">✕</button>
+           <button class="task-dialog__close" data-action="close-task" data-id="${element.id}">✕</button>
         </div>
     </header>
     <main class="task-dialog__body">

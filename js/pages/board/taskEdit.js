@@ -91,7 +91,7 @@ async function saveEditTask(taskId) {
   const index = tasks.findIndex((t) => t.id === taskId);
   tasks[index] = updatedData;
 
-  await closeDialogBoard(element.status);
+  await closeDialogBoard(taskId);
 }
 
 /**
@@ -101,7 +101,9 @@ async function saveEditTask(taskId) {
  */
 function setEditPriority(button, priority) {
   currentEditPriority = priority;
-  document.querySelectorAll(".task-edit__priority-btn").forEach((btn) => btn.classList.remove("task-edit__priority-btn--active"));
+  document
+    .querySelectorAll(".task-edit__priority-btn")
+    .forEach((btn) => btn.classList.remove("task-edit__priority-btn--active"));
   button.classList.add("task-edit__priority-btn--active");
 }
 

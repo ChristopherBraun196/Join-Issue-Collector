@@ -41,6 +41,28 @@ export async function renderSection(section) {
 }
 
 /**
+ * Builds the HTML of a single task card including subtask progress and avatars.
+ * @param {Object} element - The task object
+ * @returns {Promise<string>} HTML string of the task card
+ */
+async function getTaskCardHTML(element) {
+  const [solved, total, visibility] = getSubtaskData(element);
+  return getToDoTemplate(element, solved, total, visibility, calcSubtaskProgress(solved, total));
+}
+
+/**
+ * Replaces only the card of the given task with a freshly rendered one.
+ * @param {string} taskId - The ID of the task to update
+ * @returns {Promise<void>}
+ */
+export async function renderTaskCard(taskId) {
+  const element = tasks.find((t) => t.id === taskId);
+  const card = document.querySelector(`.task-card[data-id="${taskId}"]`);
+  if (!element || !card) return;
+  card.outerHTML = await getTaskCardHTML(element);
+}
+
+/**
  * Renders the given columns and updates the placeholders.
  * @param  {...string} columns - Column names to re-render
  * @returns {Promise<void>}
@@ -110,7 +132,10 @@ function handleMobileArrows(container, arrowUp, arrowDown) {
     arrowDown.classList.add("board__arrow--hidden");
   } else {
     arrowUp.classList.toggle("board__arrow--hidden", container.scrollLeft <= 2);
-    arrowDown.classList.toggle("board__arrow--hidden", container.scrollLeft + container.clientWidth >= container.scrollWidth - 2);
+    arrowDown.classList.toggle(
+      "board__arrow--hidden",
+      container.scrollLeft + container.clientWidth >= container.scrollWidth - 2,
+    );
   }
 }
 /**
@@ -127,7 +152,10 @@ function handleDesktopArrows(container, arrowUp, arrowDown) {
     arrowDown.classList.add("board__arrow--hidden");
   } else {
     arrowUp.classList.toggle("board__arrow--hidden", container.scrollTop <= 2);
-    arrowDown.classList.toggle("board__arrow--hidden", container.scrollTop + container.clientHeight >= container.scrollHeight - 2);
+    arrowDown.classList.toggle(
+      "board__arrow--hidden",
+      container.scrollTop + container.clientHeight >= container.scrollHeight - 2,
+    );
   }
 }
 
@@ -197,41 +225,14 @@ function calcSubtaskProgress(solved, total) {
 /**
  * Returns the subtask progress data for a given task.
  * @param {Object} element - The task object
- * @returns {Promise<Array>} Array of [solved, total, visibility]
+ * @returns {Array} Array of [solved, total, visibility]
  */
-async function getSubtaskData(element) {
-  const solved = await getAmountSolvedSubtasks(element["id"]);
-  const total = await getNumberOfSubtasks(element["id"]);
-  let visibility = "";
-  if (total != 0) visibility = "task-card__progress--visible";
+function getSubtaskData(element) {
+  const subtasks = element.subtasks || [];
+  const solved = subtasks.filter((subtask) => subtask.completed).length;
+  const total = subtasks.length;
+  const visibility = total > 0 ? "task-card__progress--visible" : "";
   return [solved, total, visibility];
-}
-
-/**
- * Returns the number of completed subtasks for a given task.
- * @param {string} taskID - The ID of the task
- * @returns {Promise<string>} The amount of completed subtasks as a string
- */
-async function getAmountSolvedSubtasks(taskID) {
-  const task = await loadData("/tasks/" + taskID);
-  if (task.subtasks === undefined) return 0;
-  let amount = 0;
-  for (let i = 0; i < task.subtasks.length; i++) {
-    if (task.subtasks[i]["completed"] == true) amount++;
-  }
-  return String(amount);
-}
-
-/**
- * Returns the total number of subtasks for a given task.
- * @param {string} taskID - The ID of the task
- * @returns {Promise<number>} The total number of subtasks
- */
-async function getNumberOfSubtasks(taskID) {
-  const task = await loadData("/tasks/" + taskID);
-  if (task.subtasks === undefined) return 0;
-
-  return task.subtasks.length;
 }
 
 /**
@@ -253,7 +254,9 @@ export async function getAssignedToAvatars(allMembersOfThisTask) {
 
   if (totalMembers > limit) {
     const overflow = totalMembers - limit;
-    members.push(`<div class="task-card__avatar task-card__avatar--overflow" title="+${overflow} more">+${overflow}</div>`);
+    members.push(
+      `<div class="task-card__avatar task-card__avatar--overflow" title="+${overflow} more">+${overflow}</div>`,
+    );
   }
   return members.join("");
 }
