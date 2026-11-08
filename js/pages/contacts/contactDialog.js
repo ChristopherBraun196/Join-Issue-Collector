@@ -8,7 +8,7 @@ import { clearActiveContact, loadContacts, getActiveContactData } from "./contac
  * Registers the listeners of the contact dialog.
  */
 export function initContactDialog() {
-  document.getElementById("dialog-overlay").addEventListener("click", handleOverlayClick);
+  document.querySelector(".contact-dialog").addEventListener("click", handleOverlayClick);
 }
 
 /**
@@ -23,14 +23,14 @@ function handleOverlayClick(event) {
  * Opens the contact dialog overlay.
  */
 export function openContactDialog() {
-  document.getElementById("dialog-overlay").classList.add("active");
+  document.querySelector(".contact-dialog").classList.add("contact-dialog--open");
 }
 
 /**
  * Closes the contact dialog overlay
  */
 export function closeContactDialog() {
-  document.getElementById("dialog-overlay").classList.remove("active");
+  document.querySelector(".contact-dialog").classList.remove("contact-dialog--open");
   clearDialogInputs();
   clearErrors();
   resetDialog();
@@ -40,9 +40,9 @@ export function closeContactDialog() {
  * Clears all input fields in the contact dialog.
  */
 function clearDialogInputs() {
-  document.getElementById("input-name").value = "";
-  document.getElementById("input-email").value = "";
-  document.getElementById("input-phone").value = "";
+  document.querySelector(".contact-dialog__input--name").value = "";
+  document.querySelector(".contact-dialog__input--email").value = "";
+  document.querySelector(".contact-dialog__input--phone").value = "";
 }
 
 /**
@@ -65,7 +65,7 @@ function generateContactJson(contactID) {
  * @returns {string} The trimmed name input value
  */
 function getContactName() {
-  return document.getElementById("input-name").value.trim();
+  return document.querySelector(".contact-dialog__input--name").value.trim();
 }
 
 /**
@@ -73,7 +73,7 @@ function getContactName() {
  * @returns {string} The trimmed email input value
  */
 function getContactEmailAdress() {
-  return document.getElementById("input-email").value.trim();
+  return document.querySelector(".contact-dialog__input--email").value.trim();
 }
 
 /**
@@ -81,7 +81,7 @@ function getContactEmailAdress() {
  * @returns {string} The trimmed phone input value
  */
 function getContactPhone() {
-  return document.getElementById("input-phone").value.trim();
+  return document.querySelector(".contact-dialog__input--phone").value.trim();
 }
 
 /**
@@ -122,10 +122,10 @@ export async function deleteContact(contactId) {
  * @param {Object} currentContact - The contact object with name, email and phone
  */
 function fillEditDialogInputs(currentContact) {
-  document.getElementById("input-name").value = currentContact?.name || "";
-  document.getElementById("input-email").value = currentContact?.email || "";
-  const phoneEl = document.getElementById("detail-phone");
-  document.getElementById("input-phone").value = phoneEl ? phoneEl.textContent : "";
+  document.querySelector(".contact-dialog__input--name").value = currentContact?.name || "";
+  document.querySelector(".contact-dialog__input--email").value = currentContact?.email || "";
+  const phoneEl = document.querySelector(".contacts__info-value");
+  document.querySelector(".contact-dialog__input--phone").value = phoneEl ? phoneEl.textContent : "";
 }
 
 /**
@@ -133,15 +133,15 @@ function fillEditDialogInputs(currentContact) {
  * @param {string} contactId - The ID of the contact to edit
  */
 function setEditDialogButtons(contactId) {
-  const cancelBtn = document.querySelector(".btn-cancel");
-  const submitBtn = document.querySelector(".btn-submit");
+  const cancelBtn = document.querySelector(".contact-dialog__cancel");
+  const submitBtn = document.querySelector(".contact-dialog__submit");
   cancelBtn.textContent = "Delete ✕";
   cancelBtn.dataset.action = "delete";
   cancelBtn.dataset.id = contactId;
   submitBtn.textContent = "Save ✓";
   submitBtn.dataset.action = "save";
   submitBtn.dataset.id = contactId;
-  document.querySelector(".dialog-left h1").textContent = "Edit contact";
+  document.querySelector(".contact-dialog__title").textContent = "Edit contact";
 }
 
 /**
@@ -165,9 +165,9 @@ export async function saveContact(contactId) {
   const updatedContact = {
     id: contactId,
     avatarColor: selectRandomAvatarColor(),
-    name: document.getElementById("input-name").value.trim(),
-    email: document.getElementById("input-email").value.trim(),
-    phone: document.getElementById("input-phone").value.trim(),
+    name: document.querySelector(".contact-dialog__input--name").value.trim(),
+    email: document.querySelector(".contact-dialog__input--email").value.trim(),
+    phone: document.querySelector(".contact-dialog__input--phone").value.trim(),
   };
   try {
     await putData("/contacts/" + contactId, updatedContact);
@@ -184,13 +184,13 @@ export async function saveContact(contactId) {
  * Resets the contact dialog to its default "Add contact" state.
  */
 function resetDialog() {
-  const cancelBtn = document.querySelector(".btn-cancel");
-  const submitBtn = document.querySelector(".btn-submit");
+  const cancelBtn = document.querySelector(".contact-dialog__cancel");
+  const submitBtn = document.querySelector(".contact-dialog__submit");
   cancelBtn.textContent = "Cancel ✕";
   cancelBtn.dataset.action = "close-dialog";
   submitBtn.textContent = "Create contact ✓";
   submitBtn.dataset.action = "submit";
-  document.querySelector(".dialog-left h1").textContent = "Add contact";
+  document.querySelector(".contact-dialog__title").textContent = "Add contact";
 }
 
 /**
@@ -198,24 +198,24 @@ function resetDialog() {
  * @returns {boolean} True if all inputs are valid, false otherwise
  */
 function validateInputs() {
-  const nameInput = document.getElementById("input-name");
-  const emailInput = document.getElementById("input-email");
-  const phoneInput = document.getElementById("input-phone");
+  const nameInput = document.querySelector(".contact-dialog__input--name");
+  const emailInput = document.querySelector(".contact-dialog__input--email");
+  const phoneInput = document.querySelector(".contact-dialog__input--phone");
   const phoneRegex = /^[+\d\s\-()]{6,20}$/;
   let isValid = true;
 
   clearErrors();
 
   if (!nameInput.value.trim()) {
-    showError("input-name", "err-name", "This field is required");
+    showError(".contact-dialog__input--name", ".contact-dialog__error--name", "This field is required");
     isValid = false;
   }
   if (!emailInput.checkValidity()) {
-    showError("input-email", "err-email", "Please enter a valid email address");
+    showError(".contact-dialog__input--email", ".contact-dialog__error--email", "Please enter a valid email address");
     isValid = false;
   }
   if (!phoneRegex.test(phoneInput.value.trim())) {
-    showError("input-phone", "err-phone", "Please enter a valid phone number");
+    showError(".contact-dialog__input--phone", ".contact-dialog__error--phone", "Please enter a valid phone number");
     isValid = false;
   }
 
@@ -224,16 +224,16 @@ function validateInputs() {
 
 /**
  * Marks an input field as invalid and displays an error message below it.
- * @param {string} inputId - The ID of the input element to mark as invalid
- * @param {string} errorId - The ID of the error message element
+ * @param {string} inputSelector - The selector of the input element to mark as invalid
+ * @param {string} errorSelector - The selector of the error message element
  * @param {string} message - The error message to display
  */
-function showError(inputId, errorId, message) {
-  const input = document.getElementById(inputId);
-  const err = document.getElementById(errorId);
+function showError(inputSelector, errorSelector, message) {
+  const input = document.querySelector(inputSelector);
+  const err = document.querySelector(errorSelector);
   input.style.borderColor = "var(--error-color)";
   err.textContent = message;
-  err.classList.add("visible");
+  err.classList.add("contact-dialog__error--visible");
 }
 
 /**
@@ -242,13 +242,13 @@ function showError(inputId, errorId, message) {
  */
 function clearErrors() {
   [
-    { inputId: "input-name", errorId: "err-name" },
-    { inputId: "input-email", errorId: "err-email" },
-    { inputId: "input-phone", errorId: "err-phone" },
-  ].forEach(({ inputId, errorId }) => {
-    document.getElementById(inputId).style.borderColor = "";
-    const err = document.getElementById(errorId);
+    { input: ".contact-dialog__input--name", error: ".contact-dialog__error--name" },
+    { input: ".contact-dialog__input--email", error: ".contact-dialog__error--email" },
+    { input: ".contact-dialog__input--phone", error: ".contact-dialog__error--phone" },
+  ].forEach(({ input, error }) => {
+    document.querySelector(input).style.borderColor = "";
+    const err = document.querySelector(error);
     err.textContent = "";
-    err.classList.remove("visible");
+    err.classList.remove("contact-dialog__error--visible");
   });
 }

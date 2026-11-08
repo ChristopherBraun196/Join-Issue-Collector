@@ -504,9 +504,15 @@ dialog#openDialogBoard p:has(img) {
 
 .dialog-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  margin-top: 24px;
+
+  @media (max-width: 1200px) {
+    margin-top: 16px;
+    gap: 8px;
+  }
 }
 
 .dialog-actions-divider {

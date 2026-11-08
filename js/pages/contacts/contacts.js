@@ -67,7 +67,7 @@ function groupContactsByLetter(contacts) {
 function createContactItem(contact) {
   const initials = getInitials(contact.name);
   const item = document.createElement("div");
-  item.className = "contact-item";
+  item.className = "contacts__item";
   item.dataset.id = contact.id;
   item.innerHTML = getContactItemTemplate(contact, initials, contact.avatarColor);
   item.addEventListener("click", (event) => openContactDetail(contact, event));
@@ -81,10 +81,10 @@ function createContactItem(contact) {
  */
 function createLetterDivider(letter) {
   const divider = document.createElement("div");
-  divider.className = "contact-divider";
+  divider.className = "contacts__divider";
   divider.innerHTML = `
-    <span class="contact-letter">${letter}</span>
-    <hr class="contact-divider-line">
+    <span class="contacts__letter">${letter}</span>
+    <hr class="contacts__divider-line">
   `;
   return divider;
 }
@@ -96,7 +96,7 @@ function createLetterDivider(letter) {
  */
 function buildContactList(grouped) {
   const list = document.createElement("div");
-  list.className = "contacts-list";
+  list.className = "contacts__list";
   Object.keys(grouped)
     .sort()
     .forEach((letter) => {
@@ -111,8 +111,8 @@ function buildContactList(grouped) {
  * @param {Object[]} contacts - Array of contact objects to render
  */
 function renderContacts(contacts) {
-  const sidebar = document.getElementById("sidebar_contacts");
-  const existingList = sidebar.querySelector(".contacts-list");
+  const sidebar = document.querySelector(".contacts__panel");
+  const existingList = sidebar.querySelector(".contacts__list");
   if (existingList) existingList.remove();
   const grouped = groupContactsByLetter(contacts);
   sidebar.appendChild(buildContactList(grouped));
@@ -147,7 +147,7 @@ function openContactFromUrl() {
   if (!id) return;
 
   const contact = contactsArray.find((c) => c.id === id);
-  const item = document.querySelector(`.contact-item[data-id="${id}"]`);
+  const item = document.querySelector(`.contacts__item[data-id="${id}"]`);
   if (!contact || !item) return;
 
   openContactDetail(contact, { currentTarget: item });
@@ -157,12 +157,12 @@ function openContactFromUrl() {
  * Clears the active contact selection and removes the detail view.
  */
 export function clearActiveContact() {
-  document.querySelectorAll(".contact-item").forEach((el) => el.classList.remove("active"));
-  const existing = document.querySelector(".contact-detail");
+  document.querySelectorAll(".contacts__item").forEach((el) => el.classList.remove("contacts__item--active"));
+  const existing = document.querySelector(".contacts__detail");
   if (existing) existing.remove();
-  document.querySelector(".main_contacts").classList.remove("contact-open");
-  document.getElementById("sidebar_contacts").style.display = "";
-  document.querySelector(".fab-add-contact").style.display = "";
+  document.querySelector(".contacts__main").classList.remove("contacts__main--open");
+  document.querySelector(".contacts__panel").style.display = "";
+  document.querySelector(".contacts__fab").style.display = "";
   mobileActiveContact = null;
 }
 
@@ -171,10 +171,10 @@ export function clearActiveContact() {
  * @param {Object} contact - The contact object to display
  */
 function appendContactDetail(contact) {
-  const main = document.querySelector(".main_contacts");
+  const main = document.querySelector(".contacts__main");
   const initials = getInitials(contact.name);
   const detail = document.createElement("div");
-  detail.className = "contact-detail";
+  detail.className = "contacts__detail";
   detail.innerHTML = getContactDetailTemplate(contact, initials, contact.avatarColor);
   main.appendChild(detail);
 }
@@ -186,16 +186,16 @@ function appendContactDetail(contact) {
  */
 function openContactDetail(contact, event) {
   const clickedItem = event.currentTarget;
-  const isAlreadyActive = clickedItem.classList.contains("active");
+  const isAlreadyActive = clickedItem.classList.contains("contacts__item--active");
   clearActiveContact();
   if (isAlreadyActive) return;
-  clickedItem.classList.add("active");
+  clickedItem.classList.add("contacts__item--active");
   mobileActiveContact = contact;
   appendContactDetail(contact);
   if (window.innerWidth <= 1200) {
-    document.querySelector(".main_contacts").classList.add("contact-open");
-    document.getElementById("sidebar_contacts").style.display = "none";
-    document.querySelector(".fab-add-contact").style.display = "none";
+    document.querySelector(".contacts__main").classList.add("contacts__main--open");
+    document.querySelector(".contacts__panel").style.display = "none";
+    document.querySelector(".contacts__fab").style.display = "none";
   }
 }
 
@@ -213,12 +213,12 @@ function backToContacts() {
  */
 export function getActiveContactData(contactId) {
   let currentContact = null;
-  document.querySelectorAll(".contact-item").forEach((item) => {
-    if (item.classList.contains("active")) {
+  document.querySelectorAll(".contacts__item").forEach((item) => {
+    if (item.classList.contains("contacts__item--active")) {
       currentContact = {
         id: contactId,
-        name: item.querySelector(".contact-name").textContent,
-        email: item.querySelector(".contact-email").textContent,
+        name: item.querySelector(".contacts__name").textContent,
+        email: item.querySelector(".contacts__email").textContent,
       };
     }
   });

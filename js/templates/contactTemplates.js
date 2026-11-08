@@ -7,12 +7,12 @@
  */
 export function getContactItemTemplate(contact, initials, color) {
   return `
-    <div class="contact-avatar" style="background-color: ${color};">
+    <div class="contacts__avatar" style="background-color: ${color};">
       ${initials}
     </div>
-    <div class="contact-info">
-      <span class="contact-name">${contact.name}</span>
-      <span class="contact-email">${contact.email}</span>
+    <div class="contacts__info">
+      <span class="contacts__name">${contact.name}</span>
+      <span class="contacts__email">${contact.email}</span>
     </div>
   `;
 }
@@ -26,33 +26,33 @@ export function getContactItemTemplate(contact, initials, color) {
  */
 export function getContactDetailTemplate(contact, initials, color) {
   return `
-    <div class="contact-detail-header">
-      <div class="contact-detail-avatar" style="background-color: ${color};">
+    <div class="contacts__detail-header">
+      <div class="contacts__detail-avatar" style="background-color: ${color};">
         ${initials}
       </div>
-      <div class="contact-detail-name-actions">
-        <h2>${contact.name}</h2>
-        <div class="contact-detail-actions">
-          <button data-action="edit" data-id="${contact.id}" class="detail-action-btn">
-            <img src="./assets/icons/edit.svg" alt="Edit"> Edit
+      <div class="contacts__detail-name-actions">
+        <h2 class="contacts__detail-name">${contact.name}</h2>
+        <div class="contacts__detail-actions">
+          <button data-action="edit" data-id="${contact.id}" class="contacts__action-btn">
+            <img src="./assets/icons/edit.svg" alt="Edit" class="contacts__action-icon"> Edit
           </button>
-          <button data-action="delete" data-id="${contact.id}" class="detail-action-btn">
-            <img src="./assets/icons/delete.svg" alt="Delete"> Delete
+          <button data-action="delete" data-id="${contact.id}" class="contacts__action-btn">
+            <img src="./assets/icons/delete.svg" alt="Delete" class="contacts__action-icon"> Delete
           </button>
         </div>
       </div>
     </div>
 
-    <p class="contact-info-label">Contact Information</p>
+    <p class="contacts__info-label">Contact Information</p>
 
-    <div class="contact-detail-info">
-      <p class="detail-info-title">Email</p>
-      <a class="detail-info-email" href="mailto:${contact.email}">${contact.email}</a>
+    <div class="contacts__detail-info">
+      <p class="contacts__info-title">Email</p>
+      <a class="contacts__info-email" href="mailto:${contact.email}">${contact.email}</a>
     </div>
 
-    <div class="contact-detail-info">
-      <p class="detail-info-title">Phone</p>
-      <p class="detail-info-value" id="detail-phone">${contact.phone || "–"}</p>
+    <div class="contacts__detail-info">
+      <p class="contacts__info-title">Phone</p>
+      <p class="contacts__info-value">${contact.phone || "–"}</p>
     </div>
   `;
 }
