@@ -9,12 +9,13 @@ import {
   handleSignup,
   guestLogin,
 } from "./login.js";
-import "./logoAnimation.js";
+import { initLogoAnimation } from "./logoAnimation.js";
 
 /**
  * Entry point for the login page.
  */
 function init() {
+  initLogoAnimation();
   const section = document.getElementById("login-signup-section");
   switchToLogin();
   document.addEventListener("click", handleLoginPageClick);

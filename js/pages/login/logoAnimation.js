@@ -1,48 +1,43 @@
 /**
- * Measures the navbar logo position and sets CSS variables for the intro animation target.
- * Temporarily makes the hidden logo visible to read its coordinates via getBoundingClientRect.
+ * Prepares the intro animation and reveals the navbar logo once it has finished.
+ */
+export function initLogoAnimation() {
+  setLogoAnimationTarget();
+  document.querySelector("#animated-img-wrapper").addEventListener("animationend", handleIntroEnd);
+}
+
+/**
+ * Measures the hidden navbar logo, so the intro logo knows where to fly to.
+ * The logo is briefly made measurable without becoming visible.
  */
 function setLogoAnimationTarget() {
-  const logo = document.getElementById("navbar-logo");
-  if (!logo) return;
-
+  const logo = document.querySelector("#navbar-logo");
   logo.style.visibility = "hidden";
   logo.classList.remove("login__logo--hidden");
-
-  const rect = logo.getBoundingClientRect();
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
-  const translateX = centerX - window.innerWidth / 2;
-  const translateY = centerY - window.innerHeight / 2;
-
-  document.documentElement.style.setProperty("--logo-x", `${translateX}px`);
-  document.documentElement.style.setProperty("--logo-y", `${translateY}px`);
-
-  // Zielgröße des echten Logos übernehmen
-  document.documentElement.style.setProperty("--logo-w", `${rect.width}px`);
-  document.documentElement.style.setProperty("--logo-h", `${rect.height}px`);
-
+  setLogoTargetVariables(logo.getBoundingClientRect());
   logo.classList.add("login__logo--hidden");
   logo.style.visibility = "";
 }
 
-setLogoAnimationTarget();
-
 /**
- * Registers the animation end event on the logo wrapper element.
- * Hides the wrapper and reveals the nav logo after the animation completes.
+ * Stores the target position and size of the navbar logo as CSS variables for the keyframes.
+ * @param {DOMRect} rect - The bounding box of the navbar logo
  */
-function initLogoAnimation() {
-  const animatedImgWrapper = document.getElementById("animated-img-wrapper");
-  const navLogo = document.getElementById("navbar-logo");
-  if (animatedImgWrapper) {
-    animatedImgWrapper.addEventListener("animationend", (e) => {
-      if (e.target === animatedImgWrapper) {
-        animatedImgWrapper.style.display = "none";
-        navLogo.classList.remove("login__logo--hidden");
-      }
-    });
-  }
+function setLogoTargetVariables(rect) {
+  const root = document.documentElement.style;
+  root.setProperty("--logo-x", `${rect.left + rect.width / 2 - window.innerWidth / 2}px`);
+  root.setProperty("--logo-y", `${rect.top + rect.height / 2 - window.innerHeight / 2}px`);
+  root.setProperty("--logo-w", `${rect.width}px`);
+  root.setProperty("--logo-h", `${rect.height}px`);
 }
 
-initLogoAnimation();
+/**
+ * Hides the intro overlay and shows the navbar logo when the overlay animation has ended.
+ * @param {AnimationEvent} event - The animationend event
+ */
+function handleIntroEnd(event) {
+  const intro = event.currentTarget;
+  if (event.target !== intro) return;
+  intro.style.display = "none";
+  document.querySelector("#navbar-logo").classList.remove("login__logo--hidden");
+}

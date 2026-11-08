@@ -2,33 +2,11 @@ import { registerUser, signInUser, signInGuest } from "../../services/authServic
 import { switchToLogin } from "./authForms.js";
 import { showMessage } from "../../components/toast.js";
 
-/**
- * Displays an error message at the relevant input field based on the Firebase signup error code.
- * @param {Error} error - The Firebase error object
- */
-function handleSignupError(error) {
-  const form = document.getElementById("login-signup-form");
-  const emailInput = form.querySelector("input[name='email']");
-  const passwordInput = form.querySelector("input[name='password']");
-  const emailError = document.getElementById("email-error");
-  const passwordError = document.getElementById("password-error");
-
-  const emailMessages = {
-    "auth/email-already-in-use": "This email is already registered.",
-    "auth/invalid-email": "Invalid email address.",
-  };
-  const passwordMessages = {
-    "auth/weak-password": "Password too weak (min. 6 characters).",
-  };
-
-  if (emailMessages[error.code]) {
-    showFieldError(emailInput.closest(".login__input--email"), emailError, emailMessages[error.code]);
-  } else if (passwordMessages[error.code]) {
-    showFieldError(passwordInput.closest(".login__input--password"), passwordError, passwordMessages[error.code]);
-  } else {
-    showFieldError(emailInput.closest(".login__input--email"), emailError, error.message);
-  }
-}
+const SIGNUP_ERROR_MESSAGES = {
+  "auth/email-already-in-use": { field: "email", text: "This email is already registered." },
+  "auth/invalid-email": { field: "email", text: "Invalid email address." },
+  "auth/weak-password": { field: "password", text: "Password too weak (min. 6 characters)." },
+};
 
 /**
  * Registers a new user with email and password and redirects to the summary page.
@@ -50,26 +28,36 @@ async function signup(name, email, password) {
 }
 
 /**
+ * Shows an error message below a login/signup input and marks its wrapper as invalid.
+ * @param {string} name - The name attribute of the input (also used for the error id)
+ * @param {string} message - The error message to display
+ */
+function showInputError(name, message) {
+  const input = document.querySelector(`#login-signup-form input[name='${name}']`);
+  showFieldError(input.closest(".login__input"), document.querySelector(`#${name}-error`), message);
+}
+
+/**
+ * Displays an error message at the relevant input field based on the Firebase signup error code.
+ * @param {Error} error - The Firebase error object
+ */
+function handleSignupError(error) {
+  const known = SIGNUP_ERROR_MESSAGES[error.code];
+  if (known) showInputError(known.field, known.text);
+  else showInputError("email", error.message);
+}
+
+/**
  * Displays an error message at the relevant input field based on the Firebase login error code.
  * @param {Error} error - The Firebase error object
  */
 function handleLoginError(error) {
-  const form = document.getElementById("login-signup-form");
-  const emailInput = form.querySelector("input[name='email']");
-  const passwordInput = form.querySelector("input[name='password']");
-  const passwordError = document.getElementById("password-error");
-
   if (error.code === "auth/too-many-requests") {
-    showFieldError(
-      passwordInput.closest(".login__input--password"),
-      passwordError,
-      "Too many failed attempts. Please wait a moment.",
-    );
+    showInputError("password", "Too many failed attempts. Please wait a moment.");
     return;
   }
-
-  emailInput.closest(".login__input--email").classList.add("invalid");
-  showFieldError(passwordInput.closest(".login__input--password"), passwordError, "Wrong email address or password.");
+  document.querySelector("#login-signup-form .login__input--email").classList.add("login__input--invalid");
+  showInputError("password", "Wrong email address or password.");
 }
 
 /**
@@ -206,7 +194,11 @@ function validateLoginField(input, errorEl, wrapperClass) {
  */
 function validateLoginInputs(emailInput, passwordInput) {
   const emailValid = validateLoginField(emailInput, document.getElementById("email-error"), ".login__input--email");
-  const passwordValid = validateLoginField(passwordInput, document.getElementById("password-error"), ".login__input--password");
+  const passwordValid = validateLoginField(
+    passwordInput,
+    document.getElementById("password-error"),
+    ".login__input--password",
+  );
   return emailValid && passwordValid;
 }
 
@@ -270,7 +262,11 @@ function validateSignupPassword(passwordInput) {
   if (!passwordInput.value.trim())
     return !showFieldError(passwordInput.closest(".login__input--password"), error, "This field is required");
   if (passwordInput.value.length < 6)
-    return !showFieldError(passwordInput.closest(".login__input--password"), error, "Password too weak (min. 6 characters).");
+    return !showFieldError(
+      passwordInput.closest(".login__input--password"),
+      error,
+      "Password too weak (min. 6 characters).",
+    );
   clearFieldError(passwordInput.closest(".login__input--password"), error);
   return true;
 }
