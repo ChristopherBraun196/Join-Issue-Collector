@@ -1,7 +1,7 @@
 import { generateUUID } from "../../utils/ids.js";
 import { selectRandomAvatarColor } from "../../utils/avatar.js";
 import { showMessage } from "../../components/toast.js";
-import { putData, deleteData } from "../../services/database.js";
+import { putData, updateData, deleteData } from "../../services/database.js";
 import { clearActiveContact, loadContacts, getActiveContactData } from "./contacts.js";
 
 /**
@@ -162,22 +162,16 @@ export function editContact(contactId) {
  */
 export async function saveContact(contactId) {
   if (!validateInputs()) return;
-  const updatedContact = {
-    id: contactId,
-    avatarColor: selectRandomAvatarColor(),
-    name: document.querySelector(".contact-dialog__input--name").value.trim(),
-    email: document.querySelector(".contact-dialog__input--email").value.trim(),
-    phone: document.querySelector(".contact-dialog__input--phone").value.trim(),
-  };
+  const changes = { name: getContactName(), email: getContactEmailAdress(), phone: getContactPhone() };
   try {
-    await putData("/contacts/" + contactId, updatedContact);
-    closeContactDialog();
-    clearActiveContact();
-    loadContacts();
-    showMessage("Contact successfully updated");
-  } catch (error) {
-    console.error("Fehler beim Speichern des Kontakts:", error);
+    await updateData("/contacts/" + contactId, changes);
+  } catch {
+    return;
   }
+  closeContactDialog();
+  clearActiveContact();
+  loadContacts();
+  showMessage("Contact successfully updated");
 }
 
 /**

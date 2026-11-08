@@ -1,5 +1,5 @@
 import { db } from "./firebaseAuth.js";
-import { ref, get, set, remove } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+import { ref, get, set, update, remove } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 import { showMessage } from "../components/toast.js";
 
 /**
@@ -41,6 +41,21 @@ async function postData(path = "", data = {}) {
 export async function putData(path = "", data = {}) {
   try {
     await set(ref(db, path), data);
+  } catch (error) {
+    showMessage("No permission for this action.");
+    throw error;
+  }
+}
+
+/**
+ * Updates only the given fields at the path and keeps all other fields.
+ * @param {string} path - The database path to update
+ * @param {Object} data - The fields to change
+ * @returns {Promise<void>}
+ */
+export async function updateData(path = "", data = {}) {
+  try {
+    await update(ref(db, path), data);
   } catch (error) {
     showMessage("No permission for this action.");
     throw error;
