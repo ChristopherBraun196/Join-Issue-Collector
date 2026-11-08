@@ -1,14 +1,19 @@
-.edit-margin {
+.task-edit__label {
   display: block;
   margin-top: 24px;
 }
 
-.priority-buttons {
+.task-edit__priority {
   display: flex;
   gap: 8px;
+
+  @media (max-width: 420px) {
+    flex-direction: column;
+    width: 100%;
+  }
 }
 
-.prio-btn {
+.task-edit__priority-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,40 +26,36 @@
   font-size: 16px;
   cursor: pointer;
   transition: all 0.2s ease;
-}
 
-.prio-btn:hover {
-  box-shadow: 0 4px 4px 0 #00000050;
-}
+  &:hover {
+    box-shadow: 0 4px 4px 0 #00000050;
+  }
 
-@media (max-width: 420px) {
-  .priority-buttons {
-    flex-direction: column;
-    width: 100%;
+  &.task-edit__priority-btn--active {
+    color: white;
+
+    .task-edit__priority-img {
+      filter: brightness(0) invert(1);
+    }
+
+    &[data-priority="urgent"] {
+      background-color: #ff3d00;
+      border-color: #ff3d00;
+    }
+
+    &[data-priority="medium"] {
+      background-color: #ffa800;
+      border-color: #ffa800;
+    }
+
+    &[data-priority="low"] {
+      background-color: #7ae229;
+      border-color: #7ae229;
+    }
   }
 }
 
-.prio-btn[data-priority="urgent"].active {
-  background-color: #ff3d00;
-  color: white;
-  border-color: #ff3d00;
-}
-.prio-btn[data-priority="medium"].active {
-  background-color: #ffa800;
-  color: white;
-  border-color: #ffa800;
-}
-.prio-btn[data-priority="low"].active {
-  background-color: #7ae229;
-  color: white;
-  border-color: #7ae229;
-}
-
-.prio-btn.active img {
-  filter: brightness(0) invert(1);
-}
-
-.dropdown__option .avatar {
+.task-edit__option-avatar {
   flex: none;
   width: 38px;
   height: 38px;
@@ -65,9 +66,12 @@
   justify-content: center;
   color: white;
   font-size: 16px;
+  font-weight: 700;
+  margin-left: -8px;
+  border: 2px solid #fff;
 }
 
-.badge-avatar {
+.task-edit__badge {
   width: 38px;
   height: 38px;
   min-width: 38px;
@@ -80,56 +84,71 @@
   font-weight: bold;
 }
 
-
-.subtask-edit-item {
+.task-edit__subtask {
   display: flex;
   align-items: center;
   padding: 6px 10px;
   border-radius: 10px;
   font-size: 16px;
+
+  &::before {
+    content: "•";
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background: #f0f4f8;
+
+    .subtask__item-actions {
+      opacity: 1;
+    }
+  }
+
+  &:has(.subtask__edit-input) {
+    padding: 0;
+    background: #f0f4f8;
+
+    .subtask__item-actions {
+      opacity: 1;
+    }
+  }
+
+  .subtask__edit-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 6px 10px;
+    font-size: 16px;
+    outline: none;
+  }
+
+  .subtask__text {
+    flex: 1;
+  }
 }
 
-.subtask-edit-item::before {
-  content: "•";
-  margin-right: 8px;
-  flex-shrink: 0;
-}
-
-.subtask-edit-item:has(.subtask__edit-input) {
-  padding: 0;
-  background: #f0f4f8;
-}
-
-.subtask-edit-item .subtask__edit-input {
-  flex: 1;
-  border: none;
-  background: transparent;
-  padding: 6px 10px;
-  font-size: 16px;
-  outline: none;
-}
-
-.subtask-edit-item .subtask__text {
-  flex: 1;
-}
-
-.subtask-divider-edit {
+.task-edit__divider {
   width: 1px;
   height: 16px;
   background: var(--border-color);
   margin: 8px 0px;
 }
-.subtask-edit-item:hover {
-  background: #f0f4f8;
-}
-.subtask-edit-item:hover .subtask__item-actions {
-  opacity: 1;
-}
-.subtask-edit-item:has(.subtask__edit-input) .subtask__item-actions {
-  opacity: 1;
+
+.task-edit__actions {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+
+  @media (max-width: 1200px) {
+    margin-top: 16px;
+    gap: 8px;
+  }
 }
 
-.save-edit-button {
+.task-edit__save {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -138,13 +157,13 @@
   color: white;
   border: none;
   border-radius: 10px;
-  font-size: 16px;  
+  font-size: 16px;
   font-weight: 500;
   margin-left: auto;
   z-index: 10;
-}
 
-.save-edit-button:hover {
-  background: var(--highligted-color);
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  &:hover {
+    background: var(--highligted-color);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  }
 }

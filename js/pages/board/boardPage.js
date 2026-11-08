@@ -26,7 +26,7 @@ async function init() {
  */
 function initBoardListeners() {
   const main = document.querySelector(".board");
-  const dialog = document.querySelector("#openDialogBoard");
+  const dialog = document.querySelector(".task-dialog");
   main.addEventListener("click", handleBoardClick);
   main.addEventListener("input", handleBoardInput);
   dialog.addEventListener("click", handleDialogBoardClick);

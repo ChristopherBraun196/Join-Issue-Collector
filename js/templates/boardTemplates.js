@@ -50,29 +50,29 @@ export async function getToDoTemplate(element, solvedSubtasks, totalSubtasks, vi
  */
 export function getDialogBoardTemplate(element, assignedContacts, subtasks, matchedCreator) {
   return `
-    <header>
-        <div class="flex-sb">
+    <header class="task-dialog__header">
+        <div class="task-dialog__top">
             <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
-            ${element.isAiGenerated ? '<span class="ai-badge"><img src="./assets/icons/wand_stars.svg" alt="AI Icon"> Ai-generated</span>' : ""}
-            <button data-action="close-task" data-status="${element.status}">✕</button>
+            ${element.isAiGenerated ? '<span class="task-dialog__ai-badge"><img src="./assets/icons/wand_stars.svg" alt="AI Icon"> Ai-generated</span>' : ""}
+            <button class="task-dialog__close" data-action="close-task" data-status="${element.status}">✕</button>
         </div>
-        <h2>${element.title}</h2>
+        <h2 class="task-dialog__title">${element.title}</h2>
     </header>
-    <main>
+    <main class="task-dialog__body">
         <p>${element.description}</p>
-        <p class="creator-type-badge ${element.creatorType === "external" ? "creator-type-external" : "creator-type-internal"}">
+        <p class="task-dialog__creator-badge ${element.creatorType === "external" ? "task-dialog__creator-badge--external" : "task-dialog__creator-badge--internal"}">
            ${
              element.creatorType === "external"
                ? '<img src="./assets/icons/global.svg" alt="Global"> Extern'
                : '<img src="./assets/icons/member.svg" alt="Member"> Member'
            }
         </p>
-        <p class="creator-row">
+        <p class="task-dialog__creator-row">
             <span>Creator: ${element.creatorName || element.creator || "Unknown"}</span>
             ${
               element.creatorType === "external"
-                ? `<a href="mailto:${element.creatorEmail || ""}" class="creator-action"><img src="./assets/icons/attach_email.svg" alt="Email"> E-mail</a>`
-                : `<a href="./contacts.html?id=${matchedCreator?.id || ""}" class="creator-action"><img src="./assets/icons/member.svg" alt="Member"> Profil</a>`
+                ? `<a href="mailto:${element.creatorEmail || ""}" class="task-dialog__creator-link"><img src="./assets/icons/attach_email.svg" alt="Email"> E-mail</a>`
+                : `<a href="./contacts.html?id=${matchedCreator?.id || ""}" class="task-dialog__creator-link"><img src="./assets/icons/member.svg" alt="Member"> Profil</a>`
             }
         </p>
         <p><span>Due date:</span><span>${formatDate(element.dueDate)}</span></p>
@@ -80,25 +80,25 @@ export function getDialogBoardTemplate(element, assignedContacts, subtasks, matc
             <span>Priority:</span>
             <span>${capitalize(element["priority"])} <img src="./assets/icons/priority-${element["priority"]}.svg" /></span>
         </p>
-        <div class="contact-list">
-            <p class="dialog-gap">Assigned To:</p>
+        <div class="task-dialog__contacts">
+            <p class="task-dialog__label">Assigned To:</p>
             <p>${assignedContacts.map(getAssignedContactTemplate).join("")}</p>
         </div>
         <div>
             <p>Subtasks</p>
-            <ul id="subtasks">
+            <ul class="task-dialog__subtasks">
                 ${checkIfSubtasksAvaiable(subtasks, element.id)}
             </ul>
         </div>
     </main>
-    <footer>
-        <div class="dialog-board-actions">
-            <button class="delete-edit-button" data-action="delete-task" data-id="${element.id}">
-                <img src="./assets/icons/delete.svg" alt="delete Button">Delete
+    <footer class="task-dialog__footer">
+        <div class="task-dialog__actions">
+            <button class="task-dialog__action-btn" data-action="delete-task" data-id="${element.id}">
+                <img class="task-dialog__action-icon" src="./assets/icons/delete.svg" alt="delete Button">Delete
             </button>
-            <div class="dialog-actions-divider"></div>
-            <button class="delete-edit-button" data-action="edit-task" data-id="${element.id}">
-                <img src="./assets/icons/edit.svg" alt="edit Button">Edit
+            <div class="task-dialog__divider"></div>
+            <button class="task-dialog__action-btn" data-action="edit-task" data-id="${element.id}">
+                <img class="task-dialog__action-icon" src="./assets/icons/edit.svg" alt="edit Button">Edit
             </button>
         </div>
     </footer>
@@ -112,8 +112,8 @@ export function getDialogBoardTemplate(element, assignedContacts, subtasks, matc
  */
 function getAssignedContactTemplate(contact) {
   return `
-    <div class="assigned-contact">
-      <span class="avatar" style="background-color:${contact.avatarColor}">${getInitials(contact.name)}</span>
+    <div class="task-dialog__contact">
+      <span class="task-dialog__avatar" style="background-color:${contact.avatarColor}">${getInitials(contact.name)}</span>
       <span>${contact.name}</span>
     </div>
   `;
@@ -155,8 +155,8 @@ function checkIfSubtasksAvaiable(subtasks, taskID) {
  */
 function getSubtasksTemplate(subtask, taskID, subtaskIndex) {
   return `
-    <li class="no-decoration board-subtask">
-        <label for="${subtask.id}">
+    <li class="no-decoration task-dialog__subtask">
+        <label class="task-dialog__subtask-label" for="${subtask.id}">
             <input type="checkbox" id="${subtask.id}"
                   data-action="toggle-subtask" data-index="${subtaskIndex}" data-completed="${subtask.completed}" data-id="${taskID}"
                    ${checkIfSubtaskActive(subtask.completed)}>

@@ -414,24 +414,6 @@
   }
 }
 
-.ai-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 16px;
-  font-weight: 600;
-
-  background: linear-gradient(to right, #9327ff, #2ea1dc);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-
-  @media (max-width: 420px) {
-    font-size: 14px;
-  }
-}
-
 .category-badge {
   display: inline-block;
   color: #fff;
@@ -447,7 +429,122 @@
   }
 }
 
-.creator-type-badge {
+.task-dialog {
+  position: fixed;
+  top: 50%;
+  left: calc(240px + min(100vw - 240px, 1440px) / 2);
+  padding: 32px;
+  width: 100%;
+  max-width: 500px;
+  max-height: min(800px, calc(100vh - 120px));
+  overflow-y: auto;
+  scrollbar-gutter: unset;
+  border-radius: calc(2 * var(--border-radius));
+  border: none;
+  transform: translate(-50%, -50%);
+  animation: slideIn 0.3s ease-out;
+
+  &[open] {
+    display: block;
+  }
+
+  p {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+
+    span:first-child {
+      min-width: 115px;
+    }
+
+    &:has(img) {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+
+  @media (max-width: 1200px) {
+    position: fixed;
+    bottom: 90px;
+    right: 16px;
+    z-index: 1001;
+    max-height: calc(100vh - 170px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translate(100vw, -50%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+
+.task-dialog__header,
+.task-dialog__body,
+.task-dialog__footer {
+  all: unset;
+  display: block;
+}
+
+.task-dialog__body {
+  position: relative;
+}
+
+.task-dialog__footer {
+  margin-top: 24px;
+}
+
+.task-dialog__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-dialog__close {
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  width: 30px;
+  height: 30px;
+  margin-bottom: 12px;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+  }
+}
+
+.task-dialog__ai-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  background: linear-gradient(to right, #9327ff, #2ea1dc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+
+  @media (max-width: 420px) {
+    font-size: 14px;
+  }
+}
+
+.task-dialog__title {
+  font-size: 42px;
+  margin-bottom: 12px;
+}
+
+.task-dialog__creator-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -458,23 +555,23 @@
   width: fit-content;
 }
 
-.creator-type-external {
+.task-dialog__creator-badge--external {
   background-color: #ebfc88;
   color: #0b3681;
 }
 
-.creator-type-internal {
+.task-dialog__creator-badge--internal {
   background-color: #9eebbc;
   color: #0b3681;
 }
 
-.creator-row {
+.task-dialog__creator-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.creator-action {
+.task-dialog__creator-link {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -489,7 +586,25 @@
   }
 }
 
-.avatar {
+.task-dialog__label {
+  margin-top: 24px;
+}
+
+.task-dialog__contacts {
+  display: flex;
+  flex-direction: column;
+}
+
+.task-dialog__contact {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-left: 10px;
+  margin-bottom: 12px;
+}
+
+.task-dialog__avatar {
   width: 34px;
   height: 34px;
   border-radius: 50%;
@@ -503,133 +618,36 @@
   border: 2px solid #fff;
 }
 
-dialog#openDialogBoard header,
-dialog#openDialogBoard main,
-dialog#openDialogBoard footer {
-  all: unset;
-  display: block;
+.task-dialog__subtasks {
+  padding: 16px 0;
 }
 
-dialog#openDialogBoard {
-  position: fixed;
-  top: 50%;
-  left: calc(240px + min(100vw - 240px, 1440px) / 2);
-  padding: 32px;
-  width: 100%;
-  max-width: 500px;
-  max-height: min(800px, calc(100vh - 120px));
-  overflow-y: auto;
-  scrollbar-gutter: unset;
-  border-radius: calc(2 * var(--border-radius));
-  border: none;
-  transform: translate(-50%, -50%);
-  animation: slideIn 0.3s ease-out;
+.task-dialog__subtask {
+  margin-bottom: 8px;
 }
 
-dialog#openDialogBoard[open] {
-  display: block;
-}
-
-dialog#openDialogBoard main {
-  position: relative;
-}
-
-dialog#openDialogBoard footer {
-  margin-top: 24px;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translate(100vw, -50%);
-    opacity: 0;
-  }
-  to {
-    transform: translate(-50%, -50%);
-    opacity: 1;
-  }
-}
-
-.flex-sb {
+.task-dialog__subtask-label {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.flex-sb button {
-  background: none;
-  border: none;
-  font-size: 16px;
-  font-weight: bold;
-  width: 30px;
-  height: 30px;
-  margin-bottom: 12px;
-}
-
-.flex-sb button:hover {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 50%;
-}
-
-dialog#openDialogBoard h2 {
-  font-size: 42px;
-  margin-bottom: 12px;
-}
-
-dialog#openDialogBoard p {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-dialog#openDialogBoard p span:first-child {
-  min-width: 115px;
-}
-
-dialog#openDialogBoard p:has(img) {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.dialog-gap {
-  margin-top: 24px;
-}
-
-.contact-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.assigned-contact {
-  display: flex;
-  align-content: center;
-  align-items: center;
-  gap: 8px;
-  margin-left: 10px;
-  margin-bottom: 12px;
-}
-
-.dialog-actions {
-  display: flex;
-  justify-content: flex-start;
   align-items: center;
   gap: 12px;
-  margin-top: 24px;
-
-  @media (max-width: 1200px) {
-    margin-top: 16px;
-    gap: 8px;
-  }
+  cursor: pointer;
 }
 
-.dialog-actions-divider {
+.task-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.task-dialog__divider {
   width: 1px;
   height: 20px;
   background-color: #ccc;
   margin-top: 28px;
 }
 
-.delete-edit-button {
+.task-dialog__action-btn {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -638,33 +656,14 @@ dialog#openDialogBoard p:has(img) {
   cursor: pointer;
   font-size: 16px;
   margin-top: 28px;
-}
 
-.delete-edit-button:hover {
-  text-decoration: none;
-  font-weight: bolder;
-  color: var(--highligted-color);
-}
+  &:hover {
+    text-decoration: none;
+    font-weight: bolder;
+    color: var(--highligted-color);
 
-.delete-edit-button:hover img {
-  filter: invert(58%) sepia(69%) saturate(456%) hue-rotate(163deg)
-    brightness(95%) contrast(93%);
-}
-
-.board-subtask label {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-}
-
-.board-subtask {
-  margin-bottom: 8px;
-}
-
-.dialog-board-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 24px;
+    .task-dialog__action-icon {
+      filter: invert(58%) sepia(69%) saturate(456%) hue-rotate(163deg) brightness(95%) contrast(93%);
+    }
+  }
 }

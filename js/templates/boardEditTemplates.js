@@ -10,42 +10,42 @@ import { getInitials, capitalize } from "../utils/format.js";
  */
 export function getDialogBoardEditTemplate(element, priorityButtons, assignedHTML, subtasksHTML) {
   return `
-    <header>
-        <div class="flex-sb">
+    <header class="task-dialog__header">
+        <div class="task-dialog__top">
             <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
-            <button data-action="close-task" data-status="${element.status}">✕</button>
+            <button class="task-dialog__close" data-action="close-task" data-status="${element.status}">✕</button>
         </div>
     </header>
-    <main>
-        <label class="edit-margin" for="edit-title">Title</label>
-        <input type="text" id="edit-title" value="${element.title}" />
-        <label class="edit-margin" for="edit-description">Description</label>
-        <textarea id="edit-description">${element.description}</textarea>
-        <label class="edit-margin" for="edit-due-date">Due date</label>
-        <input type="date" id="edit-due-date" value="${element.dueDate}" />
-        <label class="edit-margin">Priority</label>
-        <div class="priority-buttons">${priorityButtons}</div>
-        <label class="edit-margin">Assigned To</label>
-        <div class="contacts-edit-list">${assignedHTML}</div>
-        <label class="edit-margin">Subtasks</label>
+    <main class="task-dialog__body">
+        <label class="task-edit__label" for="edit-title">Title</label>
+        <input type="text" class="task-edit__input task-edit__input--title" id="edit-title" value="${element.title}" />
+        <label class="task-edit__label" for="edit-description">Description</label>
+        <textarea class="task-edit__input task-edit__input--description" id="edit-description">${element.description}</textarea>
+        <label class="task-edit__label" for="edit-due-date">Due date</label>
+        <input type="date" class="task-edit__input task-edit__input--due-date" id="edit-due-date" value="${element.dueDate}" />
+        <label class="task-edit__label">Priority</label>
+        <div class="task-edit__priority">${priorityButtons}</div>
+        <label class="task-edit__label">Assigned To</label>
+        <div class="task-edit__contacts">${assignedHTML}</div>
+        <label class="task-edit__label">Subtasks</label>
         <div class="subtask__input-wrap">
-           <input type="text" class="subtask__input" id="new-subtask-input" placeholder="Add new subtask"
+           <input type="text" class="subtask__input" placeholder="Add new subtask"
               data-id="${element.id}">
-            <div id="subtask-confirm-btns-edit" class="subtask__confirm">
+            <div class="subtask__confirm">
                 <button class="subtask__btn" type="button" data-action="clear-subtask-edit">
                     <img class="subtask__btn-icon" src="./assets/icons/close.svg">
                 </button>
-                <div class="subtask-divider-edit"></div>
+                <div class="task-edit__divider"></div>
                 <button class="subtask__btn" type="button" data-action="add-subtask-edit" data-id="${element.id}">
                     <img class="subtask__btn-icon" src="./assets/icons/check-dark.svg">
                 </button>
             </div>
         </div>
-        <ul id="subtasks">${subtasksHTML}</ul>
+        <ul class="task-dialog__subtasks">${subtasksHTML}</ul>
     </main>
-    <footer>
-        <div class="dialog-actions">
-            <button class="save-edit-button" data-action="save-task" data-id="${element.id}">
+    <footer class="task-dialog__footer">
+        <div class="task-edit__actions">
+            <button class="task-edit__save" data-action="save-task" data-id="${element.id}">
                 Ok <img src="./assets/icons/check.svg" alt="save Button">
             </button>
         </div>
@@ -60,7 +60,7 @@ export function getDialogBoardEditTemplate(element, priorityButtons, assignedHTM
  * @returns {string} "active" or empty string
  */
 function getPriorityActiveClass(priority, currentPriority) {
-  return currentPriority === priority ? "active" : "";
+  return currentPriority === priority ? "task-edit__priority-btn--active" : "";
 }
 
 /**
@@ -71,8 +71,8 @@ function getPriorityActiveClass(priority, currentPriority) {
  */
 export function getPriorityButtonTemplate(priority, currentPriority) {
   const active = getPriorityActiveClass(priority, currentPriority);
-  return `<button class="prio-btn ${active}" data-priority="${priority}" data-action="set-edit-priority">
-    ${capitalize(priority)} <span><img src="./assets/icons/priority-${priority}.svg" /></span>
+  return `<button class="task-edit__priority-btn ${active}" data-priority="${priority}" data-action="set-edit-priority">
+    ${capitalize(priority)} <span><img class="task-edit__priority-img" src="./assets/icons/priority-${priority}.svg" /></span>
   </button>`;
 }
 
@@ -86,7 +86,7 @@ export function getPriorityButtonTemplate(priority, currentPriority) {
 export function getContactOptionTemplate(id, contact, checked) {
   return `
     <div class="dropdown__option" data-action="toggle-edit-contact" data-id="${id}">
-      <span class="avatar" style="background:${contact.avatarColor}">${getInitials(contact.name)}</span>
+      <span class="task-edit__option-avatar" style="background:${contact.avatarColor}">${getInitials(contact.name)}</span>
       <span class="dropdown__label">${contact.name}</span>
       <input type="checkbox" value="${id}" ${checked} style="margin-left:auto" />
     </div>`;
@@ -98,7 +98,7 @@ export function getContactOptionTemplate(id, contact, checked) {
  * @returns {string} HTML string of the contact badge
  */
 export function getContactBadgeTemplate(contact) {
-  return `<div class="badge-avatar" style="background:${contact.avatarColor}">${getInitials(contact.name)}</div>`;
+  return `<div class="task-edit__badge" style="background:${contact.avatarColor}">${getInitials(contact.name)}</div>`;
 }
 
 /**
@@ -114,11 +114,11 @@ export function getAssignedContactsEditTemplate(optionsHTML, badgesHTML) {
         <span>Select contacts to assign</span>
         <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow">
       </div>
-      <div class="dropdown__menu" id="edit-assigned-dropdown">
+      <div class="dropdown__menu">
         <div class="dropdown__list">${optionsHTML}</div>
       </div>
     </div>
-    <div id="edit-assigned-badges" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">${badgesHTML}</div>
+    <div class="task-edit__badges" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">${badgesHTML}</div>
   `;
 }
 
@@ -131,7 +131,7 @@ export function getAssignedContactsEditTemplate(optionsHTML, badgesHTML) {
  */
 export function getSubtaskEditItemTemplate(subtask, taskId, index) {
   return `
-    <li class="subtask-edit-item" data-task-id="${taskId}" data-index="${index}">
+    <li class="task-edit__subtask" data-task-id="${taskId}" data-index="${index}">
       <span class="subtask__text" data-action="edit-subtask-edit">${subtask.title}</span>
       <div class="subtask__item-actions">
         <button class="subtask__btn" type="button" data-action="edit-subtask-edit">

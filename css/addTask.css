@@ -426,10 +426,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   flex: 1;
 }
 
-#subtasks {
-  padding: 16px 0;
-}
-
 .subtask__input-wrap {
   display: flex;
   align-items: center;

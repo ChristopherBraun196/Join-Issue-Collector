@@ -16,7 +16,7 @@ import {
  * @param {InputEvent} event - The input event
  */
 export function handleDialogBoardInput(event) {
-  if (event.target.matches("#new-subtask-input")) onSubtaskInputEdit();
+  if (event.target.matches(".subtask__input")) onSubtaskInputEdit();
 }
 
 /**
@@ -24,7 +24,7 @@ export function handleDialogBoardInput(event) {
  * @param {KeyboardEvent} event - The keydown event
  */
 export function handleDialogBoardKey(event) {
-  if (event.target.matches("#new-subtask-input")) handleSubtaskKeyEdit(event, event.target.dataset.id);
+  if (event.target.matches(".subtask__input")) handleSubtaskKeyEdit(event, event.target.dataset.id);
 }
 
 /**
@@ -48,7 +48,7 @@ export async function openDialogBoard(id) {
       (c.name && (c.name === element.creator || c.name === element.creatorName)),
   );
 
-  const dialogBoard = document.getElementById("openDialogBoard");
+  const dialogBoard = document.querySelector(".task-dialog");
   dialogBoard.innerHTML = getDialogBoardTemplate(element, assignedContacts, element.subtasks, matchedCreator);
   dialogBoard.showModal();
   document.querySelector("body > main").style.overflowY = "hidden";
@@ -60,7 +60,7 @@ export async function openDialogBoard(id) {
  * @returns {Promise<void>}
  */
 export async function closeDialogBoard(section) {
-  const dialogBoard = document.getElementById("openDialogBoard");
+  const dialogBoard = document.querySelector(".task-dialog");
   dialogBoard.close();
   document.querySelector("body > main").style.overflowY = "";
   await renderSection(section);
@@ -75,7 +75,7 @@ async function deleteTask(id) {
   try {
     await deleteData(`/tasks/${id}`);
     showMessage("Task wurde gelöscht");
-    document.getElementById("openDialogBoard").close();
+    document.querySelector(".task-dialog").close();
     await initTasks();
     renderAll();
   } catch (error) {

@@ -63,7 +63,7 @@ export async function openEditTask(taskId) {
   const assignedHTML = buildAssignedContactsEdit(allContacts, assignedIds);
   const subtasksHTML = getSubtasksEditTemplate(element.subtasks, taskId);
 
-  document.getElementById("openDialogBoard").innerHTML = getDialogBoardEditTemplate(
+  document.querySelector(".task-dialog").innerHTML = getDialogBoardEditTemplate(
     element,
     priorityButtons,
     assignedHTML,
@@ -80,9 +80,9 @@ async function saveEditTask(taskId) {
   const element = tasks.find((t) => t.id === taskId);
   const updatedData = {
     ...element,
-    title: document.getElementById("edit-title").value,
-    description: document.getElementById("edit-description").value,
-    dueDate: document.getElementById("edit-due-date").value,
+    title: document.querySelector(".task-edit__input--title").value,
+    description: document.querySelector(".task-edit__input--description").value,
+    dueDate: document.querySelector(".task-edit__input--due-date").value,
     priority: currentEditPriority ?? element.priority,
   };
 
@@ -101,8 +101,8 @@ async function saveEditTask(taskId) {
  */
 function setEditPriority(button, priority) {
   currentEditPriority = priority;
-  document.querySelectorAll(".prio-btn").forEach((btn) => btn.classList.remove("active"));
-  button.classList.add("active");
+  document.querySelectorAll(".task-edit__priority-btn").forEach((btn) => btn.classList.remove("task-edit__priority-btn--active"));
+  button.classList.add("task-edit__priority-btn--active");
 }
 
 /**
@@ -120,8 +120,8 @@ function getSubtasksEditTemplate(subtasks, taskId) {
  * Toggles the visibility of the subtask confirm buttons based on the input value.
  */
 export function onSubtaskInputEdit() {
-  const input = document.getElementById("new-subtask-input");
-  const btns = document.getElementById("subtask-confirm-btns-edit");
+  const input = document.querySelector(".task-dialog .subtask__input");
+  const btns = document.querySelector(".task-dialog .subtask__confirm");
   btns.classList.toggle("subtask__confirm--visible", input.value.trim().length > 0);
 }
 
@@ -129,7 +129,7 @@ export function onSubtaskInputEdit() {
  * Clears the subtask input field and updates the button visibility.
  */
 function clearSubtaskInputEdit() {
-  document.getElementById("new-subtask-input").value = "";
+  document.querySelector(".task-dialog .subtask__input").value = "";
   onSubtaskInputEdit();
 }
 
@@ -139,7 +139,7 @@ function clearSubtaskInputEdit() {
  * @returns {Promise<void>}
  */
 async function addSubtaskEdit(taskId) {
-  const input = document.getElementById("new-subtask-input");
+  const input = document.querySelector(".task-dialog .subtask__input");
   const title = input.value.trim();
   if (!title) return;
   const element = tasks.find((t) => t.id === taskId);
@@ -169,7 +169,7 @@ async function deleteSubtaskEdit(taskId, subtaskIndex) {
  * Toggles the open state of the assigned contacts dropdown in the edit dialog.
  */
 function toggleEditDropdown() {
-  const dropdown = document.getElementById("edit-assigned-dropdown");
+  const dropdown = document.querySelector(".task-dialog .dropdown__menu");
   const trigger = dropdown.previousElementSibling;
   dropdown.classList.toggle("dropdown__menu--open");
   trigger.classList.toggle("dropdown__trigger--open");
@@ -229,7 +229,7 @@ async function saveAndRefreshAssigned(taskId, assignedTo) {
   await initTasks();
   const allContacts = await loadData("/contacts");
   const assignedIds = assignedTo.map((a) => a.id);
-  document.getElementById("edit-assigned-badges").innerHTML = buildContactBadges(allContacts, assignedIds);
+  document.querySelector(".task-edit__badges").innerHTML = buildContactBadges(allContacts, assignedIds);
 }
 
 /**
