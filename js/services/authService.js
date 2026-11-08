@@ -5,7 +5,7 @@ import {
   signInAnonymously,
   signOut,
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-import { ref, set } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+import { ref, set, get, update } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 import { generateUUID } from "../utils/ids.js";
 import { selectRandomAvatarColor } from "../utils/avatar.js";
 
@@ -29,6 +29,22 @@ async function createContactEntry(uid, name, email) {
 }
 
 /**
+ * Links an existing contact with the same email to the new account.
+ * Only contacts without uid are linked, so each contact can be linked only once.
+ * @param {string} uid - The Firebase user ID
+ * @param {string} email - The email address of the user
+ * @returns {Promise<string|null>} The linked contact ID, or null if no contact was found
+ */
+async function linkExistingContact(uid, email) {
+  const snapshot = await get(ref(db, "contacts"));
+  const contacts = Object.values(snapshot.val() || {});
+  const match = contacts.find((contact) => !contact.uid && contact.email?.toLowerCase() === email.toLowerCase());
+  if (!match) return null;
+  await update(ref(db, `contacts/${match.id}`), { uid: uid });
+  return match.id;
+}
+
+/**
  * Creates a user entry in the database linking the user to their contact.
  * @param {string} uid - The Firebase user ID
  * @param {string} contactId - The associated contact ID
@@ -49,7 +65,8 @@ async function createUserEntry(uid, contactId) {
  */
 export async function registerUser(name, email, password) {
   const { user } = await createUserWithEmailAndPassword(auth, email, password);
-  const contactId = await createContactEntry(user.uid, name, email);
+  const existingContactId = await linkExistingContact(user.uid, email);
+  const contactId = existingContactId || (await createContactEntry(user.uid, name, email));
   await createUserEntry(user.uid, contactId);
   await signOut(auth);
 }
