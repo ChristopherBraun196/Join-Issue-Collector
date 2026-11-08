@@ -39,7 +39,6 @@ function handleContactsClick(event) {
   if (action === "save") saveContact(id);
   if (action === "edit") editContact(id);
   if (action === "delete") deleteContact(id);
-  if (action === "delete") closeContactDialog();
   if (action === "back") backToContacts();
 }
 

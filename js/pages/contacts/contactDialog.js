@@ -4,6 +4,7 @@ import { showMessage } from "../../components/toast.js";
 import { loadData, putData, updateData, deleteData } from "../../services/database.js";
 import { clearActiveContact, loadContacts, getActiveContactData, isEmailTaken } from "./contacts.js";
 import { isValidEmail } from "../../utils/validators.js";
+import { confirmAction } from "../../components/confirmDialog.js";
 
 const PHONE_PATTERN = /^[+\d\s\-()]{6,20}$/;
 const CONTACT_FIELDS = {
@@ -145,6 +146,9 @@ async function removeContactFromTasks(contactId) {
  * @returns {Promise<void>}
  */
 export async function deleteContact(contactId) {
+  if (!(await confirmAction("Do you really want to delete this contact?"))) return;
+  closeContactDialog();
+
   try {
     await removeContactFromTasks(contactId);
     await deleteData("/contacts/" + contactId);

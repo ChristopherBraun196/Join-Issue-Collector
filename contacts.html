@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./css/layout.css" />
     <link rel="stylesheet" href="./css/assets.css" />
     <link rel="stylesheet" href="./css/contact.css" />
+    <link rel="stylesheet" href="./css/confirmDialog.css" />
     <link rel="stylesheet" href="./css/fonts.css" />
     <link rel="stylesheet" href="./css/standard.css" />
     <link rel="shortcut icon" href="./assets/img/logo-light.png" type="image/x-icon" />
@@ -104,6 +105,13 @@
         </div>
       </div>
     </div>
+    <dialog class="confirm-dialog">
+      <p class="confirm-dialog__text" tabindex="-1" autofocus></p>
+      <div class="confirm-dialog__actions">
+        <button class="secondary-btn confirm-dialog__btn confirm-dialog__btn--cancel" type="button" data-confirm="false">Cancel</button>
+        <button class="primary-btn confirm-dialog__btn" type="button" data-confirm="true">Delete</button>
+      </div>
+    </dialog>
     <div class="toast"></div>
     <script type="module" src="./js/pages/contacts/contacts.js"></script>
   </body>
