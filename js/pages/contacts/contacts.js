@@ -225,4 +225,15 @@ export function getActiveContactData(contactId) {
   return currentContact;
 }
 
+/**
+ * Checks whether another contact already uses the given email address.
+ * @param {string} email - The email address to check
+ * @param {string} [contactId] - The contact being edited, it is ignored in the check
+ * @returns {boolean} True if the email belongs to a different contact
+ */
+export function isEmailTaken(email, contactId) {
+  const wanted = email.trim().toLowerCase();
+  return contactsArray.some((contact) => contact.id !== contactId && contact.email.toLowerCase() === wanted);
+}
+
 document.addEventListener("DOMContentLoaded", init);

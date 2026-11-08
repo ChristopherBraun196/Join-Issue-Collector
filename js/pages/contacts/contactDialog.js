@@ -2,13 +2,23 @@ import { generateUUID } from "../../utils/ids.js";
 import { selectRandomAvatarColor } from "../../utils/avatar.js";
 import { showMessage } from "../../components/toast.js";
 import { putData, updateData, deleteData } from "../../services/database.js";
-import { clearActiveContact, loadContacts, getActiveContactData } from "./contacts.js";
+import { clearActiveContact, loadContacts, getActiveContactData, isEmailTaken } from "./contacts.js";
+import { isValidEmail } from "../../utils/validators.js";
+
+const PHONE_PATTERN = /^[+\d\s\-()]{6,20}$/;
+const CONTACT_FIELDS = {
+  name: { input: ".contact-dialog__input--name", error: ".contact-dialog__error--name", check: getNameError },
+  email: { input: ".contact-dialog__input--email", error: ".contact-dialog__error--email", check: getEmailError },
+  phone: { input: ".contact-dialog__input--phone", error: ".contact-dialog__error--phone", check: getPhoneError },
+};
 
 /**
  * Registers the listeners of the contact dialog.
  */
 export function initContactDialog() {
-  document.querySelector(".contact-dialog").addEventListener("click", handleOverlayClick);
+  const dialog = document.querySelector(".contact-dialog");
+  dialog.addEventListener("click", handleOverlayClick);
+  dialog.addEventListener("focusout", handleFieldBlur);
 }
 
 /**
@@ -17,6 +27,16 @@ export function initContactDialog() {
  */
 function handleOverlayClick(event) {
   if (event.target === event.currentTarget) closeContactDialog();
+}
+
+/**
+ * Validates a dialog field when it loses focus.
+ * @param {FocusEvent} event - The focusout event
+ */
+function handleFieldBlur(event) {
+  const field = event.target.dataset.field;
+  if (!field) return;
+  validateField(field, document.querySelector(".contact-dialog__submit").dataset.id);
 }
 
 /**
@@ -161,7 +181,7 @@ export function editContact(contactId) {
  * @returns {Promise<void>}
  */
 export async function saveContact(contactId) {
-  if (!validateInputs()) return;
+  if (!validateInputs(contactId)) return;
   const changes = { name: getContactName(), email: getContactEmailAdress(), phone: getContactPhone() };
   try {
     await updateData("/contacts/" + contactId, changes);
@@ -184,36 +204,64 @@ function resetDialog() {
   cancelBtn.dataset.action = "close-dialog";
   submitBtn.textContent = "Create contact ✓";
   submitBtn.dataset.action = "submit";
+  delete submitBtn.dataset.id;
   document.querySelector(".contact-dialog__title").textContent = "Add contact";
 }
 
 /**
- * Validates the contact dialog input fields.
- * @returns {boolean} True if all inputs are valid, false otherwise
+ * Returns the error message for the name field or an empty string.
+ * @param {string} name - The entered name
+ * @returns {string} The error message
  */
-function validateInputs() {
-  const nameInput = document.querySelector(".contact-dialog__input--name");
-  const emailInput = document.querySelector(".contact-dialog__input--email");
-  const phoneInput = document.querySelector(".contact-dialog__input--phone");
-  const phoneRegex = /^[+\d\s\-()]{6,20}$/;
-  let isValid = true;
+function getNameError(name) {
+  return name ? "" : "This field is required";
+}
 
-  clearErrors();
+/**
+ * Returns the error message for the email field or an empty string.
+ * @param {string} email - The entered email address
+ * @param {string} [contactId] - The contact being edited
+ * @returns {string} The error message
+ */
+function getEmailError(email, contactId) {
+  if (!email) return "This field is required";
+  if (!isValidEmail(email)) return "Please enter a valid email address";
+  if (isEmailTaken(email, contactId)) return "This email address already exists";
+  return "";
+}
 
-  if (!nameInput.value.trim()) {
-    showError(".contact-dialog__input--name", ".contact-dialog__error--name", "This field is required");
-    isValid = false;
-  }
-  if (!emailInput.checkValidity()) {
-    showError(".contact-dialog__input--email", ".contact-dialog__error--email", "Please enter a valid email address");
-    isValid = false;
-  }
-  if (!phoneRegex.test(phoneInput.value.trim())) {
-    showError(".contact-dialog__input--phone", ".contact-dialog__error--phone", "Please enter a valid phone number");
-    isValid = false;
-  }
+/**
+ * Returns the error message for the phone field or an empty string.
+ * @param {string} phone - The entered phone number
+ * @returns {string} The error message
+ */
+function getPhoneError(phone) {
+  if (!phone) return "This field is required";
+  return PHONE_PATTERN.test(phone) ? "" : "Please enter a valid phone number";
+}
 
-  return isValid;
+/**
+ * Validates one field, shows or clears its error and returns whether it is valid.
+ * @param {string} field - The field name ("name", "email" or "phone")
+ * @param {string} [contactId] - The contact being edited
+ * @returns {boolean} True if the field is valid
+ */
+function validateField(field, contactId) {
+  const { input, error, check } = CONTACT_FIELDS[field];
+  const message = check(document.querySelector(input).value.trim(), contactId);
+  if (message) showError(input, error, message);
+  else clearError(input, error);
+  return !message;
+}
+
+/**
+ * Validates all fields of the contact dialog.
+ * @param {string} [contactId] - The contact being edited
+ * @returns {boolean} True if all fields are valid
+ */
+function validateInputs(contactId) {
+  const results = Object.keys(CONTACT_FIELDS).map((field) => validateField(field, contactId));
+  return results.every(Boolean);
 }
 
 /**
@@ -231,18 +279,20 @@ function showError(inputSelector, errorSelector, message) {
 }
 
 /**
+ * Removes the error state of one field.
+ * @param {string} inputSelector - The selector of the input element
+ * @param {string} errorSelector - The selector of the error message element
+ */
+function clearError(inputSelector, errorSelector) {
+  document.querySelector(inputSelector).style.borderColor = "";
+  const err = document.querySelector(errorSelector);
+  err.textContent = "";
+  err.classList.remove("contact-dialog__error--visible");
+}
+
+/**
  * Clears all validation errors from the contact dialog input fields.
- * Resets border colors and removes all error message elements.
  */
 function clearErrors() {
-  [
-    { input: ".contact-dialog__input--name", error: ".contact-dialog__error--name" },
-    { input: ".contact-dialog__input--email", error: ".contact-dialog__error--email" },
-    { input: ".contact-dialog__input--phone", error: ".contact-dialog__error--phone" },
-  ].forEach(({ input, error }) => {
-    document.querySelector(input).style.borderColor = "";
-    const err = document.querySelector(error);
-    err.textContent = "";
-    err.classList.remove("contact-dialog__error--visible");
-  });
+  Object.values(CONTACT_FIELDS).forEach(({ input, error }) => clearError(input, error));
 }
