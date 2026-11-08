@@ -1,6 +1,7 @@
 import { registerUser, signInUser, signInGuest } from "../../services/authService.js";
 import { switchToLogin } from "./authForms.js";
 import { showMessage } from "../../components/toast.js";
+import { isValidEmail } from "../../utils/validators.js";
 
 const SIGNUP_ERROR_MESSAGES = {
   "auth/email-already-in-use": { field: "email", text: "This email is already registered." },
@@ -126,18 +127,27 @@ export function togglePwdVisibility(btn) {
 }
 
 /**
- * Validates a required field on blur and shows an error if empty.
+ * Validates a field on blur and shows an error if it is empty or not a valid email.
  * @param {HTMLInputElement} input - The input element
  * @param {string} errorId - The ID of the error span
  */
 export function validateField(input, errorId) {
   const errorEl = document.getElementById(errorId);
-  const wrapper = input.parentElement;
-  if (!input.value.trim()) {
-    showFieldError(wrapper, errorEl, "This field is required");
-  } else {
-    clearFieldError(wrapper, errorEl);
-  }
+  const message = getFieldErrorMessage(input);
+  if (message) showFieldError(input.parentElement, errorEl, message);
+  else clearFieldError(input.parentElement, errorEl);
+}
+
+/**
+ * Returns the error message for a field or an empty string if the field is valid.
+ * @param {HTMLInputElement} input - The input element to check
+ * @returns {string} The error message or ""
+ */
+function getFieldErrorMessage(input) {
+  const value = input.value.trim();
+  if (!value) return "This field is required";
+  if (input.type === "email" && !isValidEmail(value)) return "Not a valid email address";
+  return "";
 }
 
 /**
@@ -193,7 +203,7 @@ function validateLoginField(input, errorEl, wrapperClass) {
  * @returns {boolean} True if all inputs are valid
  */
 function validateLoginInputs(emailInput, passwordInput) {
-  const emailValid = validateLoginField(emailInput, document.getElementById("email-error"), ".login__input--email");
+  const emailValid = validateEmailField(emailInput);
   const passwordValid = validateLoginField(
     passwordInput,
     document.getElementById("password-error"),
@@ -238,18 +248,13 @@ function validateSignupName(nameInput) {
 }
 
 /**
- * Validates the email input field including format check.
- * @param {HTMLElement} emailInput - The email input element
- * @returns {boolean} True if the input is valid
+ * Validates the email input on submit, including the format check.
+ * @param {HTMLInputElement} emailInput - The email input element
+ * @returns {boolean} True if the email is valid
  */
-function validateSignupEmail(emailInput) {
-  const error = document.getElementById("email-error");
-  if (!emailInput.value.trim())
-    return !showFieldError(emailInput.closest(".login__input--email"), error, "This field is required");
-  if (!/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(emailInput.value.trim()))
-    return !showFieldError(emailInput.closest(".login__input--email"), error, "Not a valid email address");
-  clearFieldError(emailInput.closest(".login__input--email"), error);
-  return true;
+function validateEmailField(emailInput) {
+  validateField(emailInput, "email-error");
+  return !getFieldErrorMessage(emailInput);
 }
 
 /**
@@ -313,7 +318,7 @@ function validateAcceptCheckbox(acceptCheckbox) {
  */
 function validateSignupInputs({ nameInput, emailInput, passwordInput, passwordConfirmInput, acceptCheckbox }) {
   const nameValid = validateSignupName(nameInput);
-  const emailValid = validateSignupEmail(emailInput);
+  const emailValid = validateEmailField(emailInput);
   const passwordValid = validateSignupPassword(passwordInput);
   const confirmValid = validateSignupPasswordConfirm(passwordInput, passwordConfirmInput);
   const acceptValid = validateAcceptCheckbox(acceptCheckbox);
