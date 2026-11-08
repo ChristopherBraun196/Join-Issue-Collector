@@ -11,20 +11,20 @@
   <body>
     <aside id="sidebar"></aside>
 
-    <main class="summary-add-task-board-main" id="summary-main">
+    <main class="summary-add-task-board-main summary" id="summary-main">
       <div class="headline">
         <h1>Join 360</h1>
         <div class="line"></div>
         <a>Key Metrics at a Glance</a>
       </div>
 
-      <div class="summary_main_content">
-        <div class="summary_grid">
-          <div class="summary_row_first">
-            <div class="summary_bubble">
-              <div class="icon-wrapper">
+      <div class="summary__content">
+        <div class="summary__grid">
+          <div class="summary__row summary__row--first">
+            <div class="summary__bubble">
+              <div class="summary__icon">
                 <svg width="69" height="69" viewBox="0 0 69 69" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle class="icon-bg" cx="34.5" cy="34.5" r="34.5" fill="#2A3647" />
+                  <circle class="summary__icon-bg" cx="34.5" cy="34.5" r="34.5" fill="#2A3647" />
                   <mask
                     id="mask0_446529_6089"
                     style="mask-type: alpha"
@@ -38,24 +38,24 @@
                   </mask>
                   <g mask="url(#mask0_446529_6089)">
                     <path
-                      class="icon-symbol"
+                      class="summary__icon-symbol"
                       d="M25.1667 43.8332H27.0333L38.5333 32.3332L36.6667 30.4665L25.1667 41.9665V43.8332ZM44.2333 30.3998L38.5667 24.7998L40.4333 22.9332C40.9444 22.4221 41.5722 22.1665 42.3167 22.1665C43.0611 22.1665 43.6889 22.4221 44.2 22.9332L46.0667 24.7998C46.5778 25.3109 46.8444 25.9276 46.8667 26.6498C46.8889 27.3721 46.6444 27.9887 46.1333 28.4998L44.2333 30.3998ZM42.3 32.3665L28.1667 46.4998H22.5V40.8332L36.6333 26.6998L42.3 32.3665Z"
                       fill="white"
                     />
                   </g>
                 </svg>
               </div>
-              <div class="summary_counter">
-                <div id="todo_count"></div>
+              <div class="summary__counter">
+                <div id="todo_count" class="summary__count"></div>
                 <a>To-do</a>
               </div>
             </div>
-            <div class="summary_bubble">
-              <div class="icon-wrapper">
+            <div class="summary__bubble">
+              <div class="summary__icon">
                 <svg width="69" height="69" viewBox="0 0 69 69" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle class="icon-bg" cx="34.5" cy="34.5" r="34.5" fill="#2A3647" />
+                  <circle class="summary__icon-bg" cx="34.5" cy="34.5" r="34.5" fill="#2A3647" />
                   <path
-                    class="icon-symbol-done"
+                    class="summary__icon-check"
                     d="M19.5283 34.5001L30.7571 45.5662L49.4717 23.4341"
                     stroke="white"
                     stroke-width="7"
@@ -64,62 +64,62 @@
                   />
                 </svg>
               </div>
-              <div class="summary_counter">
-                <div id="done_count"></div>
+              <div class="summary__counter">
+                <div id="done_count" class="summary__count"></div>
                 <a>Done</a>
               </div>
             </div>
           </div>
 
-          <div class="summary_row_second">
-            <div class="summary_bubble" id="deadline-bubble">
-              <div id="all-deadlines-counter">
+          <div class="summary__row summary__row--second">
+            <div class="summary__bubble summary__bubble--deadline">
+              <div class="summary__urgent">
                 <img src="./assets/icons/urgent_icon.svg" />
-                <div class="summary_counter">
-                  <div id="urgent_count"></div>
+                <div class="summary__counter">
+                  <div id="urgent_count" class="summary__count"></div>
                   <a>Urgent</a>
                 </div>
               </div>
-              <div class="line"></div>
-              <div class="summary_counter">
-                <div id="deadline"></div>
+              <div class="summary__divider"></div>
+              <div class="summary__counter">
+                <div id="deadline" class="summary__deadline"></div>
                 <a>Upcoming Deadline</a>
               </div>
             </div>
 
-            <div class="summary_bubble" id="email-requests-bubble">
-              <div class="summary_counter">
-                <div id="email_requests_count"></div>
+            <div class="summary__bubble">
+              <div class="summary__counter">
+                <div id="email_requests_count" class="summary__count summary__count--gradient"></div>
                 <a>Email requests</a>
               </div>
             </div>
           </div>
 
-          <div class="summary_row_last">
-            <div class="summary_bubble">
-              <div class="summary_counter">
-                <div id="board_count"></div>
+          <div class="summary__row summary__row--last">
+            <div class="summary__bubble">
+              <div class="summary__counter">
+                <div id="board_count" class="summary__count"></div>
                 <a>Tasks in Board </a>
               </div>
             </div>
-            <div class="summary_bubble">
-              <div class="summary_counter">
-                <div id="progress_count"></div>
+            <div class="summary__bubble">
+              <div class="summary__counter">
+                <div id="progress_count" class="summary__count"></div>
                 <a>Tasks in Progress</a>
               </div>
             </div>
-            <div class="summary_bubble">
-              <div class="summary_counter">
-                <div id="feedback_count"></div>
+            <div class="summary__bubble">
+              <div class="summary__counter">
+                <div id="feedback_count" class="summary__count"></div>
                 <a>Awaiting Feedback</a>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="welcome_msg">
-          <div id="greeting-msg"></div>
-          <div class="welcome_name"></div>
+        <div class="summary__greeting">
+          <div id="greeting-msg" class="summary__greeting-text"></div>
+          <div class="summary__greeting-name"></div>
         </div>
       </div>
     </main>

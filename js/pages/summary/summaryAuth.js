@@ -8,7 +8,7 @@ const currentTime = new Date().toLocaleTimeString([], {
   second: "2-digit",
 });
 const greetingElement = document.getElementById("greeting-msg");
-const nameElement = document.querySelector(".welcome_name");
+const nameElement = document.querySelector(".summary__greeting-name");
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) {

@@ -17,7 +17,7 @@ function init() {
  * @param {MouseEvent} event - The click event
  */
 function handleBubbleClick(event) {
-  if (event.target.closest(".summary_bubble")) window.location.href = "./board.html";
+  if (event.target.closest(".summary__bubble")) window.location.href = "./board.html";
 }
 
 /**
@@ -66,16 +66,16 @@ async function initSummary() {
   renderSummaryElements(getSummaryCounts(tasks));
 
   if (window.innerWidth <= 1200) {
-    const welcomeMsg = document.querySelector(".welcome_msg");
+    const welcomeMsg = document.querySelector(".summary__greeting");
     if (!welcomeMsg) return;
 
     setTimeout(() => {
-      welcomeMsg.classList.add("fade-out");
+      welcomeMsg.classList.add("summary__greeting--fade-out");
 
       welcomeMsg.addEventListener(
         "transitionend",
         () => {
-          welcomeMsg.classList.add("hidden");
+          welcomeMsg.classList.add("summary__greeting--hidden");
         },
         { once: true },
       );
