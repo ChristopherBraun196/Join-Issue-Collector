@@ -36,11 +36,10 @@ async function loadUserName(user) {
 
 /**
  * Returns a time-based greeting string.
- * @param {string} timeString - The current time in HH:MM:SS format
+ * @param {number} hour - The current hour (0–23)
  * @returns {string} A greeting string (e.g. "Good morning,")
  */
-function getGreeting(timeString) {
-  const hour = parseInt(timeString.split(":")[0], 10);
+function getGreeting(hour) {
   if (hour >= 5 && hour < 12) return "Good morning,";
   if (hour >= 12 && hour < 18) return "Good afternoon,";
   return "Good evening,";
@@ -51,7 +50,6 @@ function getGreeting(timeString) {
  * @param {string} name - The display name of the current user
  */
 function setGreeting(name) {
-  const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-  document.querySelector("#greeting-msg").textContent = getGreeting(time);
+  document.querySelector("#greeting-msg").textContent = getGreeting(new Date().getHours());
   document.querySelector(".summary__greeting-name").textContent = name;
 }
