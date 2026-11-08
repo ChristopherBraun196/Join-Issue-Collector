@@ -1,7 +1,7 @@
 import { generateUUID } from "../../utils/ids.js";
 import { selectRandomAvatarColor } from "../../utils/avatar.js";
 import { showMessage } from "../../components/toast.js";
-import { putData, updateData, deleteData } from "../../services/database.js";
+import { loadData, putData, updateData, deleteData } from "../../services/database.js";
 import { clearActiveContact, loadContacts, getActiveContactData, isEmailTaken } from "./contacts.js";
 import { isValidEmail } from "../../utils/validators.js";
 
@@ -122,19 +122,38 @@ export async function submitContact() {
 }
 
 /**
- * Deletes a contact from Firebase and refreshes the contact list.
+ * Removes a contact from the assignedTo list of every task it is assigned to.
+ * @param {string} contactId - The ID of the contact
+ * @returns {Promise<void>}
+ */
+async function removeContactFromTasks(contactId) {
+  const tasks = (await loadData("/tasks")) || {};
+  const writes = Object.entries(tasks).map(([taskId, task]) => {
+    const assigned = Object.values(task.assignedTo || {});
+    if (!assigned.some((a) => a.id === contactId)) return null;
+    return putData(
+      `/tasks/${taskId}/assignedTo`,
+      assigned.filter((a) => a.id !== contactId),
+    );
+  });
+  await Promise.all(writes);
+}
+
+/**
+ * Deletes a contact from Firebase, removes it from all tasks and refreshes the contact list.
  * @param {string} contactId - The ID of the contact to delete
  * @returns {Promise<void>}
  */
 export async function deleteContact(contactId) {
   try {
+    await removeContactFromTasks(contactId);
     await deleteData("/contacts/" + contactId);
-    clearActiveContact();
-    loadContacts();
-    showMessage("Contact successfully deleted");
-  } catch (error) {
-    console.error("Fehler beim Löschen des Kontakts:", error);
+  } catch {
+    return;
   }
+  clearActiveContact();
+  loadContacts();
+  showMessage("Contact successfully deleted");
 }
 
 /**
