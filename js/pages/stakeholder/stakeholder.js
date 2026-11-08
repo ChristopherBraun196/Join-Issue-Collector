@@ -1,29 +1,37 @@
 /**
  * Live-updates the stakeholder landing page's daily request counter.
  * Listens to Firebase's /emailRequestCount/{today} (written by the n8n workflow)
- * and toggles the "limit-reached" state once today's count hits the daily cap of 10.
+ * and switches to the limit state once today's count hits the daily cap of 10.
  * @module stakeholder
  */
 import { onValue, ref } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 import { db } from "../../services/firebaseAuth.js";
 
-// "sv-SE" locale formats as YYYY-MM-DD, matching the date keys n8n writes under /emailRequestCount
-const today = new Intl.DateTimeFormat("sv-SE", {
-  timeZone: "Europe/Berlin",
-}).format(new Date());
-
-const counterReference = ref(db, `emailRequestCount/${today}`);
-
-const currentCount = document.querySelector("#requestCounter").querySelector(".counter-number strong");
-
-const stakeholderLayout = document.querySelector("#stakeholderLayout");
+const DAILY_LIMIT = 10;
 
 /**
+ * Entry point for the stakeholder page.
+ */
+function init() {
+  onValue(ref(db, `emailRequestCount/${getTodayKey()}`), renderRequestCount);
+}
+
+/**
+ * Returns today's date in Berlin time as YYYY-MM-DD, matching the keys n8n writes under /emailRequestCount.
+ * @returns {string} Today's date key
+ */
+function getTodayKey() {
+  return new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Berlin" }).format(new Date());
+}
+
+/**
+ * Shows today's request count and switches to the limit state once the daily limit is reached.
  * @param {Object} snapshot - Firebase DataSnapshot of today's /emailRequestCount/{today} node
  */
-onValue(counterReference, (snapshot) => {
+function renderRequestCount(snapshot) {
   const count = snapshot.val()?.count ?? 0;
+  document.querySelector("#requestCounter .stakeholder__count strong").textContent = count;
+  document.querySelector("#stakeholderLayout").classList.toggle("stakeholder__layout--limit", count >= DAILY_LIMIT);
+}
 
-  currentCount.textContent = count;
-  stakeholderLayout.classList.toggle("limit-reached", count >= 10);
-});
+document.addEventListener("DOMContentLoaded", init);
