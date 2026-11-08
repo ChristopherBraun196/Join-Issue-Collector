@@ -22,11 +22,11 @@ function handleSignupError(error) {
   };
 
   if (emailMessages[error.code]) {
-    showFieldError(emailInput.closest(".email-input"), emailError, emailMessages[error.code]);
+    showFieldError(emailInput.closest(".login__input--email"), emailError, emailMessages[error.code]);
   } else if (passwordMessages[error.code]) {
-    showFieldError(passwordInput.closest(".pwd-input"), passwordError, passwordMessages[error.code]);
+    showFieldError(passwordInput.closest(".login__input--password"), passwordError, passwordMessages[error.code]);
   } else {
-    showFieldError(emailInput.closest(".email-input"), emailError, error.message);
+    showFieldError(emailInput.closest(".login__input--email"), emailError, error.message);
   }
 }
 
@@ -61,15 +61,15 @@ function handleLoginError(error) {
 
   if (error.code === "auth/too-many-requests") {
     showFieldError(
-      passwordInput.closest(".pwd-input"),
+      passwordInput.closest(".login__input--password"),
       passwordError,
       "Too many failed attempts. Please wait a moment.",
     );
     return;
   }
 
-  emailInput.closest(".email-input").classList.add("invalid");
-  showFieldError(passwordInput.closest(".pwd-input"), passwordError, "Wrong email address or password.");
+  emailInput.closest(".login__input--email").classList.add("invalid");
+  showFieldError(passwordInput.closest(".login__input--password"), passwordError, "Wrong email address or password.");
 }
 
 /**
@@ -97,9 +97,9 @@ async function login(email, password) {
  * @param {string} message - The error message to display
  */
 function showFieldError(inputWrapper, errorEl, message) {
-  inputWrapper.classList.add("invalid");
+  inputWrapper.classList.add("login__input--invalid");
   errorEl.textContent = message;
-  errorEl.classList.add("visible");
+  errorEl.classList.add("login__error--visible");
 }
 
 /**
@@ -108,9 +108,9 @@ function showFieldError(inputWrapper, errorEl, message) {
  * @param {HTMLElement} errorEl - The error span element
  */
 function clearFieldError(inputWrapper, errorEl) {
-  inputWrapper.classList.remove("invalid");
+  inputWrapper.classList.remove("login__input--invalid");
   errorEl.textContent = "";
-  errorEl.classList.remove("visible");
+  errorEl.classList.remove("login__error--visible");
 }
 
 /**
@@ -119,11 +119,11 @@ function clearFieldError(inputWrapper, errorEl) {
  */
 export function togglePwdVisibilityBtn(input) {
   const wrapper = input.parentElement;
-  const btn = wrapper.querySelector(".pwd-toggle-btn");
-  const lock = wrapper.querySelector(".pwd-lock-icon");
+  const btn = wrapper.querySelector(".login__pwd-toggle");
+  const lock = wrapper.querySelector(".login__lock");
   const hasValue = input.value.length > 0;
-  if (btn) btn.classList.toggle("visible", hasValue);
-  if (lock) lock.classList.toggle("hidden", hasValue);
+  if (btn) btn.classList.toggle("login__pwd-toggle--visible", hasValue);
+  if (lock) lock.classList.toggle("login__lock--hidden", hasValue);
 }
 
 /**
@@ -134,7 +134,7 @@ export function togglePwdVisibility(btn) {
   const input = btn.parentElement.querySelector("input");
   const isHidden = input.type === "password";
   input.type = isHidden ? "text" : "password";
-  btn.classList.toggle("showing", isHidden);
+  btn.classList.toggle("login__pwd-toggle--showing", isHidden);
 }
 
 /**
@@ -205,8 +205,8 @@ function validateLoginField(input, errorEl, wrapperClass) {
  * @returns {boolean} True if all inputs are valid
  */
 function validateLoginInputs(emailInput, passwordInput) {
-  const emailValid = validateLoginField(emailInput, document.getElementById("email-error"), ".email-input");
-  const passwordValid = validateLoginField(passwordInput, document.getElementById("password-error"), ".pwd-input");
+  const emailValid = validateLoginField(emailInput, document.getElementById("email-error"), ".login__input--email");
+  const passwordValid = validateLoginField(passwordInput, document.getElementById("password-error"), ".login__input--password");
   return emailValid && passwordValid;
 }
 
@@ -242,7 +242,7 @@ function getSignupFormInputs() {
  */
 function validateSignupName(nameInput) {
   const error = document.getElementById("fullname-error");
-  return validateLoginField(nameInput, error, ".name-input");
+  return validateLoginField(nameInput, error, ".login__input--name");
 }
 
 /**
@@ -253,10 +253,10 @@ function validateSignupName(nameInput) {
 function validateSignupEmail(emailInput) {
   const error = document.getElementById("email-error");
   if (!emailInput.value.trim())
-    return !showFieldError(emailInput.closest(".email-input"), error, "This field is required");
+    return !showFieldError(emailInput.closest(".login__input--email"), error, "This field is required");
   if (!/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(emailInput.value.trim()))
-    return !showFieldError(emailInput.closest(".email-input"), error, "Not a valid email address");
-  clearFieldError(emailInput.closest(".email-input"), error);
+    return !showFieldError(emailInput.closest(".login__input--email"), error, "Not a valid email address");
+  clearFieldError(emailInput.closest(".login__input--email"), error);
   return true;
 }
 
@@ -268,10 +268,10 @@ function validateSignupEmail(emailInput) {
 function validateSignupPassword(passwordInput) {
   const error = document.getElementById("password-error");
   if (!passwordInput.value.trim())
-    return !showFieldError(passwordInput.closest(".pwd-input"), error, "This field is required");
+    return !showFieldError(passwordInput.closest(".login__input--password"), error, "This field is required");
   if (passwordInput.value.length < 6)
-    return !showFieldError(passwordInput.closest(".pwd-input"), error, "Password too weak (min. 6 characters).");
-  clearFieldError(passwordInput.closest(".pwd-input"), error);
+    return !showFieldError(passwordInput.closest(".login__input--password"), error, "Password too weak (min. 6 characters).");
+  clearFieldError(passwordInput.closest(".login__input--password"), error);
   return true;
 }
 
@@ -284,10 +284,10 @@ function validateSignupPassword(passwordInput) {
 function validateSignupPasswordConfirm(passwordInput, passwordConfirmInput) {
   const error = document.getElementById("password-confirm-error");
   if (!passwordConfirmInput.value.trim())
-    return !showFieldError(passwordConfirmInput.closest(".pwd-input"), error, "This field is required");
+    return !showFieldError(passwordConfirmInput.closest(".login__input--password"), error, "This field is required");
   if (passwordConfirmInput.value !== passwordInput.value)
-    return !showFieldError(passwordConfirmInput.closest(".pwd-input"), error, "Passwords do not match");
-  clearFieldError(passwordConfirmInput.closest(".pwd-input"), error);
+    return !showFieldError(passwordConfirmInput.closest(".login__input--password"), error, "Passwords do not match");
+  clearFieldError(passwordConfirmInput.closest(".login__input--password"), error);
   return true;
 }
 
@@ -299,14 +299,14 @@ function validateSignupPasswordConfirm(passwordInput, passwordConfirmInput) {
 function validateAcceptCheckbox(acceptCheckbox) {
   const error = document.getElementById("accept-error");
   if (acceptCheckbox.checked) {
-    acceptCheckbox.classList.remove("invalid");
+    acceptCheckbox.classList.remove("login__checkbox--invalid");
     error.textContent = "";
-    error.classList.remove("visible");
+    error.classList.remove("login__error--visible");
     return true;
   }
-  acceptCheckbox.classList.add("invalid");
+  acceptCheckbox.classList.add("login__checkbox--invalid");
   error.textContent = "You have to accept the privacy policy";
-  error.classList.add("visible");
+  error.classList.add("login__error--visible");
   return false;
 }
 

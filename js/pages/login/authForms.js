@@ -8,8 +8,8 @@ export function switchToSignup() {
   const signupBtn = document.getElementById("signup");
 
   loginSignupSection.innerHTML = getSignupTemplate();
-  signupBtn.classList.add("hidden");
-  document.getElementById("signupResponsiv").classList.add("hidden");
+  signupBtn.classList.add("login__signup--hidden");
+  document.getElementById("signupResponsiv").classList.add("login__signup-mobile--hidden");
   document.title = "Join | Sign up";
 }
 
@@ -21,7 +21,7 @@ export function switchToLogin() {
   const signupBtn = document.getElementById("signup");
 
   loginSignupSection.innerHTML = getLoginTemplate();
-  signupBtn.classList.remove("hidden");
-  document.getElementById("signupResponsiv").classList.remove("hidden");
+  signupBtn.classList.remove("login__signup--hidden");
+  document.getElementById("signupResponsiv").classList.remove("login__signup-mobile--hidden");
   document.title = "Join | Log in";
 }

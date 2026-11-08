@@ -9,36 +9,34 @@
     <link rel="shortcut icon" href="./assets/img/logo-light.svg" type="image/x-icon" />
   </head>
 
-  <body>
-    <div id="animated-img-wrapper" class="animated-img-wrapper">
-      <img src="./assets/img/logo-dark.svg" class="animated-img" />
+  <body class="login">
+    <div id="animated-img-wrapper" class="login__intro">
+      <img src="./assets/img/logo-dark.svg" class="login__intro-logo" />
     </div>
 
-    <header id="login-signup-navbar">
-      <nav>
-        <img src="./assets/img/logo-dark.svg" id="navbar-logo" class="logo hide" />
-        <div id="signup">
-          <p>Not a Join user?</p>
-          <button class="primary-btn btn" data-action="show-signup">Sign up</button>
+    <header class="login__header">
+      <nav class="login__nav">
+        <img src="./assets/img/logo-dark.svg" id="navbar-logo" class="login__logo login__logo--hidden" />
+        <div id="signup" class="login__signup">
+          <p class="login__signup-text">Not a Join user?</p>
+          <button class="primary-btn login__btn login__btn--small" data-action="show-signup">Sign up</button>
         </div>
       </nav>
     </header>
 
-    <main id="login-signup-main">
-      <section id="login-signup-section"></section>
+    <main class="login__main">
+      <section id="login-signup-section" class="login__card"></section>
 
       <span id="message-box"></span>
-      <div id="signupResponsiv">
-        <p>Not a Join user?</p>
-        <button class="primary-btn btn" data-action="show-signup">Sign up</button>
+      <div id="signupResponsiv" class="login__signup-mobile">
+        <p class="login__signup-text">Not a Join user?</p>
+        <button class="primary-btn login__btn login__btn--small" data-action="show-signup">Sign up</button>
       </div>
     </main>
 
-    <footer>
-      <div id="login-signup-privacy" class="privacy">
-        <a href="./privacy.html">Privacy Policy</a>
-        <a href="./legal.html">Legal notice</a>
-      </div>
+    <footer class="login__footer">
+      <a href="./privacy.html" class="login__privacy-link" data-text="Privacy Policy">Privacy Policy</a>
+      <a href="./legal.html" class="login__privacy-link" data-text="Legal notice">Legal notice</a>
     </footer>
     <script type="module" src="./js/pages/login/loginPage.js"></script>
   </body>

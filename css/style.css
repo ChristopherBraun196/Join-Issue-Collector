@@ -14,11 +14,6 @@ nav {
   width: 100%;
 }
 
-.name-input input[type="text"] {
-  padding: 0;
-  border: 0px solid var(--border-color);
-}
-
 .nav-link {
   display: flex;
   align-items: center;

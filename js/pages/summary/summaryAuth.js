@@ -16,7 +16,7 @@ export function initGreeting() {
  */
 async function handleAuthChange(user) {
   if (!user) {
-    window.location.href = "./index.html";
+    window.location.href = "./welcome.html";
     return;
   }
   setGreeting(user.isAnonymous ? "Guest" : await loadUserName(user));

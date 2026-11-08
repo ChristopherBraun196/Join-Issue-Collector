@@ -7,7 +7,7 @@ function setLogoAnimationTarget() {
   if (!logo) return;
 
   logo.style.visibility = "hidden";
-  logo.classList.remove("hide");
+  logo.classList.remove("login__logo--hidden");
 
   const rect = logo.getBoundingClientRect();
   const centerX = rect.left + rect.width / 2;
@@ -22,7 +22,7 @@ function setLogoAnimationTarget() {
   document.documentElement.style.setProperty("--logo-w", `${rect.width}px`);
   document.documentElement.style.setProperty("--logo-h", `${rect.height}px`);
 
-  logo.classList.add("hide");
+  logo.classList.add("login__logo--hidden");
   logo.style.visibility = "";
 }
 
@@ -39,7 +39,7 @@ function initLogoAnimation() {
     animatedImgWrapper.addEventListener("animationend", (e) => {
       if (e.target === animatedImgWrapper) {
         animatedImgWrapper.style.display = "none";
-        navLogo.classList.remove("hide");
+        navLogo.classList.remove("login__logo--hidden");
       }
     });
   }

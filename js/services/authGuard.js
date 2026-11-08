@@ -46,7 +46,7 @@ function handleUnauthenticatedUser(path) {
       window.location.href = "./welcome.html";
     }
   } else {
-    window.location.href = "./index.html";
+    window.location.href = "./welcome.html";
   }
 }
 
@@ -84,5 +84,5 @@ onAuthStateChanged(auth, async (user) => {
  */
 export async function logout() {
   await signOut(auth);
-  window.location.href = "./index.html";
+  window.location.href = "./welcome.html";
 }
