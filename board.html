@@ -20,50 +20,50 @@
     <aside class="sidebar"></aside>
 
     <main class="page page--full board">
-      <section class="board-bar">
+      <section class="board__bar">
         <h1>Board</h1>
-        <div class="search-wrapper">
-          <div class="search-input-group">
-            <input class="find-task" type="text" role="search" placeholder="Find Task" />
-            <div id="search-spacer"></div>
-            <button class="search-btn" data-action="search-task">
-              <img src="./assets/icons/search.svg" class="search-icon" />
+        <div class="board__search-wrap">
+          <div class="board__search">
+            <input class="board__search-input" type="text" role="search" placeholder="Find Task" />
+            <div class="board__search-divider"></div>
+            <button class="board__search-btn" data-action="search-task">
+              <img src="./assets/icons/search.svg" class="board__search-icon" />
             </button>
           </div>
-          <button class="primary-btn add-task-btn" data-action="add-task" data-status="toDo">Add task +</button>
+          <button class="primary-btn board__add-btn" data-action="add-task" data-status="toDo">Add task +</button>
         </div>
       </section>
 
-      <section class="board-bar-mobile">
-        <div id="board-header">
+      <section class="board__bar-mobile">
+        <div class="board__mobile-header">
           <h1>Board</h1>
-          <button class="add-task-btn-mobile" data-action="add-task" data-status="toDo">+</button>
+          <button class="board__add-btn-mobile" data-action="add-task" data-status="toDo">+</button>
         </div>
-        <div class="search-wrapper">
-          <div class="search-input-group">
-            <input class="find-task" type="text" role="search" placeholder="Find Task" />
-            <div id="search-spacer"></div>
-            <button class="search-btn" data-action="search-task">
-              <img src="./assets/icons/search.svg" class="search-icon" />
+        <div class="board__search-wrap">
+          <div class="board__search">
+            <input class="board__search-input" type="text" role="search" placeholder="Find Task" />
+            <div class="board__search-divider"></div>
+            <button class="board__search-btn" data-action="search-task">
+              <img src="./assets/icons/search.svg" class="board__search-icon" />
             </button>
           </div>
         </div>
       </section>
 
-      <section class="progress-board">
-        <div class="board-task">
-          <div class="board-task-header">
+      <section class="board__columns">
+        <div class="board__column">
+          <div class="board__column-header">
             <h4>Triage</h4>
-            <button class="plus-btn" data-action="add-task" data-status="triage">+</button>
+            <button class="board__plus-btn" data-action="add-task" data-status="triage">+</button>
           </div>
-          <div class="board-task-body" data-column="triage">
+          <div class="board__column-body" data-column="triage">
             <button
-              class="scroll-arrow arrow-up hidden"
+              class="board__arrow board__arrow--up board__arrow--hidden"
               data-target="triage"
               data-action="scroll-column"
               data-direction="-1"
             >
-              <svg width="16" height="16" viewBox="0 0 16 16">
+              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,11 8,5 14,11"
                   fill="none"
@@ -74,18 +74,18 @@
                 />
               </svg>
             </button>
-            <div class="no-tasks-placeholder hidden" id="placeholder-triage">
-              <p class="p-no-task">No Tasks in Triage</p>
+            <div class="board__placeholder board__placeholder--hidden" data-placeholder="triage">
+              <p class="board__placeholder-text">No Tasks in Triage</p>
             </div>
-            <div id="triage" class="task-cards"></div>
+            <div class="board__cards" data-cards="triage"></div>
 
             <button
-              class="scroll-arrow arrow-down hidden"
+              class="board__arrow board__arrow--down board__arrow--hidden"
               data-target="triage"
               data-action="scroll-column"
               data-direction="1"
             >
-              <svg width="16" height="16" viewBox="0 0 16 16">
+              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,5 8,11 14,5"
                   fill="none"
@@ -99,19 +99,19 @@
           </div>
         </div>
 
-        <div class="board-task">
-          <div class="board-task-header">
+        <div class="board__column">
+          <div class="board__column-header">
             <h4>To do</h4>
-            <button class="plus-btn" data-action="add-task" data-status="toDo">+</button>
+            <button class="board__plus-btn" data-action="add-task" data-status="toDo">+</button>
           </div>
-          <div class="board-task-body" data-column="toDo">
+          <div class="board__column-body" data-column="toDo">
             <button
-              class="scroll-arrow arrow-up hidden"
+              class="board__arrow board__arrow--up board__arrow--hidden"
               data-target="toDo"
               data-action="scroll-column"
               data-direction="-1"
             >
-              <svg width="16" height="16" viewBox="0 0 16 16">
+              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,11 8,5 14,11"
                   fill="none"
@@ -122,17 +122,17 @@
                 />
               </svg>
             </button>
-            <div class="no-tasks-placeholder hidden" id="placeholder-toDo">
-              <p class="p-no-task">No Tasks to do</p>
+            <div class="board__placeholder board__placeholder--hidden" data-placeholder="toDo">
+              <p class="board__placeholder-text">No Tasks to do</p>
             </div>
-            <div id="toDo" class="task-cards"></div>
+            <div class="board__cards" data-cards="toDo"></div>
             <button
-              class="scroll-arrow arrow-down hidden"
+              class="board__arrow board__arrow--down board__arrow--hidden"
               data-target="toDo"
               data-action="scroll-column"
               data-direction="1"
             >
-              <svg width="16" height="16" viewBox="0 0 16 16">
+              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,5 8,11 14,5"
                   fill="none"
@@ -146,19 +146,19 @@
           </div>
         </div>
 
-        <div class="board-task">
-          <div class="board-task-header">
+        <div class="board__column">
+          <div class="board__column-header">
             <h4>In progress</h4>
-            <button class="plus-btn" data-action="add-task" data-status="inProgress">+</button>
+            <button class="board__plus-btn" data-action="add-task" data-status="inProgress">+</button>
           </div>
-          <div class="board-task-body" data-column="inProgress">
+          <div class="board__column-body" data-column="inProgress">
             <button
-              class="scroll-arrow arrow-up hidden"
+              class="board__arrow board__arrow--up board__arrow--hidden"
               data-target="inProgress"
               data-action="scroll-column"
               data-direction="-1"
             >
-              <svg width="16" height="16" viewBox="0 0 16 16">
+              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,11 8,5 14,11"
                   fill="none"
@@ -169,17 +169,17 @@
                 />
               </svg>
             </button>
-            <div class="no-tasks-placeholder hidden" id="placeholder-inProgress">
-              <p class="p-no-task">No Tasks in Progress</p>
+            <div class="board__placeholder board__placeholder--hidden" data-placeholder="inProgress">
+              <p class="board__placeholder-text">No Tasks in Progress</p>
             </div>
-            <div id="inProgress" class="task-cards"></div>
+            <div class="board__cards" data-cards="inProgress"></div>
             <button
-              class="scroll-arrow arrow-down hidden"
+              class="board__arrow board__arrow--down board__arrow--hidden"
               data-target="inProgress"
               data-action="scroll-column"
               data-direction="1"
             >
-              <svg width="16" height="16" viewBox="0 0 16 16">
+              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,5 8,11 14,5"
                   fill="none"
@@ -193,19 +193,19 @@
           </div>
         </div>
 
-        <div class="board-task">
-          <div class="board-task-header">
+        <div class="board__column">
+          <div class="board__column-header">
             <h4>Await feedback</h4>
-            <button class="plus-btn" data-action="add-task" data-status="await">+</button>
+            <button class="board__plus-btn" data-action="add-task" data-status="await">+</button>
           </div>
-          <div class="board-task-body" data-column="await">
+          <div class="board__column-body" data-column="await">
             <button
-              class="scroll-arrow arrow-up hidden"
+              class="board__arrow board__arrow--up board__arrow--hidden"
               data-target="await"
               data-action="scroll-column"
               data-direction="-1"
             >
-              <svg width="16" height="16" viewBox="0 0 16 16">
+              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,11 8,5 14,11"
                   fill="none"
@@ -216,18 +216,18 @@
                 />
               </svg>
             </button>
-            <div class="no-tasks-placeholder hidden" id="placeholder-await">
-              <p class="p-no-task">No Task to await feedback</p>
+            <div class="board__placeholder board__placeholder--hidden" data-placeholder="await">
+              <p class="board__placeholder-text">No Task to await feedback</p>
             </div>
-            <div id="await" class="task-cards"></div>
+            <div class="board__cards" data-cards="await"></div>
 
             <button
-              class="scroll-arrow arrow-down hidden"
+              class="board__arrow board__arrow--down board__arrow--hidden"
               data-target="await"
               data-action="scroll-column"
               data-direction="1"
             >
-              <svg width="16" height="16" viewBox="0 0 16 16">
+              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,5 8,11 14,5"
                   fill="none"
@@ -241,18 +241,18 @@
           </div>
         </div>
 
-        <div class="board-task">
-          <div class="board-task-header">
+        <div class="board__column">
+          <div class="board__column-header">
             <h4>Done</h4>
           </div>
-          <div class="board-task-body" data-column="done">
+          <div class="board__column-body" data-column="done">
             <button
-              class="scroll-arrow arrow-up hidden"
+              class="board__arrow board__arrow--up board__arrow--hidden"
               data-target="done"
               data-action="scroll-column"
               data-direction="-1"
             >
-              <svg width="16" height="16" viewBox="0 0 16 16">
+              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,11 8,5 14,11"
                   fill="none"
@@ -263,18 +263,18 @@
                 />
               </svg>
             </button>
-            <div class="no-tasks-placeholder hidden" id="placeholder-done">
-              <p class="p-no-task">No Task is done</p>
+            <div class="board__placeholder board__placeholder--hidden" data-placeholder="done">
+              <p class="board__placeholder-text">No Task is done</p>
             </div>
-            <div id="done" class="task-cards"></div>
+            <div class="board__cards" data-cards="done"></div>
 
             <button
-              class="scroll-arrow arrow-down hidden"
+              class="board__arrow board__arrow--down board__arrow--hidden"
               data-target="done"
               data-action="scroll-column"
               data-direction="1"
             >
-              <svg width="16" height="16" viewBox="0 0 16 16">
+              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16">
                 <polyline
                   points="2,5 8,11 14,5"
                   fill="none"

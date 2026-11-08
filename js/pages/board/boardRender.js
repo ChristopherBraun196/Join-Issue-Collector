@@ -22,7 +22,7 @@ export async function renderAll() {
  * @returns {Promise<void>}
  */
 export async function renderSection(section) {
-  const container = document.getElementById(section);
+  const container = document.querySelector(`[data-cards="${section}"]`);
   container.innerHTML = "";
   const taskStatus = tasks.filter((t) => t["status"] == section);
 
@@ -58,7 +58,7 @@ export async function reRenderColumns(...columns) {
  * @param {number} direction - -1 = up/left, 1 = down/right
  */
 export function scrollColumn(columnId, direction) {
-  const container = document.getElementById(columnId);
+  const container = document.querySelector(`[data-cards="${columnId}"]`);
   if (!container) return;
   const isMobile = window.innerWidth <= 1200;
   const scrollAmount = isMobile ? 260 : 280;
@@ -78,12 +78,12 @@ export function scrollColumn(columnId, direction) {
  */
 export function updateScrollArrows() {
   for (const col of COLUMNS) {
-    const container = document.getElementById(col);
-    const body = document.querySelector(`.board-task-body[data-column="${col}"]`);
+    const container = document.querySelector(`[data-cards="${col}"]`);
+    const body = document.querySelector(`.board__column-body[data-column="${col}"]`);
     if (!container || !body) continue;
 
-    const arrowUp = body.querySelector(".arrow-up");
-    const arrowDown = body.querySelector(".arrow-down");
+    const arrowUp = body.querySelector(".board__arrow--up");
+    const arrowDown = body.querySelector(".board__arrow--down");
     if (!arrowUp || !arrowDown) continue;
 
     const isMobile = window.innerWidth <= 1200;
@@ -106,11 +106,11 @@ export function updateScrollArrows() {
 function handleMobileArrows(container, arrowUp, arrowDown) {
   const hasOverflow = container.scrollWidth > container.clientWidth + 2;
   if (!hasOverflow) {
-    arrowUp.classList.add("hidden");
-    arrowDown.classList.add("hidden");
+    arrowUp.classList.add("board__arrow--hidden");
+    arrowDown.classList.add("board__arrow--hidden");
   } else {
-    arrowUp.classList.toggle("hidden", container.scrollLeft <= 2);
-    arrowDown.classList.toggle("hidden", container.scrollLeft + container.clientWidth >= container.scrollWidth - 2);
+    arrowUp.classList.toggle("board__arrow--hidden", container.scrollLeft <= 2);
+    arrowDown.classList.toggle("board__arrow--hidden", container.scrollLeft + container.clientWidth >= container.scrollWidth - 2);
   }
 }
 /**
@@ -123,11 +123,11 @@ function handleMobileArrows(container, arrowUp, arrowDown) {
 function handleDesktopArrows(container, arrowUp, arrowDown) {
   const hasOverflow = container.scrollHeight > container.clientHeight + 2;
   if (!hasOverflow) {
-    arrowUp.classList.add("hidden");
-    arrowDown.classList.add("hidden");
+    arrowUp.classList.add("board__arrow--hidden");
+    arrowDown.classList.add("board__arrow--hidden");
   } else {
-    arrowUp.classList.toggle("hidden", container.scrollTop <= 2);
-    arrowDown.classList.toggle("hidden", container.scrollTop + container.clientHeight >= container.scrollHeight - 2);
+    arrowUp.classList.toggle("board__arrow--hidden", container.scrollTop <= 2);
+    arrowDown.classList.toggle("board__arrow--hidden", container.scrollTop + container.clientHeight >= container.scrollHeight - 2);
   }
 }
 
@@ -136,13 +136,13 @@ function handleDesktopArrows(container, arrowUp, arrowDown) {
  */
 function updateNoTaskPlaceholders() {
   for (let i = 0; i < COLUMNS.length; i++) {
-    const column = document.getElementById(COLUMNS[i]);
-    const placeholder = document.getElementById("placeholder-" + COLUMNS[i]);
+    const column = document.querySelector(`[data-cards="${COLUMNS[i]}"]`);
+    const placeholder = document.querySelector(`[data-placeholder="${COLUMNS[i]}"]`);
     const hasTasks = column.querySelector(".task-card") !== null;
     if (!hasTasks) {
-      placeholder.classList.remove("hidden");
+      placeholder.classList.remove("board__placeholder--hidden");
     } else {
-      placeholder.classList.add("hidden");
+      placeholder.classList.add("board__placeholder--hidden");
     }
   }
 }
@@ -164,7 +164,7 @@ export async function findTask(input) {
 
 async function renderFilteredTasks(filteredTasks) {
   for (const section of COLUMNS) {
-    const container = document.getElementById(section);
+    const container = document.querySelector(`[data-cards="${section}"]`);
     container.innerHTML = "";
 
     const sectionTasks = filteredTasks.filter((t) => t.status === section);
@@ -203,7 +203,7 @@ async function getSubtaskData(element) {
   const solved = await getAmountSolvedSubtasks(element["id"]);
   const total = await getNumberOfSubtasks(element["id"]);
   let visibility = "";
-  if (total != 0) visibility = "show";
+  if (total != 0) visibility = "task-card__progress--visible";
   return [solved, total, visibility];
 }
 
@@ -253,7 +253,7 @@ export async function getAssignedToAvatars(allMembersOfThisTask) {
 
   if (totalMembers > limit) {
     const overflow = totalMembers - limit;
-    members.push(`<div class="avatar overflow-badge" title="+${overflow} more">+${overflow}</div>`);
+    members.push(`<div class="task-card__avatar task-card__avatar--overflow" title="+${overflow} more">+${overflow}</div>`);
   }
   return members.join("");
 }
@@ -268,7 +268,7 @@ async function getMemberAvatar(id) {
   if (!member) return "";
 
   const name = member.name;
-  const htmlTemplate = `<div class="avatar" style="background:${member["avatarColor"]}">${getInitials(name)}</div>`;
+  const htmlTemplate = `<div class="task-card__avatar" style="background:${member["avatarColor"]}">${getInitials(name)}</div>`;
 
   return htmlTemplate;
 }

@@ -24,7 +24,7 @@ function getMoveTargets(currentStatus) {
  */
 export function toggleMoveOverlay(event, taskId, currentStatus) {
   event.stopPropagation();
-  const existingOverlay = document.getElementById("move-overlay-" + taskId);
+  const existingOverlay = document.querySelector(`.move-overlay[data-id="${taskId}"]`);
   closeAllOverlays();
   if (existingOverlay) return;
 
@@ -32,7 +32,7 @@ export function toggleMoveOverlay(event, taskId, currentStatus) {
   const targets = getMoveTargets(currentStatus);
   const overlay = document.createElement("div");
   overlay.className = "move-overlay";
-  overlay.id = "move-overlay-" + taskId;
+  overlay.dataset.id = taskId;
   overlay.innerHTML = getMoveOverlayHTML(taskId, targets);
   card.appendChild(overlay);
 }
@@ -41,11 +41,11 @@ export function toggleMoveOverlay(event, taskId, currentStatus) {
  * Returns the HTML for the move overlay content.
  */
 function getMoveOverlayHTML(taskId, targets) {
-  let html = '<p class="move-overlay-title">Move to</p>';
+  let html = '<p class="move-overlay__title">Move to</p>';
   for (const t of targets) {
     const arrow = t.direction === "up" ? "↑" : "↓";
-    html += `<button class="move-overlay-option" data-action="move-task" data-id="${taskId}" data-status="${t.id}">
-      <span class="move-arrow">${arrow}</span> ${t.label}
+    html += `<button class="move-overlay__option" data-action="move-task" data-id="${taskId}" data-status="${t.id}">
+      <span class="move-overlay__arrow">${arrow}</span> ${t.label}
     </button>`;
   }
   return html;
@@ -81,7 +81,7 @@ function closeAllOverlays() {
  * Handles clicks outside overlays to close them.
  */
 export function handleOutsideClick(event) {
-  if (!event.target.closest(".move-overlay") && !event.target.closest(".move-to-btn")) {
+  if (!event.target.closest(".move-overlay") && !event.target.closest(".task-card__move-btn")) {
     closeAllOverlays();
   }
 }

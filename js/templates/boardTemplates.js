@@ -14,26 +14,26 @@ export async function getToDoTemplate(element, solvedSubtasks, totalSubtasks, vi
   return `  
 <div class="task-card" draggable="true" data-action="open-task" data-id="${element["id"]}">
 
-  <div class="task-card-topbar">
+  <div class="task-card__topbar">
     <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
-   <button class="move-to-btn" data-action="toggle-move" data-id="${element["id"]}" data-status="${element["status"]}" title="Move to">
+   <button class="task-card__move-btn" data-action="toggle-move" data-id="${element["id"]}" data-status="${element["status"]}" title="Move to">
       <img src="./assets/icons/move-task.svg" />
     </button>
   </div>
 
-  <h3 class="task-title">${element["title"]}</h3>
+  <h3 class="task-card__title">${element["title"]}</h3>
 
-  <p class="task-description">${element["description"]}</p>
+  <p class="task-card__description">${element["description"]}</p>
 
-  <div class="progress-wrapper ${visibility}">
-    <div class="progress-bar">
-      <div class="progress-fill" style="width: ${progress}%"></div>
+  <div class="task-card__progress ${visibility}">
+    <div class="task-card__progress-bar">
+      <div class="task-card__progress-fill" style="width: ${progress}%"></div>
     </div>
-    <span class="progress-label">${solvedSubtasks}/${totalSubtasks} Subtasks</span>
+    <span class="task-card__progress-label">${solvedSubtasks}/${totalSubtasks} Subtasks</span>
   </div>
 
-  <div class="task-footer">
-    <div class="avatars">
+  <div class="task-card__footer">
+    <div class="task-card__avatars">
       ${await getAssignedToAvatars(element.assignedTo)}
     </div>
     <span><img src="./assets/icons/priority-${element["priority"]}.svg" /></span>

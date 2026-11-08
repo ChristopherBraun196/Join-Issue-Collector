@@ -6,7 +6,7 @@ let currentDraggedElement;
  * Registers the delegated drag and drop listeners on the board.
  */
 export function initDragDrop() {
-  const board = document.querySelector(".progress-board");
+  const board = document.querySelector(".board__columns");
   board.addEventListener("dragover", handleDragOver);
   board.addEventListener("dragleave", handleDragLeave);
   board.addEventListener("drop", handleDrop);
@@ -72,8 +72,8 @@ function allowDrop(ev) {
  * @param {string} columnId - The column ID to highlight
  */
 function highlight(columnId) {
-  const dropzone = document.querySelector(`.board-task-body[data-column="${columnId}"]`);
-  if (dropzone) dropzone.classList.add("drag-area-highlight");
+  const dropzone = document.querySelector(`.board__column-body[data-column="${columnId}"]`);
+  if (dropzone) dropzone.classList.add("board__column-body--highlight");
 }
 
 /**
@@ -81,8 +81,8 @@ function highlight(columnId) {
  * @param {string} columnId - The column ID to unhighlight
  */
 function removeHighlight(columnId) {
-  const dropzone = document.querySelector(`.board-task-body[data-column="${columnId}"]`);
-  if (dropzone) dropzone.classList.remove("drag-area-highlight");
+  const dropzone = document.querySelector(`.board__column-body[data-column="${columnId}"]`);
+  if (dropzone) dropzone.classList.remove("board__column-body--highlight");
 }
 
 /**

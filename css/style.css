@@ -1,10 +1,3 @@
-@media (min-width: 1200px) {
-  .move-to-btn,
-  .move-arrow {
-    rotate: -90deg;
-  }
-}
-
 @media (max-width: 1200px) {
   dialog#openDialogBoard {
     position: fixed;
@@ -15,87 +8,6 @@
 
   dialog#openDialogBoard {
     max-height: calc(100vh - 170px);
-  }
-
-  .board-bar {
-    padding: 40px;
-  }
-
-  .progress-board {
-    padding: 0 20px;
-    margin: 0;
-  }
-
-  .board-bar {
-    display: none;
-  }
-
-  .board-bar-mobile {
-    display: flex;
-  }
-
-  .progress-board {
-    flex-direction: column;
-    margin-top: 40px;
-    height: auto;
-  }
-
-  .board-task {
-    width: 100%;
-    flex: none;
-  }
-
-  .board-task-body {
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .task-cards {
-    flex-direction: row;
-    flex: 1;
-    overflow-x: auto;
-    overflow-y: visible;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .task-cards::-webkit-scrollbar {
-    display: none;
-  }
-
-  .drop-zone {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: 12px;
-    min-height: unset;
-    width: max-content;
-    overflow: visible;
-  }
-
-  .scroll-arrow {
-    width: 28px;
-    min-width: 28px;
-    height: 48px;
-    border-radius: 10px;
-  }
-
-  .arrow-up {
-    margin-bottom: 0;
-    margin-right: 4px;
-  }
-
-  .arrow-up svg {
-    transform: rotate(-90deg);
-  }
-
-  .arrow-down {
-    margin-top: 0;
-    margin-left: 4px;
-  }
-
-  .arrow-down svg {
-    transform: rotate(-90deg);
   }
 
   dialog#openDialogBoard {

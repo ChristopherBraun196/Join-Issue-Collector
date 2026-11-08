@@ -44,7 +44,7 @@ function handleBoardClick(event) {
   const { action, id, status, target: columnId, direction } = target.dataset;
   if (action === "add-task") openAddTaskDialog(status);
   if (action === "scroll-column") scrollColumn(columnId, Number(direction));
-  if (action === "search-task") findTask(target.closest(".search-input-group").querySelector(".find-task"));
+  if (action === "search-task") findTask(target.closest(".board__search").querySelector(".board__search-input"));
   if (action === "open-task") openDialogBoard(id);
   if (action === "toggle-move") toggleMoveOverlay(event, id, status);
   if (action === "move-task") moveTaskTo(event, id, status);
@@ -55,7 +55,7 @@ function handleBoardClick(event) {
  * @param {InputEvent} event - The input event
  */
 function handleBoardInput(event) {
-  if (event.target.matches(".find-task")) findTask(event.target);
+  if (event.target.matches(".board__search-input")) findTask(event.target);
 }
 
 document.addEventListener("DOMContentLoaded", init);

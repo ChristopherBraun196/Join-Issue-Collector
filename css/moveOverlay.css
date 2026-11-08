@@ -1,4 +1,4 @@
-.move-to-btn {
+.task-card__move-btn {
   background: none;
   border: none;
   border-radius: 8px;
@@ -14,7 +14,7 @@
   transition: background-color 0.15s, border-color 0.15s;
 }
 
-.move-to-btn:hover {
+.task-card__move-btn:hover {
   background-color: #f0f0f0;
   border-color: #bbb;
 }
@@ -44,7 +44,7 @@
   }
 }
 
-.move-overlay-title {
+.move-overlay__title {
   font-size: 20px;
   font-weight: 700;
   margin: 0 0 12px 0;
@@ -52,7 +52,7 @@
   color: #fff;
 }
 
-.move-overlay-option {
+.move-overlay__option {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -68,12 +68,19 @@
   text-align: left;
 }
 
-.move-overlay-option:hover {
+.move-overlay__option:hover {
   background-color: #1a2736;
 }
 
-.move-arrow {
+.move-overlay__arrow {
   font-size: 18px;
   font-weight: 700;
   line-height: 1;
+}
+
+@media (min-width: 1200px) {
+  .task-card__move-btn,
+  .move-overlay__arrow {
+    rotate: -90deg;
+  }
 }
