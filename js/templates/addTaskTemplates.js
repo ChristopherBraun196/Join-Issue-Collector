@@ -5,101 +5,101 @@
  */
 export function getAddTaskDialogTemplate(status) {
   return `
-    <section class="add-task" id="add-task-dialog-content">
-      <header id="add-task-dialog-header">
+    <section class="add-task add-task--dialog">
+      <header class="add-task__dialog-header">
         <h1>Add Task</h1>
-        <button data-action="close-dialog" id="close-dialog-btn"><img src="../assets/icons/close.svg"></button>
+        <button class="add-task__close" data-action="close-dialog"><img src="../assets/icons/close.svg"></button>
       </header>
-      <form class="add-task-form" data-status="${status}" id="add-task-form" novalidate>
-          <div id="left-side-form">
-              <div id="task-title">
-                  <label for="title">Title<span class="required">*</span></label>
-                  <input type="text" name="title" placeholder="Enter a title" required data-error-msg="Please enter a title" autofocus />
-                  <span class="field-error-msg"></span>
+      <form class="task-form" data-status="${status}" id="add-task-form" novalidate>
+          <div class="task-form__column">
+              <div class="task-form__field">
+                  <label for="title">Title<span class="task-form__required">*</span></label>
+                  <input type="text" class="task-form__input" name="title" placeholder="Enter a title" required data-error-msg="Please enter a title" autofocus />
+                  <span class="task-form__error"></span>
               </div>
-              <div id="task-description">
+              <div class="task-form__field">
                   <label for="description">Description</label>
-                  <textarea name="description" id="description" cols="30" rows="5"></textarea>
+                  <textarea class="task-form__input" name="description" id="description" cols="30" rows="5"></textarea>
               </div>
-              <div id="task-due-date">
-                  <label for="due-date">Due Date<span class="required">*</span></label>
-                  <input type="date" id="due-date" name="due-date" required data-validate-date />
-                  <span class="field-error-msg"></span>
+              <div class="task-form__field">
+                  <label for="due-date">Due Date<span class="task-form__required">*</span></label>
+                  <input type="date" class="task-form__input" id="due-date" name="due-date" required data-validate-date />
+                  <span class="task-form__error"></span>
               </div>
           </div>
-          <div id="right-side-task">
-              <div id="task-priority">
+          <div class="task-form__column task-form__column--right">
+              <div class="task-form__field">
                   <label for="priority">Priority</label>
-                  <div id="task-priority-btns">
-                      <button class="priority-btn urgent" data-action="set-priority" type="button">Urgent <span><img src="./assets/icons/priority-urgent.svg" alt="Urgent priority icon"></span></button>
-                      <button class="priority-btn medium set" data-action="set-priority" type="button">Medium<span><img src="./assets/icons/priority-medium.svg" alt="Medium priority icon"></span></button>
-                      <button class="priority-btn low" data-action="set-priority" type="button">Low<span><img src="./assets/icons/priority-low.svg" alt="Low priority icon"></span></button>
+                  <div class="task-form__priority">
+                      <button class="task-form__priority-btn task-form__priority-btn--urgent" data-action="set-priority" type="button">Urgent <span class="task-form__priority-icon"><img class="task-form__priority-img" src="./assets/icons/priority-urgent.svg" alt="Urgent priority icon"></span></button>
+                      <button class="task-form__priority-btn task-form__priority-btn--medium task-form__priority-btn--active" data-action="set-priority" type="button">Medium<span class="task-form__priority-icon"><img class="task-form__priority-img" src="./assets/icons/priority-medium.svg" alt="Medium priority icon"></span></button>
+                      <button class="task-form__priority-btn task-form__priority-btn--low" data-action="set-priority" type="button">Low<span class="task-form__priority-icon"><img class="task-form__priority-img" src="./assets/icons/priority-low.svg" alt="Low priority icon"></span></button>
                   </div>
               </div>
-              <div id="task-assigned-to">
+              <div class="task-form__field">
                   <label>Assigned to</label>
-                  <div class="custom-select-wrapper" id="assigned-wrapper">
-                      <div class="custom-select-trigger" data-action="toggle-dropdown" data-dropdown="assigned">
-                          <span id="assigned-placeholder">Select contacts to assign</span>
-                          <img src="./assets/icons/arrow_drop_down.svg" class="select-arrow">
+                  <div class="dropdown dropdown--assigned">
+                      <div class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="assigned">
+                          <span class="dropdown__placeholder">Select contacts to assign</span>
+                          <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow">
                       </div>
-                      <div class="custom-select-dropdown" id="assigned-dropdown">
-                          <div id="custom-select-dropdown-inner">
+                      <div class="dropdown__menu">
+                          <div class="dropdown__list">
                           </div>
                       </div>
                   </div>
-                  <div id="assigned-badges"></div>
+                  <div class="task-form__badges"></div>
               </div>
-              <div id="task-category">
-                  <label>Category<span class="required">*</span></label>
-                  <div class="custom-select-wrapper" id="category-wrapper">
-                      <input type="hidden" name="category" required data-error-msg="Please select a category" />
-                      <span class="field-error-msg"></span>
-                      <div class="custom-select-trigger" data-action="toggle-dropdown" data-dropdown="category">
-                          <span id="category-placeholder">Select task category</span>
-                          <img src="./assets/icons/arrow_drop_down.svg" class="select-arrow">
+              <div class="task-form__field">
+                  <label>Category<span class="task-form__required">*</span></label>
+                  <div class="dropdown dropdown--category">
+                      <input type="hidden" class="task-form__input" name="category" required data-error-msg="Please select a category" />
+                      <span class="task-form__error"></span>
+                      <div class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="category">
+                          <span class="dropdown__placeholder">Select task category</span>
+                          <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow">
                       </div>
-                      <div class="custom-select-dropdown" id="category-dropdown">
-                          <div class="custom-select-dropdown-inner">
-                              <div class="custom-option" data-action="select-category" data-value="technical-task">
-                                  <span>Technical Task</span>
+                      <div class="dropdown__menu">
+                          <div class="dropdown__list">
+                              <div class="dropdown__option" data-action="select-category" data-value="technical-task">
+                                  <span class="dropdown__label">Technical Task</span>
                               </div>
-                              <div class="custom-option" data-action="select-category" data-value="user-story">
-                                  <span>User Story</span>
+                              <div class="dropdown__option" data-action="select-category" data-value="user-story">
+                                  <span class="dropdown__label">User Story</span>
                               </div>
                           </div>
                       </div>
                   </div>
               </div>
-              <div id="task-subtasks">
+              <div class="task-form__field">
                   <label>Subtasks</label>
-                  <div class="subtask-input-wrapper" id="subtask-wrapper">
+                  <div class="subtask__input-wrap">
                       <input 
                           type="text" 
-                          id="subtask-input"
+                          class="subtask__input"
                           placeholder="Add new Subtask"
                       />
-                      <div class="subtask-actions" id="subtask-actions">
-                          <div class="subtask-confirm-btns" id="subtask-confirm-btns">
-                              <button class="subtask-icon-btn" data-action="clear-subtask" type="button">
-                                  <img src="./assets/icons/close.svg" alt="Cancel">
+                      <div class="subtask__actions">
+                          <div class="subtask__confirm">
+                              <button class="subtask__btn" data-action="clear-subtask" type="button">
+                                  <img class="subtask__btn-icon" src="./assets/icons/close.svg" alt="Cancel">
                               </button>
-                              <div class="subtask-divider"></div>
-                              <button class="subtask-icon-btn" data-action="add-subtask" type="button">
-                                  <img src="./assets/icons/check-dark.svg" alt="Confirm">
+                              <div class="subtask__divider"></div>
+                              <button class="subtask__btn" data-action="add-subtask" type="button">
+                                  <img class="subtask__btn-icon" src="./assets/icons/check-dark.svg" alt="Confirm">
                               </button>
                           </div>
                       </div>
                   </div>
-                  <ul id="subtask-list"></ul>
+                  <ul class="subtask__list"></ul>
               </div>
           </div>
       </form>
-      <footer id="add-task-form-footer">
-          <p><span class="required">*</span> This field is required</p>
-          <div id="task-btns">
-              <button id="clear-task-form" type="button" data-action="clear-form">Clear <img src="./assets/icons/close.svg" alt="Cross icon"></button>
-              <button id="create-task" class="primary-btn" form="add-task-form" type="submit">Create Task <img src="./assets/icons/check.svg" alt="Check icon"></button>
+      <footer class="task-form__footer">
+          <p><span class="task-form__required">*</span> This field is required</p>
+          <div class="task-form__buttons">
+              <button class="task-form__btn task-form__btn--clear" type="button" data-action="clear-form">Clear <img class="task-form__btn-icon" src="./assets/icons/close.svg" alt="Cross icon"></button>
+              <button class="primary-btn task-form__btn task-form__btn--create" form="add-task-form" type="submit">Create Task <img class="task-form__btn-icon" src="./assets/icons/check.svg" alt="Check icon"></button>
           </div>
       </footer>
     </section>

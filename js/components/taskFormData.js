@@ -56,8 +56,8 @@ function getTaskDueDate() {
  * @returns {string} The active priority ("urgent", "medium" or "low")
  */
 function getTaskPriority() {
-  const priorityBtn = document.querySelector(".priority-btn.set");
-  const priority = ["urgent", "medium", "low"].find((p) => priorityBtn.classList.contains(p));
+  const priorityBtn = document.querySelector(".task-form__priority-btn--active");
+  const priority = ["urgent", "medium", "low"].find((p) => priorityBtn.classList.contains(`task-form__priority-btn--${p}`));
   return priority;
 }
 
@@ -89,7 +89,7 @@ function getTaskCategoryLabelColor(category) {
  * @returns {Object[]} Array of objects containing the contact ID
  */
 function getAssignedTo() {
-  return [...document.querySelectorAll("#assigned-dropdown .custom-option.selected")].map((opt) => ({
+  return [...document.querySelectorAll(".dropdown--assigned .dropdown__option--selected")].map((opt) => ({
     id: opt.dataset.id,
   }));
 }
@@ -99,9 +99,9 @@ function getAssignedTo() {
  * @returns {Object[]} Array of subtask objects with id, title and completed state
  */
 function getSubtasks() {
-  return [...document.querySelectorAll("#subtask-list li")].map((li) => ({
+  return [...document.querySelectorAll(".subtask__list .subtask__item")].map((li) => ({
     id: "subtask-" + generateUUID(),
-    title: li.querySelector(".subtask-text").textContent,
+    title: li.querySelector(".subtask__text").textContent,
     completed: false,
   }));
 }
@@ -112,7 +112,7 @@ function getSubtasks() {
  * @returns {Promise<void>}
  */
 export async function createTask(status) {
-  const form = document.getElementById("add-task-form");
+  const form = document.querySelector(".task-form");
   if (!validateForm(form)) return;
 
   const taskID = generateUUID();

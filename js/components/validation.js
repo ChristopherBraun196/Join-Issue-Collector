@@ -76,12 +76,12 @@ export function validateDate(input) {
  * @param {string} message - The error message to display
  */
 function showFieldError(input, message) {
-  input.classList.add("input-error");
+  input.classList.add("task-form__input--invalid");
 
   let errorEl = getErrorElement(input);
   if (!errorEl) {
     errorEl = document.createElement("span");
-    errorEl.className = "field-error-msg";
+    errorEl.className = "task-form__error";
     input.insertAdjacentElement("afterend", errorEl);
   }
   errorEl.textContent = message;
@@ -93,7 +93,7 @@ function showFieldError(input, message) {
  * @param {HTMLElement} input - The input element to clear the error from
  */
 export function clearFieldError(input) {
-  input.classList.remove("input-error");
+  input.classList.remove("task-form__input--invalid");
   const errorEl = getErrorElement(input);
   if (errorEl) errorEl.style.visibility = "hidden";
 }
@@ -105,5 +105,5 @@ export function clearFieldError(input) {
  */
 function getErrorElement(input) {
   const next = input.nextElementSibling;
-  return next?.classList.contains("field-error-msg") ? next : null;
+  return next?.classList.contains("task-form__error") ? next : null;
 }

@@ -28,16 +28,16 @@ export function getDialogBoardEditTemplate(element, priorityButtons, assignedHTM
         <label class="edit-margin">Assigned To</label>
         <div class="contacts-edit-list">${assignedHTML}</div>
         <label class="edit-margin">Subtasks</label>
-        <div class="subtask-input-wrapper">
-           <input type="text" id="new-subtask-input" placeholder="Add new subtask"
+        <div class="subtask__input-wrap">
+           <input type="text" class="subtask__input" id="new-subtask-input" placeholder="Add new subtask"
               data-id="${element.id}">
-            <div id="subtask-confirm-btns-edit" class="subtask-confirm-btns">
-                <button class="subtask-icon-btn" type="button" data-action="clear-subtask-edit">
-                    <img src="./assets/icons/close.svg">
+            <div id="subtask-confirm-btns-edit" class="subtask__confirm">
+                <button class="subtask__btn" type="button" data-action="clear-subtask-edit">
+                    <img class="subtask__btn-icon" src="./assets/icons/close.svg">
                 </button>
                 <div class="subtask-divider-edit"></div>
-                <button class="subtask-icon-btn" type="button" data-action="add-subtask-edit" data-id="${element.id}">
-                    <img src="./assets/icons/check-dark.svg">
+                <button class="subtask__btn" type="button" data-action="add-subtask-edit" data-id="${element.id}">
+                    <img class="subtask__btn-icon" src="./assets/icons/check-dark.svg">
                 </button>
             </div>
         </div>
@@ -85,9 +85,9 @@ export function getPriorityButtonTemplate(priority, currentPriority) {
  */
 export function getContactOptionTemplate(id, contact, checked) {
   return `
-    <div class="custom-option" data-action="toggle-edit-contact" data-id="${id}">
+    <div class="dropdown__option" data-action="toggle-edit-contact" data-id="${id}">
       <span class="avatar" style="background:${contact.avatarColor}">${getInitials(contact.name)}</span>
-      <span>${contact.name}</span>
+      <span class="dropdown__label">${contact.name}</span>
       <input type="checkbox" value="${id}" ${checked} style="margin-left:auto" />
     </div>`;
 }
@@ -109,13 +109,13 @@ export function getContactBadgeTemplate(contact) {
  */
 export function getAssignedContactsEditTemplate(optionsHTML, badgesHTML) {
   return `
-    <div class="custom-select-wrapper">
-      <div class="custom-select-trigger" data-action="toggle-edit-dropdown">
+    <div class="dropdown">
+      <div class="dropdown__trigger" data-action="toggle-edit-dropdown">
         <span>Select contacts to assign</span>
-        <img src="./assets/icons/arrow_drop_down.svg" class="select-arrow">
+        <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow">
       </div>
-      <div class="custom-select-dropdown" id="edit-assigned-dropdown">
-        <div class="custom-select-dropdown-inner">${optionsHTML}</div>
+      <div class="dropdown__menu" id="edit-assigned-dropdown">
+        <div class="dropdown__list">${optionsHTML}</div>
       </div>
     </div>
     <div id="edit-assigned-badges" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">${badgesHTML}</div>
@@ -132,14 +132,14 @@ export function getAssignedContactsEditTemplate(optionsHTML, badgesHTML) {
 export function getSubtaskEditItemTemplate(subtask, taskId, index) {
   return `
     <li class="subtask-edit-item" data-task-id="${taskId}" data-index="${index}">
-      <span class="subtask-text" data-action="edit-subtask-edit">${subtask.title}</span>
-      <div class="subtask-item-actions">
-        <button class="subtask-icon-btn" type="button" data-action="edit-subtask-edit">
-          <img src="./assets/icons/edit.svg">
+      <span class="subtask__text" data-action="edit-subtask-edit">${subtask.title}</span>
+      <div class="subtask__item-actions">
+        <button class="subtask__btn" type="button" data-action="edit-subtask-edit">
+          <img class="subtask__btn-icon" src="./assets/icons/edit.svg">
         </button>
-        <div class="subtask-divider"></div>
-        <button class="subtask-icon-btn" type="button" data-action="delete-subtask-edit" data-id="${taskId}" data-index="${index}">
-          <img src="./assets/icons/delete.svg">
+        <div class="subtask__divider"></div>
+        <button class="subtask__btn" type="button" data-action="delete-subtask-edit" data-id="${taskId}" data-index="${index}">
+          <img class="subtask__btn-icon" src="./assets/icons/delete.svg">
         </button>
       </div>
     </li>
@@ -153,14 +153,14 @@ export function getSubtaskEditItemTemplate(subtask, taskId, index) {
  */
 export function getSubtaskEditingStateTemplate(currentText) {
   return `
-    <input class="subtask-edit-input" type="text" value="${currentText}">
-    <div class="subtask-item-actions">
-      <button class="subtask-icon-btn" type="button" data-action="remove-subtask-edit">
-        <img src="./assets/icons/delete.svg">
+    <input class="subtask__edit-input" type="text" value="${currentText}">
+    <div class="subtask__item-actions">
+      <button class="subtask__btn" type="button" data-action="remove-subtask-edit">
+        <img class="subtask__btn-icon" src="./assets/icons/delete.svg">
       </button>
-      <div class="subtask-divider"></div>
-      <button class="subtask-icon-btn" type="button" data-action="confirm-subtask-edit">
-        <img src="./assets/icons/check-dark.svg">
+      <div class="subtask__divider"></div>
+      <button class="subtask__btn" type="button" data-action="confirm-subtask-edit">
+        <img class="subtask__btn-icon" src="./assets/icons/check-dark.svg">
       </button>
     </div>
   `;
@@ -173,12 +173,12 @@ export function getSubtaskEditingStateTemplate(currentText) {
  */
 export function getSubtaskEditActionsTemplate() {
   return `
-        <button class="subtask-icon-btn" data-action="remove-subtask" type="button">
-            <img src="./assets/icons/delete.svg" alt="Delete">
+        <button class="subtask__btn" data-action="remove-subtask" type="button">
+            <img class="subtask__btn-icon" src="./assets/icons/delete.svg" alt="Delete">
         </button>
-        <div class="subtask-divider"></div>
-        <button class="subtask-icon-btn" data-action="confirm-subtask" type="button">
-            <img src="./assets/icons/check-dark.svg" alt="Confirm">
+        <div class="subtask__divider"></div>
+        <button class="subtask__btn" data-action="confirm-subtask" type="button">
+            <img class="subtask__btn-icon" src="./assets/icons/check-dark.svg" alt="Confirm">
         </button>
     `;
 }

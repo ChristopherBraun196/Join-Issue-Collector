@@ -59,30 +59,6 @@
   opacity: 1;
 }
 
-.required {
-  color: var(--error-color);
-}
-
-input.input-error,
-textarea.input-error {
-  border-color: var(--error-color);
-  background-color: #fff5f6;
-}
-
-.field-error-msg {
-  visibility: hidden;
-  display: block;
-  color: var(--error-color);
-  font-size: 16px;
-  margin-top: 5px;
-  min-height: 20px;
-}
-
-#category-wrapper input[name="category"].input-error ~ .custom-select-trigger {
-  border-color: var(--error-color);
-  background-color: #fff5f6;
-}
-
 input[type="checkbox"] {
   width: 18px;
   height: 18px;

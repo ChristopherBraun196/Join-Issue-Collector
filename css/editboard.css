@@ -54,12 +54,7 @@
   filter: brightness(0) invert(1);
 }
 
-.custom-select-dropdown-inner {
-  max-height: 220px;
-  overflow-y: auto;
-}
-
-.custom-option .avatar {
+.dropdown__option .avatar {
   flex: none;
   width: 38px;
   height: 38px;
@@ -86,13 +81,6 @@
 }
 
 
-.subtask-icon-btn {
-  background: transparent;
-  border: none;
-  padding: 4px 8px;  
-  font-size: 16px;
-}
-
 .subtask-edit-item {
   display: flex;
   align-items: center;
@@ -107,12 +95,12 @@
   flex-shrink: 0;
 }
 
-.subtask-edit-item:has(.subtask-edit-input) {
+.subtask-edit-item:has(.subtask__edit-input) {
   padding: 0;
   background: #f0f4f8;
 }
 
-.subtask-edit-item .subtask-edit-input {
+.subtask-edit-item .subtask__edit-input {
   flex: 1;
   border: none;
   background: transparent;
@@ -121,7 +109,7 @@
   outline: none;
 }
 
-.subtask-edit-item .subtask-text {
+.subtask-edit-item .subtask__text {
   flex: 1;
 }
 
@@ -134,16 +122,10 @@
 .subtask-edit-item:hover {
   background: #f0f4f8;
 }
-.subtask-edit-item:hover .subtask-item-actions {
+.subtask-edit-item:hover .subtask__item-actions {
   opacity: 1;
 }
-.subtask-item-actions {
-  opacity: 0;
-  transition: opacity 0.15s;
-  margin-left: auto;
-}
-
-.subtask-edit-item:has(.subtask-edit-input) .subtask-item-actions {
+.subtask-edit-item:has(.subtask__edit-input) .subtask__item-actions {
   opacity: 1;
 }
 

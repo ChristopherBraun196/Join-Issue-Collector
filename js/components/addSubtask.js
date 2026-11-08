@@ -8,7 +8,7 @@ import { getSubtaskEditActionsTemplate } from "../templates/boardEditTemplates.j
 export function handleSubtaskAction(action, target) {
   if (action === "clear-subtask") clearSubtaskInput();
   if (action === "add-subtask") addSubtask();
-  if (action === "edit-subtask") editSubtask(target.closest("li").querySelector(".subtask-text"));
+  if (action === "edit-subtask") editSubtask(target.closest("li").querySelector(".subtask__text"));
   if (action === "remove-subtask") removeSubtask(target);
   if (action === "confirm-subtask") confirmEditSubtask(target);
 }
@@ -17,14 +17,14 @@ export function handleSubtaskAction(action, target) {
  * Sets the focus to the subtask input field.
  */
 function focusSubtaskInput() {
-  document.getElementById("subtask-input").focus();
+  document.querySelector(".task-form .subtask__input").focus();
 }
 
 /**
  * Clears the subtak input field
  */
 function clearSubtaskInput() {
-  document.getElementById("subtask-input").value = "";
+  document.querySelector(".task-form .subtask__input").value = "";
   onSubtaskInput();
 }
 
@@ -44,21 +44,21 @@ export function handleSubtaskKey(event) {
  * Toggles the visibility of the subtask confirm buttons based on the input value.
  */
 export function onSubtaskInput() {
-  const input = document.getElementById("subtask-input");
-  const confirmBtns = document.getElementById("subtask-confirm-btns");
+  const input = document.querySelector(".task-form .subtask__input");
+  const confirmBtns = document.querySelector(".task-form .subtask__confirm");
   const hasText = input.value.trim().length > 0;
-  confirmBtns.classList.toggle("visible", hasText);
+  confirmBtns.classList.toggle("subtask__confirm--visible", hasText);
 }
 
 /**
  * Adds a new subtask to the subtask list.
  */
 function addSubtask() {
-  const input = document.getElementById("subtask-input");
+  const input = document.querySelector(".task-form .subtask__input");
   const text = input.value.trim();
   if (!text) return;
 
-  const list = document.getElementById("subtask-list");
+  const list = document.querySelector(".task-form .subtask__list");
   const li = createSubtaskItem(text);
   list.appendChild(li);
   clearSubtaskInput();
@@ -71,15 +71,16 @@ function addSubtask() {
  */
 function createSubtaskItem(text) {
   const li = document.createElement("li");
+  li.className = "subtask__item";
   li.innerHTML = `
-        <span class="subtask-text" data-action="edit-subtask">${text}</span>
-        <div class="subtask-item-actions">
-            <button class="subtask-icon-btn" data-action="edit-subtask" type="button">
-                <img src="./assets/icons/edit.svg" alt="Edit">
+        <span class="subtask__text" data-action="edit-subtask">${text}</span>
+        <div class="subtask__item-actions">
+            <button class="subtask__btn" data-action="edit-subtask" type="button">
+                <img class="subtask__btn-icon" src="./assets/icons/edit.svg" alt="Edit">
             </button>
-            <div class="subtask-divider"></div>
-            <button class="subtask-icon-btn" data-action="remove-subtask" type="button">
-                <img src="./assets/icons/delete.svg" alt="Delete">
+            <div class="subtask__divider"></div>
+            <button class="subtask__btn" data-action="remove-subtask" type="button">
+                <img class="subtask__btn-icon" src="./assets/icons/delete.svg" alt="Delete">
             </button>
         </div>
     `;
@@ -101,12 +102,12 @@ function editSubtask(span) {
   const input = document.createElement("input");
   input.type = "text";
   input.value = currentText;
-  input.className = "subtask-edit-input";
+  input.className = "subtask__edit-input";
   li.replaceChild(input, span);
   input.focus();
   input.select();
 
-  const actions = li.querySelector(".subtask-item-actions");
+  const actions = li.querySelector(".subtask__item-actions");
   actions.innerHTML = getSubtaskEditActionsTemplate();
 
   input.addEventListener("keydown", (e) => {
@@ -121,7 +122,7 @@ function editSubtask(span) {
  */
 function confirmEditSubtask(btn) {
   const li = btn.closest("li");
-  const input = li.querySelector(".subtask-edit-input");
+  const input = li.querySelector(".subtask__edit-input");
   const newText = input.value.trim();
   if (!newText) {
     li.remove();

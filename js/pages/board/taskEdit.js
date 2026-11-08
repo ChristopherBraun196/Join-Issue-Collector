@@ -37,7 +37,7 @@ export function handleEditSubtaskAction(target, action) {
   const { id, index } = target.dataset;
   if (action === "clear-subtask-edit") clearSubtaskInputEdit();
   if (action === "add-subtask-edit") addSubtaskEdit(id);
-  if (action === "edit-subtask-edit") editSubtaskEditMode(target.closest("li").querySelector(".subtask-text"));
+  if (action === "edit-subtask-edit") editSubtaskEditMode(target.closest("li").querySelector(".subtask__text"));
   if (action === "delete-subtask-edit") deleteSubtaskEdit(id, Number(index));
   if (action === "remove-subtask-edit") target.closest("li").remove();
   if (action === "confirm-subtask-edit") confirmSubtaskEditMode(target);
@@ -122,7 +122,7 @@ function getSubtasksEditTemplate(subtasks, taskId) {
 export function onSubtaskInputEdit() {
   const input = document.getElementById("new-subtask-input");
   const btns = document.getElementById("subtask-confirm-btns-edit");
-  btns.classList.toggle("visible", input.value.trim().length > 0);
+  btns.classList.toggle("subtask__confirm--visible", input.value.trim().length > 0);
 }
 
 /**
@@ -171,8 +171,8 @@ async function deleteSubtaskEdit(taskId, subtaskIndex) {
 function toggleEditDropdown() {
   const dropdown = document.getElementById("edit-assigned-dropdown");
   const trigger = dropdown.previousElementSibling;
-  dropdown.classList.toggle("open");
-  trigger.classList.toggle("open");
+  dropdown.classList.toggle("dropdown__menu--open");
+  trigger.classList.toggle("dropdown__trigger--open");
 }
 
 /**
@@ -209,10 +209,10 @@ function getNormalizedAssignedTo(element) {
 function updateAssignedList(checkbox, assignedTo, contactId, currentTarget) {
   if (checkbox.checked) {
     assignedTo.push({ id: contactId });
-    currentTarget.classList.add("selected");
+    currentTarget.classList.add("dropdown__option--selected");
   } else {
     assignedTo = assignedTo.filter((a) => a.id !== contactId);
-    currentTarget.classList.remove("selected");
+    currentTarget.classList.remove("dropdown__option--selected");
   }
   return assignedTo;
 }
@@ -285,7 +285,7 @@ function editSubtaskEditMode(span) {
 
 function confirmSubtaskEditMode(btn) {
   const li = btn.closest("li");
-  const text = li.querySelector(".subtask-edit-input").value.trim();
+  const text = li.querySelector(".subtask__edit-input").value.trim();
   if (!text) {
     li.remove();
     return;

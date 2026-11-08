@@ -60,7 +60,7 @@ function handleTaskFormChange(event) {
  * @param {InputEvent} event - The input event
  */
 function handleTaskFormInput(event) {
-  if (event.target.matches("#subtask-input")) onSubtaskInput();
+  if (event.target.matches(".subtask__input")) onSubtaskInput();
 }
 
 /**
@@ -68,7 +68,7 @@ function handleTaskFormInput(event) {
  * @param {KeyboardEvent} event - The keydown event
  */
 function handleTaskFormKey(event) {
-  if (event.target.matches("#subtask-input")) handleSubtaskKey(event);
+  if (event.target.matches(".subtask__input")) handleSubtaskKey(event);
 }
 
 /**
@@ -85,7 +85,7 @@ function handleTaskFormSubmit(event) {
  * @param {HTMLElement} container - The container the listener is registered on
  */
 function clearTaskForm(container) {
-  if (container.id === "add-task-dialog") {
+  if (container.classList.contains("add-task-dialog")) {
     clearDialogAddTaskForm(container.querySelector("form").dataset.status);
   } else {
     clearAddTaskForm();
@@ -99,7 +99,7 @@ function clearTaskForm(container) {
 export function openAddTaskDialog(status) {
   let main = document.querySelector("main");
   let dialogSection = document.createElement("dialog");
-  dialogSection.id = "add-task-dialog";
+  dialogSection.className = "add-task-dialog";
   main.appendChild(dialogSection);
   dialogSection.innerHTML = getAddTaskDialogTemplate(status);
   initTaskForm(dialogSection);
@@ -122,7 +122,7 @@ function closeAddTaskDialog() {
  * @param {string} status - The initial status for the new task
  */
 function clearDialogAddTaskForm(status) {
-  const dialogSection = document.querySelector("#add-task-dialog");
+  const dialogSection = document.querySelector(".add-task-dialog");
   dialogSection.innerHTML = "";
   dialogSection.innerHTML = getAddTaskDialogTemplate(status);
   renderContacts();
@@ -132,24 +132,24 @@ function clearDialogAddTaskForm(status) {
  * Resets the add task form in addtask.html including all custom dropdowns, priority buttons, and subtasks.
  */
 function clearAddTaskForm() {
-  document.getElementById("add-task-form").reset();
-  document.querySelectorAll("#assigned-dropdown .custom-option.selected").forEach((opt) => {
-    opt.classList.remove("selected");
+  document.querySelector(".task-form").reset();
+  document.querySelectorAll(".dropdown--assigned .dropdown__option--selected").forEach((opt) => {
+    opt.classList.remove("dropdown__option--selected");
     opt.querySelector('input[type="checkbox"]').checked = false;
   });
-  document.getElementById("assigned-badges").innerHTML = "";
+  document.querySelector(".task-form__badges").innerHTML = "";
   document
-    .querySelectorAll("#category-dropdown .custom-option.selected")
-    .forEach((opt) => opt.classList.remove("selected"));
-  document.querySelector('#category-wrapper input[name="category"]').value = "";
-  document.getElementById("category-placeholder").textContent = "Select task category";
-  document.getElementById("category-placeholder").style.color = "";
-  document.querySelectorAll("#task-priority-btns .priority-btn").forEach((btn) => btn.classList.remove("set"));
-  document.querySelector("#task-priority-btns .priority-btn.medium").classList.add("set");
-  document.getElementById("subtask-list").innerHTML = "";
+    .querySelectorAll(".dropdown--category .dropdown__option--selected")
+    .forEach((opt) => opt.classList.remove("dropdown__option--selected"));
+  document.querySelector('.dropdown--category input[name="category"]').value = "";
+  document.querySelector(".dropdown--category .dropdown__placeholder").textContent = "Select task category";
+  document.querySelector(".dropdown--category .dropdown__placeholder").style.color = "";
+  document.querySelectorAll(".task-form__priority-btn").forEach((btn) => btn.classList.remove("task-form__priority-btn--active"));
+  document.querySelector(".task-form__priority-btn--medium").classList.add("task-form__priority-btn--active");
+  document.querySelector(".subtask__list").innerHTML = "";
 
-  document.querySelectorAll("#add-task-form .input-error").forEach((input) => clearFieldError(input));
-  document.querySelectorAll("#add-task-form .field-error-msg").forEach((el) => (el.style.visibility = "hidden"));
+  document.querySelectorAll(".task-form .task-form__input--invalid").forEach((input) => clearFieldError(input));
+  document.querySelectorAll(".task-form .task-form__error").forEach((el) => (el.style.visibility = "hidden"));
 }
 
 /**
@@ -157,11 +157,11 @@ function clearAddTaskForm() {
  * @param {HTMLElement} clickedButton - The priority button that was clicked
  */
 function setPriority(clickedButton) {
-  const buttons = document.querySelectorAll("#task-priority-btns .priority-btn");
+  const buttons = document.querySelectorAll(".task-form__priority-btn");
   buttons.forEach((btn) => {
-    btn.classList.remove("set");
+    btn.classList.remove("task-form__priority-btn--active");
   });
-  clickedButton.classList.add("set");
+  clickedButton.classList.add("task-form__priority-btn--active");
 }
 
 /**
@@ -187,18 +187,18 @@ async function loadContacts() {
  */
 export async function renderContacts() {
   await loadContacts();
-  const container = document.getElementById("custom-select-dropdown-inner");
+  const container = document.querySelector(".dropdown--assigned .dropdown__list");
 
   container.innerHTML = contacts
     .map(
       (contact) => `
-        <div class="custom-option" 
+        <div class="dropdown__option" 
              data-action="toggle-contact" 
              data-id="${contact.id}">
-            <div class="contact-avatar" style="background:${contact.color}">
+            <div class="dropdown__avatar" style="background:${contact.color}">
                 ${getInitials(contact.name)}
             </div>
-            <span>${contact.name}</span>
+            <span class="dropdown__label">${contact.name}</span>
             <input type="checkbox">
         </div>
     `,
@@ -211,17 +211,17 @@ export async function renderContacts() {
  * @param {string} id - The ID of the dropdown to toggle
  */
 function toggleDropdown(id) {
-  const wrapper = document.getElementById(`${id}-wrapper`);
-  const trigger = wrapper.querySelector(".custom-select-trigger");
-  const dropdown = document.getElementById(`${id}-dropdown`);
-  const isOpen = dropdown.classList.contains("open");
+  const wrapper = document.querySelector(`.dropdown--${id}`);
+  const trigger = wrapper.querySelector(".dropdown__trigger");
+  const dropdown = wrapper.querySelector(".dropdown__menu");
+  const isOpen = dropdown.classList.contains("dropdown__menu--open");
 
-  document.querySelectorAll(".custom-select-dropdown.open").forEach((d) => d.classList.remove("open"));
-  document.querySelectorAll(".custom-select-trigger.open").forEach((t) => t.classList.remove("open"));
+  document.querySelectorAll(".dropdown__menu--open").forEach((d) => d.classList.remove("dropdown__menu--open"));
+  document.querySelectorAll(".dropdown__trigger--open").forEach((t) => t.classList.remove("dropdown__trigger--open"));
 
   if (!isOpen) {
-    dropdown.classList.add("open");
-    trigger.classList.add("open");
+    dropdown.classList.add("dropdown__menu--open");
+    trigger.classList.add("dropdown__trigger--open");
   } else if (id === "category") {
     const hiddenInput = wrapper.querySelector('input[name="category"]');
     if (hiddenInput) validateOnBlur(hiddenInput, "Please select a category");
@@ -233,14 +233,14 @@ function toggleDropdown(id) {
  * @param {HTMLElement} option - The selected category option element
  */
 function selectCategory(option) {
-  document.querySelectorAll("#category-dropdown .custom-option").forEach((o) => o.classList.remove("selected"));
-  option.classList.add("selected");
+  document.querySelectorAll(".dropdown--category .dropdown__option").forEach((o) => o.classList.remove("dropdown__option--selected"));
+  option.classList.add("dropdown__option--selected");
 
-  const placeholder = document.getElementById("category-placeholder");
+  const placeholder = document.querySelector(".dropdown--category .dropdown__placeholder");
   placeholder.textContent = option.querySelector("span").textContent;
   placeholder.style.color = "#2a3647";
 
-  const hiddenInput = document.querySelector('#category-wrapper input[name="category"]');
+  const hiddenInput = document.querySelector('.dropdown--category input[name="category"]');
   hiddenInput.value = option.dataset.value;
   clearFieldError(hiddenInput);
 
@@ -253,7 +253,7 @@ function selectCategory(option) {
  */
 function toggleContact(option) {
   const checkbox = option.querySelector('input[type="checkbox"]');
-  const isSelected = option.classList.toggle("selected");
+  const isSelected = option.classList.toggle("dropdown__option--selected");
   checkbox.checked = isSelected;
   updateAssignedBadges();
 }
@@ -262,17 +262,17 @@ function toggleContact(option) {
  * Updates the assigned contact badges based on the selected contacts.
  */
 function updateAssignedBadges() {
-  const badges = document.getElementById("assigned-badges");
+  const badges = document.querySelector(".task-form__badges");
   badges.innerHTML = "";
   const limit = 5;
-  const selected = document.querySelectorAll("#assigned-dropdown .custom-option.selected");
+  const selected = document.querySelectorAll(".dropdown--assigned .dropdown__option--selected");
   const total = selected.length;
 
   selected.forEach((opt, i) => {
     if (i >= limit) return;
-    const avatar = opt.querySelector(".contact-avatar");
+    const avatar = opt.querySelector(".dropdown__avatar");
     const badge = document.createElement("div");
-    badge.className = "badge-avatar";
+    badge.className = "task-form__badge";
     badge.style.background = avatar.style.background;
     badge.textContent = avatar.textContent.trim();
     badges.appendChild(badge);
@@ -280,7 +280,7 @@ function updateAssignedBadges() {
 
   if (total > limit) {
     const overflow = document.createElement("div");
-    overflow.className = "badge-avatar overflow-badge";
+    overflow.className = "task-form__badge task-form__badge--overflow";
     overflow.textContent = `+${total - limit}`;
     badges.appendChild(overflow);
   }
@@ -304,14 +304,14 @@ function renderSelectedAvatars() {
 }
 
 document.addEventListener("click", (e) => {
-  if (!e.target.closest(".custom-select-wrapper")) {
-    document.querySelectorAll(".custom-select-dropdown.open").forEach((d) => {
-      d.classList.remove("open");
+  if (!e.target.closest(".dropdown")) {
+    document.querySelectorAll(".dropdown__menu--open").forEach((d) => {
+      d.classList.remove("dropdown__menu--open");
 
-      const wrapper = d.closest(".custom-select-wrapper");
+      const wrapper = d.closest(".dropdown");
       const hiddenInput = wrapper?.querySelector('input[name="category"]');
       if (hiddenInput) validateOnBlur(hiddenInput, "Please select a category");
     });
-    document.querySelectorAll(".custom-select-trigger.open").forEach((t) => t.classList.remove("open"));
+    document.querySelectorAll(".dropdown__trigger--open").forEach((t) => t.classList.remove("dropdown__trigger--open"));
   }
 });
