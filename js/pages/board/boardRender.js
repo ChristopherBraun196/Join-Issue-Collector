@@ -22,22 +22,23 @@ export async function renderAll() {
  * @returns {Promise<void>}
  */
 export async function renderSection(section) {
+  await renderCards(
+    section,
+    tasks.filter((t) => t.status === section),
+  );
+}
+
+/**
+ * Builds all cards of a column first and then sets them in one step,
+ * so overlapping renders cannot add the same card twice.
+ * @param {string} section - The column name
+ * @param {Object[]} sectionTasks - The tasks to show in this column
+ * @returns {Promise<void>}
+ */
+async function renderCards(section, sectionTasks) {
   const container = document.querySelector(`[data-cards="${section}"]`);
-  container.innerHTML = "";
-  const taskStatus = tasks.filter((t) => t["status"] == section);
-
-  for (let i = 0; i < taskStatus.length; i++) {
-    const element = taskStatus[i];
-    const [solved, total, visibility] = await getSubtaskData(element);
-
-    container.innerHTML += await getToDoTemplate(
-      element,
-      solved,
-      total,
-      visibility,
-      calcSubtaskProgress(solved, total),
-    );
-  }
+  const cards = await Promise.all(sectionTasks.map(getTaskCardHTML));
+  container.innerHTML = cards.join("");
 }
 
 /**
@@ -192,21 +193,10 @@ export async function findTask(input) {
 
 async function renderFilteredTasks(filteredTasks) {
   for (const section of COLUMNS) {
-    const container = document.querySelector(`[data-cards="${section}"]`);
-    container.innerHTML = "";
-
-    const sectionTasks = filteredTasks.filter((t) => t.status === section);
-
-    for (const element of sectionTasks) {
-      const [solved, total, visibility] = await getSubtaskData(element);
-      container.innerHTML += await getToDoTemplate(
-        element,
-        solved,
-        total,
-        visibility,
-        calcSubtaskProgress(solved, total),
-      );
-    }
+    await renderCards(
+      section,
+      filteredTasks.filter((t) => t.status === section),
+    );
   }
   updateNoTaskPlaceholders();
   updateScrollArrows();
