@@ -3,7 +3,7 @@
  */
 export function initLogoAnimation() {
   setLogoAnimationTarget();
-  document.querySelector("#animated-img-wrapper").addEventListener("animationend", handleIntroEnd);
+  document.querySelector(".login__intro").addEventListener("animationend", handleIntroEnd);
 }
 
 /**
@@ -11,7 +11,7 @@ export function initLogoAnimation() {
  * The logo is briefly made measurable without becoming visible.
  */
 function setLogoAnimationTarget() {
-  const logo = document.querySelector("#navbar-logo");
+  const logo = document.querySelector(".login__logo");
   logo.style.visibility = "hidden";
   logo.classList.remove("login__logo--hidden");
   setLogoTargetVariables(logo.getBoundingClientRect());
@@ -39,5 +39,5 @@ function handleIntroEnd(event) {
   const intro = event.currentTarget;
   if (event.target !== intro) return;
   intro.style.display = "none";
-  document.querySelector("#navbar-logo").classList.remove("login__logo--hidden");
+  document.querySelector(".login__logo").classList.remove("login__logo--hidden");
 }

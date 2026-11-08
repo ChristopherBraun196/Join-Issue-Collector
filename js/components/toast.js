@@ -3,15 +3,15 @@
  * @param {string} message - The message to display
  */
 export function showMessage(message) {
-  const messageElement = document.getElementById("message-box");
-  messageElement.classList.add("visible");
+  const messageElement = document.querySelector(".toast");
+  messageElement.classList.add("toast--visible");
   const msgNode = document.createElement("p");
   msgNode.textContent = message.toString();
   messageElement.appendChild(msgNode);
   setTimeout(() => {
     msgNode.remove();
     if (messageElement.children.length === 0) {
-      messageElement.classList.remove("visible");
+      messageElement.classList.remove("toast--visible");
     }
   }, 5000);
 }

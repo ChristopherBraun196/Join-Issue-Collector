@@ -50,7 +50,7 @@
                 </svg>
               </div>
               <div class="summary__counter">
-                <div id="todo_count" class="summary__count"></div>
+                <div data-count="todo" class="summary__count"></div>
                 <a>To-do</a>
               </div>
             </div>
@@ -69,7 +69,7 @@
                 </svg>
               </div>
               <div class="summary__counter">
-                <div id="done_count" class="summary__count"></div>
+                <div data-count="done" class="summary__count"></div>
                 <a>Done</a>
               </div>
             </div>
@@ -80,20 +80,20 @@
               <div class="summary__urgent">
                 <img src="./assets/icons/urgent_icon.svg" />
                 <div class="summary__counter">
-                  <div id="urgent_count" class="summary__count"></div>
+                  <div data-count="urgent" class="summary__count"></div>
                   <a>Urgent</a>
                 </div>
               </div>
               <div class="summary__divider"></div>
               <div class="summary__counter">
-                <div id="deadline" class="summary__deadline"></div>
+                <div class="summary__deadline"></div>
                 <a>Upcoming Deadline</a>
               </div>
             </div>
 
             <div class="summary__bubble">
               <div class="summary__counter">
-                <div id="email_requests_count" class="summary__count summary__count--gradient"></div>
+                <div data-count="email-requests" class="summary__count summary__count--gradient"></div>
                 <a>Email requests</a>
               </div>
             </div>
@@ -102,19 +102,19 @@
           <div class="summary__row summary__row--last">
             <div class="summary__bubble">
               <div class="summary__counter">
-                <div id="board_count" class="summary__count"></div>
+                <div data-count="board" class="summary__count"></div>
                 <a>Tasks in Board </a>
               </div>
             </div>
             <div class="summary__bubble">
               <div class="summary__counter">
-                <div id="progress_count" class="summary__count"></div>
+                <div data-count="progress" class="summary__count"></div>
                 <a>Tasks in Progress</a>
               </div>
             </div>
             <div class="summary__bubble">
               <div class="summary__counter">
-                <div id="feedback_count" class="summary__count"></div>
+                <div data-count="feedback" class="summary__count"></div>
                 <a>Awaiting Feedback</a>
               </div>
             </div>
@@ -122,7 +122,7 @@
         </div>
 
         <div class="summary__greeting">
-          <div id="greeting-msg" class="summary__greeting-text"></div>
+          <div class="summary__greeting-text"></div>
           <div class="summary__greeting-name"></div>
         </div>
       </div>

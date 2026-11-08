@@ -30,8 +30,8 @@ function getTodayKey() {
  */
 function renderRequestCount(snapshot) {
   const count = snapshot.val()?.count ?? 0;
-  document.querySelector("#requestCounter .stakeholder__count strong").textContent = count;
-  document.querySelector("#stakeholderLayout").classList.toggle("stakeholder__layout--limit", count >= DAILY_LIMIT);
+  document.querySelector(".stakeholder__counter .stakeholder__count strong").textContent = count;
+  document.querySelector(".stakeholder__layout").classList.toggle("stakeholder__layout--limit", count >= DAILY_LIMIT);
 }
 
 document.addEventListener("DOMContentLoaded", init);

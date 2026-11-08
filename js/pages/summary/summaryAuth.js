@@ -50,6 +50,6 @@ function getGreeting(hour) {
  * @param {string} name - The display name of the current user
  */
 function setGreeting(name) {
-  document.querySelector("#greeting-msg").textContent = getGreeting(new Date().getHours());
+  document.querySelector(".summary__greeting-text").textContent = getGreeting(new Date().getHours());
   document.querySelector(".summary__greeting-name").textContent = name;
 }

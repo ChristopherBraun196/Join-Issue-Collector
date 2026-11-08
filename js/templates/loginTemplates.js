@@ -10,30 +10,30 @@ export function getLoginTemplate() {
             <div class="login__divider"></div>
         </div>
 
-        <form id="login-signup-form" class="login__form" data-form="login" novalidate>
+        <form class="login__form" data-form="login" novalidate>
             <div class="login__fields">
                 <div class="login__field">
                     <div class="login__input login__input--email">
-                        <input class="login__input-field" type="email" placeholder="Email" name="email" autocomplete="additional-name" data-validate="email-error"/>
+                        <input class="login__input-field" type="email" placeholder="Email" name="email" autocomplete="additional-name" data-validate="email"/>
                         <span><img class="login__icon" src="./assets/icons/mail.svg" alt="Email icon"></span>
                     </div>
-                    <span class="login__error" id="email-error"></span>
+                    <span class="login__error login__error--email"></span>
                 </div>
                 <div class="login__field">
                     <div class="login__input login__input--password">
-                        <input class="login__input-field" type="password" placeholder="Password" name="password" data-validate="password-error" data-pwd-input/>
+                        <input class="login__input-field" type="password" placeholder="Password" name="password" data-validate="password" data-pwd-input/>
                         <span class="login__lock"><img class="login__icon" src="./assets/icons/lock.svg" alt="Lock icon"></span>
                         <button type="button" class="login__pwd-toggle" data-action="toggle-pwd" tabindex="-1">
                             <img class="login__icon login__eye login__eye--off" src="./assets/icons/visibility-off.svg" alt="Hide password">
                             <img class="login__icon login__eye login__eye--on" src="./assets/icons/visibility-on.svg" alt="Show password">
                         </button>
                     </div>
-                    <span class="login__error" id="password-error"></span>
+                    <span class="login__error login__error--password"></span>
                 </div>
             </div>
             <div class="login__buttons">
-                <button id="login-btn" class="primary-btn login__btn" type="submit">Log in</button>
-                <button id="guest-login-btn" class="login__btn login__btn--secondary" type="button" data-action="guest-login">Guest Log in</button>
+                <button class="primary-btn login__btn" type="submit">Log in</button>
+                <button class="login__btn login__btn--secondary" type="button" data-action="guest-login">Guest Log in</button>
             </div>
         </form>
     `;
@@ -52,34 +52,34 @@ export function getSignupTemplate() {
             <div class="login__divider"></div>
         </div>
 
-        <form id="login-signup-form" class="login__form" data-form="signup" novalidate>
+        <form class="login__form" data-form="signup" novalidate>
             <div class="login__fields">
                 <div class="login__field">
                     <div class="login__input login__input--name">
-                        <input class="login__input-field" type="text" placeholder="Full Name" name="fullname" autocomplete="name" data-validate="fullname-error"/>
+                        <input class="login__input-field" type="text" placeholder="Full Name" name="fullname" autocomplete="name" data-validate="fullname"/>
                         <span><img class="login__icon" src="./assets/icons/person.svg" alt="User icon"></span>
                     </div>
-                    <span class="login__error" id="fullname-error"></span>
+                    <span class="login__error login__error--fullname"></span>
                 </div>
 
                 <div class="login__field">
                     <div class="login__input login__input--email">
-                        <input class="login__input-field" type="email" placeholder="Email" name="email" autocomplete="email" data-validate="email-error"/>
+                        <input class="login__input-field" type="email" placeholder="Email" name="email" autocomplete="email" data-validate="email"/>
                         <span><img class="login__icon" src="./assets/icons/mail.svg" alt="Email icon"></span>
                     </div>
-                    <span class="login__error" id="email-error"></span>
+                    <span class="login__error login__error--email"></span>
                 </div>
 
                 <div class="login__field">
                     <div class="login__input login__input--password">
-                        <input class="login__input-field" type="password" placeholder="Password" name="password" data-validate="password-error" data-pwd-input/>
+                        <input class="login__input-field" type="password" placeholder="Password" name="password" data-validate="password" data-pwd-input/>
                         <span class="login__lock"><img class="login__icon" src="./assets/icons/lock.svg" alt="Lock icon"></span>
                         <button type="button" class="login__pwd-toggle" data-action="toggle-pwd" tabindex="-1">
                             <img class="login__icon login__eye login__eye--off" src="./assets/icons/visibility-off.svg" alt="Hide password">
                             <img class="login__icon login__eye login__eye--on" src="./assets/icons/visibility-on.svg" alt="Show password">
                         </button>
                     </div>
-                    <span class="login__error" id="password-error"></span>
+                    <span class="login__error login__error--password"></span>
                 </div>
 
                 <div class="login__field">
@@ -91,18 +91,18 @@ export function getSignupTemplate() {
                             <img class="login__icon login__eye login__eye--on" src="./assets/icons/visibility-on.svg" alt="Show password">
                         </button>
                     </div>
-                    <span class="login__error" id="password-confirm-error"></span>
+                    <span class="login__error login__error--password-confirm"></span>
                 </div>
                 <div class="login__field">
                     <div class="login__accept">
-                        <input type="checkbox" id="accept-btn" class="login__checkbox"/><p>I accept the <a class="highlighted" href="./legal.html">Privacy policy</a></p>
+                        <input type="checkbox" class="login__checkbox"/><p>I accept the <a class="highlighted" href="./legal.html">Privacy policy</a></p>
                     </div>
-                    <span class="login__error login__error--center" id="accept-error"></span>
+                    <span class="login__error login__error--center login__error--accept"></span>
                 </div>
             </div>
 
             <div class="login__buttons">
-                <button id="signup-btn" class="primary-btn login__btn" type="submit">Sign Up</button>
+                <button class="primary-btn login__btn" type="submit">Sign Up</button>
             </div>
         </form>
     `;

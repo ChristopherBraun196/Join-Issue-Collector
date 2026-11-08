@@ -34,8 +34,8 @@ async function signup(name, email, password) {
  * @param {string} message - The error message to display
  */
 function showInputError(name, message) {
-  const input = document.querySelector(`#login-signup-form input[name='${name}']`);
-  showFieldError(input.closest(".login__input"), document.querySelector(`#${name}-error`), message);
+  const input = document.querySelector(`.login__form input[name='${name}']`);
+  showFieldError(input.closest(".login__input"), document.querySelector(`.login__error--${name}`), message);
 }
 
 /**
@@ -57,7 +57,7 @@ function handleLoginError(error) {
     showInputError("password", "Too many failed attempts. Please wait a moment.");
     return;
   }
-  document.querySelector("#login-signup-form .login__input--email").classList.add("login__input--invalid");
+  document.querySelector(".login__form .login__input--email").classList.add("login__input--invalid");
   showInputError("password", "Wrong email address or password.");
 }
 
@@ -129,10 +129,10 @@ export function togglePwdVisibility(btn) {
 /**
  * Validates a field on blur and shows an error if it is empty or not a valid email.
  * @param {HTMLInputElement} input - The input element
- * @param {string} errorId - The ID of the error span
+ * @param {string} errorId - The field name of the error span (e.g. "email")
  */
 export function validateField(input, errorId) {
-  const errorEl = document.getElementById(errorId);
+  const errorEl = document.querySelector(`.login__error--${errorId}`);
   const message = getFieldErrorMessage(input);
   if (message) showFieldError(input.parentElement, errorEl, message);
   else clearFieldError(input.parentElement, errorEl);
@@ -159,9 +159,9 @@ function getFieldErrorMessage(input) {
  * @param {HTMLInputElement} input - The confirm password input element
  */
 export function validatePasswordConfirm(input) {
-  const errorEl = document.getElementById("password-confirm-error");
+  const errorEl = document.querySelector(".login__error--password-confirm");
   const wrapper = input.parentElement;
-  const form = document.getElementById("login-signup-form");
+  const form = document.querySelector(".login__form");
   const password = form.querySelector("input[name='password']").value;
   if (!input.value.trim()) {
     showFieldError(wrapper, errorEl, "This field is required");
@@ -177,7 +177,7 @@ export function validatePasswordConfirm(input) {
  * @returns {{emailInput: HTMLElement, passwordInput: HTMLElement}}
  */
 function getLoginFormInputs() {
-  const form = document.getElementById("login-signup-form");
+  const form = document.querySelector(".login__form");
   return {
     emailInput: form.querySelector("input[name='email']"),
     passwordInput: form.querySelector("input[name='password']"),
@@ -191,8 +191,8 @@ function getLoginFormInputs() {
  * @returns {boolean} True if all inputs are valid
  */
 function validateLoginInputs(emailInput, passwordInput) {
-  const emailValid = validateInputField(emailInput, "email-error");
-  const passwordValid = validateInputField(passwordInput, "password-error");
+  const emailValid = validateInputField(emailInput, "email");
+  const passwordValid = validateInputField(passwordInput, "password");
   return emailValid && passwordValid;
 }
 
@@ -211,20 +211,20 @@ export async function handleLogin() {
  * @returns {{nameInput: HTMLElement, emailInput: HTMLElement, passwordInput: HTMLElement, passwordConfirmInput: HTMLElement, acceptCheckbox: HTMLElement}}
  */
 function getSignupFormInputs() {
-  const form = document.getElementById("login-signup-form");
+  const form = document.querySelector(".login__form");
   return {
     nameInput: form.querySelector("input[name='fullname']"),
     emailInput: form.querySelector("input[name='email']"),
     passwordInput: form.querySelector("input[name='password']"),
     passwordConfirmInput: form.querySelector("input[name='password_confirm']"),
-    acceptCheckbox: form.querySelector("#accept-btn"),
+    acceptCheckbox: form.querySelector(".login__checkbox"),
   };
 }
 
 /**
  * Validates an input on submit with the same rules as on blur.
  * @param {HTMLInputElement} input - The input element
- * @param {string} errorId - The ID of the error span
+ * @param {string} errorId - The field name of the error span (e.g. "email")
  * @returns {boolean} True if the input is valid
  */
 function validateInputField(input, errorId) {
@@ -239,7 +239,7 @@ function validateInputField(input, errorId) {
  * @returns {boolean} True if both passwords match
  */
 function validateSignupPasswordConfirm(passwordInput, passwordConfirmInput) {
-  const error = document.getElementById("password-confirm-error");
+  const error = document.querySelector(".login__error--password-confirm");
   if (!passwordConfirmInput.value.trim())
     return !showFieldError(passwordConfirmInput.closest(".login__input--password"), error, "This field is required");
   if (passwordConfirmInput.value !== passwordInput.value)
@@ -254,7 +254,7 @@ function validateSignupPasswordConfirm(passwordInput, passwordConfirmInput) {
  * @returns {boolean} True if the checkbox is checked
  */
 function validateAcceptCheckbox(acceptCheckbox) {
-  const error = document.getElementById("accept-error");
+  const error = document.querySelector(".login__error--accept");
   if (acceptCheckbox.checked) {
     acceptCheckbox.classList.remove("login__checkbox--invalid");
     error.textContent = "";
@@ -273,9 +273,9 @@ function validateAcceptCheckbox(acceptCheckbox) {
  * @returns {boolean} True if all inputs are valid
  */
 function validateSignupInputs({ nameInput, emailInput, passwordInput, passwordConfirmInput, acceptCheckbox }) {
-  const nameValid = validateInputField(nameInput, "fullname-error");
-  const emailValid = validateInputField(emailInput, "email-error");
-  const passwordValid = validateInputField(passwordInput, "password-error");
+  const nameValid = validateInputField(nameInput, "fullname");
+  const emailValid = validateInputField(emailInput, "email");
+  const passwordValid = validateInputField(passwordInput, "password");
   const confirmValid = validateSignupPasswordConfirm(passwordInput, passwordConfirmInput);
   const acceptValid = validateAcceptCheckbox(acceptCheckbox);
   return nameValid && emailValid && passwordValid && confirmValid && acceptValid;

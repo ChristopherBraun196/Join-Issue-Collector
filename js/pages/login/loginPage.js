@@ -16,7 +16,7 @@ import { initLogoAnimation } from "./logoAnimation.js";
  */
 function init() {
   initLogoAnimation();
-  const section = document.getElementById("login-signup-section");
+  const section = document.querySelector(".login__card");
   switchToLogin();
   document.addEventListener("click", handleLoginPageClick);
   section.addEventListener("submit", handleFormSubmit);

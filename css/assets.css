@@ -27,7 +27,7 @@
   box-shadow: 0 4px 4px 0 #00000050;
 }
 
-#message-box {
+.toast {
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -54,7 +54,7 @@
   min-width: 200px;
 }
 
-#message-box.visible {
+.toast.toast--visible {
   transform: translate(-50%, 0);
   opacity: 1;
 }

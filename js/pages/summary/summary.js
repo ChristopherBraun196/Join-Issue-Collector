@@ -45,14 +45,14 @@ function getSummaryCounts(tasks) {
  * @param {Object} counts - The counts object returned by getSummaryCounts
  */
 function renderSummaryElements(counts) {
-  document.getElementById("todo_count").textContent = counts.toDoCount;
-  document.getElementById("done_count").textContent = counts.doneCount;
-  document.getElementById("progress_count").textContent = counts.progressCount;
-  document.getElementById("feedback_count").textContent = counts.feedbackCount;
-  document.getElementById("board_count").textContent = counts.boardCount;
-  document.getElementById("urgent_count").textContent = counts.urgentCount;
-  document.getElementById("deadline").textContent = counts.deadline;
-  document.getElementById("email_requests_count").textContent = counts.emailRequestsCount;
+  document.querySelector('[data-count="todo"]').textContent = counts.toDoCount;
+  document.querySelector('[data-count="done"]').textContent = counts.doneCount;
+  document.querySelector('[data-count="progress"]').textContent = counts.progressCount;
+  document.querySelector('[data-count="feedback"]').textContent = counts.feedbackCount;
+  document.querySelector('[data-count="board"]').textContent = counts.boardCount;
+  document.querySelector('[data-count="urgent"]').textContent = counts.urgentCount;
+  document.querySelector(".summary__deadline").textContent = counts.deadline;
+  document.querySelector('[data-count="email-requests"]').textContent = counts.emailRequestsCount;
 }
 
 /**
