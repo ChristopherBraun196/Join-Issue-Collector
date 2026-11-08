@@ -1,4 +1,4 @@
-import "./summaryAuth.js";
+import { initGreeting } from "./summaryAuth.js";
 import { init as initLayout } from "../../components/layout.js";
 import { loadData } from "../../services/database.js";
 import { STATUS } from "../../utils/constants.js";
@@ -8,6 +8,7 @@ import { STATUS } from "../../utils/constants.js";
  */
 function init() {
   initLayout("summary");
+  initGreeting();
   initSummary();
   document.querySelector("#summary-main").addEventListener("click", handleBubbleClick);
 }
@@ -60,27 +61,21 @@ function renderSummaryElements(counts) {
  */
 async function initSummary() {
   const data = await loadData("/tasks");
-
   const tasks = data ? Object.entries(data).map(([id, task]) => ({ ...task, id })) : [];
-
   renderSummaryElements(getSummaryCounts(tasks));
+  if (window.innerWidth <= 1200) setTimeout(fadeOutGreeting, 1000);
+}
 
-  if (window.innerWidth <= 1200) {
-    const welcomeMsg = document.querySelector(".summary__greeting");
-    if (!welcomeMsg) return;
-
-    setTimeout(() => {
-      welcomeMsg.classList.add("summary__greeting--fade-out");
-
-      welcomeMsg.addEventListener(
-        "transitionend",
-        () => {
-          welcomeMsg.classList.add("summary__greeting--hidden");
-        },
-        { once: true },
-      );
-    }, 1000);
-  }
+/**
+ * Fades out the mobile greeting overlay and hides it once the transition has finished.
+ */
+function fadeOutGreeting() {
+  const greeting = document.querySelector(".summary__greeting");
+  if (!greeting) return;
+  greeting.classList.add("summary__greeting--fade-out");
+  greeting.addEventListener("transitionend", () => greeting.classList.add("summary__greeting--hidden"), {
+    once: true,
+  });
 }
 
 /**
