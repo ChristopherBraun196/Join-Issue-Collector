@@ -8,9 +8,7 @@ import { tasks, COLUMNS } from "./boardData.js";
  * @returns {Promise<void>}
  */
 export async function renderAll() {
-  for (const column of COLUMNS) {
-    await renderSection(column);
-  }
+  await Promise.all(COLUMNS.map((column) => renderSection(column)));
 
   updateNoTaskPlaceholders();
   updateScrollArrows();
@@ -192,12 +190,14 @@ export async function findTask(input) {
 }
 
 async function renderFilteredTasks(filteredTasks) {
-  for (const section of COLUMNS) {
-    await renderCards(
-      section,
-      filteredTasks.filter((t) => t.status === section),
-    );
-  }
+  await Promise.all(
+    COLUMNS.map((section) =>
+      renderCards(
+        section,
+        filteredTasks.filter((t) => t.status === section),
+      ),
+    ),
+  );
   updateNoTaskPlaceholders();
   updateScrollArrows();
 }
