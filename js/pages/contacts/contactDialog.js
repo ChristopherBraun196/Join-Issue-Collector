@@ -107,17 +107,33 @@ function getContactPhone() {
 }
 
 /**
+ * Writes data to Firebase while the submit button is disabled, so a double click cannot save twice.
+ * @param {Function} writeFn - The database function to use (putData or updateData)
+ * @param {string} path - The Firebase path
+ * @param {Object} data - The data to write
+ * @returns {Promise<boolean>} True if the data was saved
+ */
+async function saveWithLockedButton(writeFn, path, data) {
+  const button = document.querySelector(".contact-dialog__submit");
+  button.disabled = true;
+  try {
+    await writeFn(path, data);
+    return true;
+  } catch {
+    return false;
+  } finally {
+    button.disabled = false;
+  }
+}
+
+/**
  * Creates a new contact in Firebase and refreshes the contact list.
  * @returns {Promise<void>}
  */
 export async function submitContact() {
   if (!validateInputs()) return;
   const contactID = "contact-" + generateUUID();
-  try {
-    await putData("/contacts/" + contactID, generateContactJson(contactID));
-  } catch {
-    return;
-  }
+  if (!(await saveWithLockedButton(putData, "/contacts/" + contactID, generateContactJson(contactID)))) return;
   closeContactDialog();
   await loadContacts();
   openContactById(contactID);
@@ -209,11 +225,7 @@ export function editContact(contactId) {
 export async function saveContact(contactId) {
   if (!validateInputs(contactId)) return;
   const changes = { name: getContactName(), email: getContactEmailAdress(), phone: getContactPhone() };
-  try {
-    await updateData("/contacts/" + contactId, changes);
-  } catch {
-    return;
-  }
+  if (!(await saveWithLockedButton(updateData, "/contacts/" + contactId, changes))) return;
   closeContactDialog();
   await loadContacts();
   openContactById(contactId);

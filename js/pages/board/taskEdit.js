@@ -27,7 +27,7 @@ export function handleEditTaskAction(event, target, action) {
   if (action === "set-edit-priority") setEditPriority(target, priority);
   if (action === "toggle-edit-dropdown") toggleEditDropdown();
   if (action === "toggle-edit-contact") toggleAssignedContact(event, target, id);
-  if (action === "save-task") saveEditTask(id);
+  if (action === "save-task") saveEditTask(id, target);
 }
 
 /**
@@ -93,13 +93,16 @@ function getEditedTaskData(element) {
 /**
  * Saves the edited task, shows its detail view again and updates its card.
  * @param {string} taskId - The ID of the task to save
+ * @param {HTMLButtonElement} button - The clicked save button
  * @returns {Promise<void>}
  */
-async function saveEditTask(taskId) {
+async function saveEditTask(taskId, button) {
   const element = tasks.find((t) => t.id === taskId);
+  button.disabled = true;
   try {
     await putData("/tasks/" + taskId, getEditedTaskData(element));
   } catch {
+    button.disabled = false;
     return;
   }
   await openDialogBoard(taskId);
