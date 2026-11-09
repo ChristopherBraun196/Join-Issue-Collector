@@ -1,4 +1,5 @@
 import { loadData, putData, deleteData } from "../../services/database.js";
+import { confirmAction } from "../../components/confirmDialog.js";
 import { showMessage } from "../../components/toast.js";
 import { getDialogBoardTemplate } from "../../templates/boardTemplates.js";
 import { tasks, initTasks, getAssignedContacts } from "./boardData.js";
@@ -72,15 +73,18 @@ export async function closeDialogBoard(taskId) {
  * @returns {Promise<void>}
  */
 async function deleteTask(id) {
+  if (!(await confirmAction("Do you really want to delete this task?"))) return;
   try {
     await deleteData(`/tasks/${id}`);
-    showMessage("Task wurde gelöscht");
-    document.querySelector(".task-dialog").close();
-    await initTasks();
-    renderAll();
-  } catch (error) {
-    console.error("Fehler beim Löschen des Tasks:", error);
+  } catch {
+    return;
   }
+  document.querySelector(".task-dialog").close();
+  document.querySelector("body > main").style.overflowY = "";
+  document.querySelectorAll(".board__search-input").forEach((input) => (input.value = ""));
+  showMessage("Task successfully deleted");
+  await initTasks();
+  renderAll();
 }
 
 /**

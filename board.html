@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./css/board.css" />
     <link rel="stylesheet" href="./css/moveOverlay.css" />
     <link rel="stylesheet" href="./css/editboard.css" />
+    <link rel="stylesheet" href="./css/confirmDialog.css" />
     <link rel="stylesheet" href="./css/fonts.css" />
     <link rel="stylesheet" href="./css/standard.css" />
   </head>
@@ -290,6 +291,13 @@
       <span class="toast"></span>
     </main>
     <dialog class="task-dialog"></dialog>
+    <dialog class="confirm-dialog">
+      <p class="confirm-dialog__text" tabindex="-1" autofocus></p>
+      <div class="confirm-dialog__actions">
+        <button class="secondary-btn confirm-dialog__btn confirm-dialog__btn--cancel" type="button" data-confirm="false">Cancel</button>
+        <button class="primary-btn confirm-dialog__btn" type="button" data-confirm="true">Delete</button>
+      </div>
+    </dialog>
     <script type="module" src="./js/pages/board/boardPage.js"></script>
   </body>
 </html>
