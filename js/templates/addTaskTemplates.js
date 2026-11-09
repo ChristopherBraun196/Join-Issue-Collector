@@ -23,7 +23,7 @@ export function getAddTaskDialogTemplate(status) {
               </div>
               <div class="task-form__field">
                   <label for="due-date">Due Date<span class="task-form__required">*</span></label>
-                  <input type="date" class="task-form__input" id="due-date" name="due-date" required data-validate-date />
+                  <input type="date" class="task-form__input" id="due-date" name="due-date" required data-validate-date data-error-msg="Please pick a due date" />
                   <span class="task-form__error"></span>
               </div>
           </div>

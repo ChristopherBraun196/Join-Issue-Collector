@@ -26,7 +26,8 @@
               <label for="title">Title<span class="task-form__required">*</span></label>
               <input
                 type="text"
-                class="task-form__input" name="title"
+                class="task-form__input"
+                name="title"
                 placeholder="Enter a title"
                 required
                 data-error-msg="Please enter a title"
@@ -39,7 +40,15 @@
             </div>
             <div class="task-form__field">
               <label for="due-date">Due Date<span class="task-form__required">*</span></label>
-              <input type="date" class="task-form__input" id="due-date" name="due-date" required data-validate-date />
+              <input
+                type="date"
+                class="task-form__input"
+                id="due-date"
+                name="due-date"
+                required
+                data-validate-date
+                data-error-msg="Please pick a due date"
+              />
               <span class="task-form__error"></span>
             </div>
           </div>
@@ -47,14 +56,39 @@
             <div class="task-form__field">
               <label for="task-priority-btns">Priority</label>
               <div class="task-form__priority">
-                <button class="task-form__priority-btn task-form__priority-btn--urgent" data-action="set-priority" type="button">
-                  Urgent <span class="task-form__priority-icon"><img class="task-form__priority-img" src="./assets/icons/priority-urgent.svg" alt="Urgent priority icon" /></span>
+                <button
+                  class="task-form__priority-btn task-form__priority-btn--urgent"
+                  data-action="set-priority"
+                  type="button"
+                >
+                  Urgent
+                  <span class="task-form__priority-icon"
+                    ><img
+                      class="task-form__priority-img"
+                      src="./assets/icons/priority-urgent.svg"
+                      alt="Urgent priority icon"
+                  /></span>
                 </button>
-                <button class="task-form__priority-btn task-form__priority-btn--medium task-form__priority-btn--active" data-action="set-priority" type="button">
-                  Medium<span class="task-form__priority-icon"><img class="task-form__priority-img" src="./assets/icons/priority-medium.svg" alt="Medium priority icon" /></span>
+                <button
+                  class="task-form__priority-btn task-form__priority-btn--medium task-form__priority-btn--active"
+                  data-action="set-priority"
+                  type="button"
+                >
+                  Medium<span class="task-form__priority-icon"
+                    ><img
+                      class="task-form__priority-img"
+                      src="./assets/icons/priority-medium.svg"
+                      alt="Medium priority icon"
+                  /></span>
                 </button>
-                <button class="task-form__priority-btn task-form__priority-btn--low" data-action="set-priority" type="button">
-                  Low<span class="task-form__priority-icon"><img class="task-form__priority-img" src="./assets/icons/priority-low.svg" alt="Low priority icon" /></span>
+                <button
+                  class="task-form__priority-btn task-form__priority-btn--low"
+                  data-action="set-priority"
+                  type="button"
+                >
+                  Low<span class="task-form__priority-icon"
+                    ><img class="task-form__priority-img" src="./assets/icons/priority-low.svg" alt="Low priority icon"
+                  /></span>
                 </button>
               </div>
             </div>
@@ -74,7 +108,13 @@
             <div class="task-form__field">
               <label>Category<span class="task-form__required">*</span></label>
               <div class="dropdown dropdown--category">
-                <input type="hidden" class="task-form__input" name="category" required data-error-msg="Please select a category" />
+                <input
+                  type="hidden"
+                  class="task-form__input"
+                  name="category"
+                  required
+                  data-error-msg="Please select a category"
+                />
                 <span class="task-form__error"></span>
                 <div class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="category">
                   <span class="dropdown__placeholder">Select task category</span>
