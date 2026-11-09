@@ -115,3 +115,21 @@ html {
 body {
   font-family: InterRegular;
 }
+
+@media (orientation: landscape) and (max-height: 500px) and (pointer: coarse) {
+  body::after {
+    content: "Please rotate your device to portrait mode";
+    position: fixed;
+    inset: 0;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: var(--primary-color);
+    color: white;
+    font-family: InterBold;
+    font-size: 24px;
+    text-align: center;
+  }
+}
