@@ -144,7 +144,9 @@ function clearAddTaskForm() {
   document.querySelector('.dropdown--category input[name="category"]').value = "";
   document.querySelector(".dropdown--category .dropdown__placeholder").textContent = "Select task category";
   document.querySelector(".dropdown--category .dropdown__placeholder").style.color = "";
-  document.querySelectorAll(".task-form__priority-btn").forEach((btn) => btn.classList.remove("task-form__priority-btn--active"));
+  document
+    .querySelectorAll(".task-form__priority-btn")
+    .forEach((btn) => btn.classList.remove("task-form__priority-btn--active"));
   document.querySelector(".task-form__priority-btn--medium").classList.add("task-form__priority-btn--active");
   document.querySelector(".subtask__list").innerHTML = "";
 
@@ -169,16 +171,10 @@ function setPriority(clickedButton) {
  * @returns {Promise<void>}
  */
 async function loadContacts() {
-  try {
-    const data = await loadData("/contacts");
-    contacts = Object.entries(data).map(([id, contact]) => ({
-      id,
-      name: contact.name,
-      color: contact.avatarColor,
-    }));
-  } catch (error) {
-    contacts = [];
-  }
+  const data = (await loadData("/contacts")) || {};
+  contacts = Object.entries(data)
+    .map(([id, contact]) => ({ id, name: contact.name, color: contact.avatarColor }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 /**
@@ -233,7 +229,9 @@ function toggleDropdown(id) {
  * @param {HTMLElement} option - The selected category option element
  */
 function selectCategory(option) {
-  document.querySelectorAll(".dropdown--category .dropdown__option").forEach((o) => o.classList.remove("dropdown__option--selected"));
+  document
+    .querySelectorAll(".dropdown--category .dropdown__option")
+    .forEach((o) => o.classList.remove("dropdown__option--selected"));
   option.classList.add("dropdown__option--selected");
 
   const placeholder = document.querySelector(".dropdown--category .dropdown__placeholder");

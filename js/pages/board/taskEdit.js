@@ -251,6 +251,7 @@ async function toggleAssignedContact(event, option, contactId) {
 
 function buildContactOptions(allContacts, assignedIds) {
   return Object.entries(allContacts)
+    .sort(([, a], [, b]) => a.name.localeCompare(b.name))
     .map(([id, contact]) => {
       const checked = assignedIds.includes(id) ? "checked" : "";
       return getContactOptionTemplate(id, contact, checked);
