@@ -95,7 +95,7 @@ export function getSignupTemplate() {
                 </div>
                 <div class="login__field">
                     <div class="login__accept">
-                        <input type="checkbox" class="login__checkbox"/><p>I accept the <a class="highlighted" href="./legal.html">Privacy policy</a></p>
+                        <input type="checkbox" class="login__checkbox"/><p>I accept the <a class="highlighted" href="./privacy.html">Privacy policy</a></p>
                     </div>
                     <span class="login__error login__error--center login__error--accept"></span>
                 </div>
