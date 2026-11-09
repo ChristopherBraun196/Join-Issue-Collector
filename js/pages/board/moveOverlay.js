@@ -1,4 +1,5 @@
 import { putData } from "../../services/database.js";
+import { showMessage } from "../../components/toast.js";
 import { tasks, COLUMNS, COLUMN_LABELS } from "./boardData.js";
 import { reRenderColumns } from "./boardRender.js";
 
@@ -64,6 +65,7 @@ export async function moveTaskTo(event, taskId, newStatus) {
   task.status = newStatus;
   try {
     await putData("/tasks/" + task.id, task);
+    showMessage(`Task moved to ${COLUMN_LABELS[newStatus]}`);
   } catch {
     task.status = oldStatus;
   }

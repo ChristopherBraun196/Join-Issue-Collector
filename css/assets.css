@@ -30,28 +30,28 @@
 .toast {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 8px;
   position: fixed;
   left: 50%;
-  transform: translate(-50%, 200px);
   bottom: 140px;
-  padding: 10px;
-  background-color: var(--primary-color);
-
-  align-self: flex-start;
-  z-index: 10;
-
-  border: solid 1px black;
-  border-radius: 10px;
-  box-shadow: black 0px 0px 10px;
+  transform: translate(-50%, 200px);
+  z-index: 0;
   opacity: 0;
   transition:
     transform 0.4s ease,
     opacity 0.4s ease;
   text-align: center;
-  gap: 8px;
-  z-index: 0;
   color: white;
-  min-width: 200px;
+
+  & p {
+    min-width: 200px;
+    padding: 10px;
+    background-color: var(--primary-color);
+    border: solid 1px black;
+    border-radius: 10px;
+    box-shadow: black 0px 0px 10px;
+  }
 }
 
 .toast.toast--visible {
