@@ -19,10 +19,10 @@ export function getAddTaskDialogTemplate(status) {
               </div>
               <div class="task-form__field">
                   <label for="description">Description</label>
-                  <textarea class="task-form__input" name="description" id="description" cols="30" rows="5"></textarea>
+                  <textarea class="task-form__input" name="description" id="description" cols="30" rows="5" placeholder="Enter a Description"></textarea>
               </div>
               <div class="task-form__field">
-                  <label for="due-date">Due Date<span class="task-form__required">*</span></label>
+                  <label for="due-date">Due date<span class="task-form__required">*</span></label>
                   <input type="date" class="task-form__input" id="due-date" name="due-date" required data-validate-date data-error-msg="Please pick a due date" />
                   <span class="task-form__error"></span>
               </div>
@@ -77,7 +77,7 @@ export function getAddTaskDialogTemplate(status) {
                       <input 
                           type="text" 
                           class="subtask__input"
-                          placeholder="Add new Subtask"
+                          placeholder="Add new subtask"
                       />
                       <div class="subtask__actions">
                           <div class="subtask__confirm">
@@ -96,10 +96,10 @@ export function getAddTaskDialogTemplate(status) {
               </div>
           </div>
       </form>
-      <footer class="task-form__footer">
+      <footer class="task-form__footer task-form__footer--dialog">
           <p><span class="task-form__required">*</span> This field is required</p>
           <div class="task-form__buttons">
-              <button class="task-form__btn task-form__btn--clear" type="button" data-action="clear-form">Clear <img class="task-form__btn-icon" src="./assets/icons/close.svg" alt="Cross icon"></button>
+              <button class="secondary-btn task-form__btn task-form__btn--clear" type="button" data-action="close-dialog">Cancel <svg class="task-form__btn-icon" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M6.243 6.243L11.486 11.486M1 11.486L6.243 6.243L1 11.486ZM11.486 1L6.242 6.243L11.486 1ZM6.242 6.243L1 1L6.242 6.243Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
               <button class="primary-btn task-form__btn task-form__btn--create" form="add-task-form" type="submit">Create Task <img class="task-form__btn-icon" src="./assets/icons/check.svg" alt="Check icon"></button>
           </div>
       </footer>

@@ -36,13 +36,15 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 40px 60px;
   flex-shrink: 0;
   position: relative;
   width: 100%;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 48px 60px 24px;
 
   @media (max-width: 1200px) {
+    justify-content: center;
+    padding: 40px 60px;
     height: 100px;
     box-shadow: 0px 1px 25px rgba(0, 0, 0, 0.09);
     z-index: 1000;
@@ -50,9 +52,6 @@
 }
 
 .add-task__close {
-  position: absolute;
-  top: 70px;
-  right: 60px;
   transition: all 0.1s ease-in;
 
   &:hover {
@@ -61,6 +60,7 @@
   }
 
   @media (max-width: 1200px) {
+    position: absolute;
     width: 16px;
     height: 16px;
     top: 46px;
@@ -92,7 +92,7 @@
 .task-form {
   display: flex;
   justify-content: center;
-  align-items: stretch;
+  align-items: flex-start;
   gap: 40px;
   width: 100%;
   flex: 1;
@@ -104,6 +104,7 @@
   @media (max-width: 1200px) {
     overflow: visible;
     flex-direction: column;
+    align-items: stretch;
     margin: 0;
     padding: 40px;
     height: auto;
@@ -118,7 +119,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
 }
 
 .task-form__column--right {
@@ -147,7 +148,7 @@ textarea {
   width: 100%;
   padding: 12px 15px;
   border-radius: var(--border-radius);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--input-border-color);
   background-color: white;
   font-size: 16px;
   font-family: inherit;
@@ -179,8 +180,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .task-form__priority {
   display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 16px;
+  margin-bottom: 25px;
 
   @media (max-width: 420px) {
     flex-direction: column;
@@ -192,7 +193,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   flex: 1;
   padding: 10px;
   border: 1px solid var(--border-color);
-  box-shadow: 0 0 1px 0.01px rgba(130, 130, 130, 0.515);
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
   border-radius: var(--border-radius);
   cursor: pointer;
   font-weight: 500;
@@ -272,12 +273,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .task-form__footer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   flex-wrap: wrap;
   gap: 15px;
   width: 100%;
   font-size: 16px;
   padding: 0 60px;
+
+  & p {
+    font-size: 14px;
+  }
 
   @media (max-width: 1200px) {
     justify-content: center;
@@ -290,6 +295,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     position: relative;
     bottom: 0px;
   }
+}
+
+.task-form__footer--dialog {
+  padding-bottom: 48px;
 }
 
 .task-form__buttons {
@@ -313,7 +322,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   }
 
   .task-form__btn--clear {
-    background-color: buttonface;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+
+    &:hover {
+      border-color: var(--highligted-color);
+      color: var(--highligted-color);
+    }
   }
 
   .task-form__btn--create:hover {
@@ -332,7 +347,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .dropdown--category {
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 
   .task-form__error {
     position: absolute;
@@ -346,12 +361,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   align-items: center;
   justify-content: space-between;
   padding: 12px 15px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--input-border-color);
   border-radius: var(--border-radius);
   background: white;
   cursor: pointer;
   font-size: 16px;
-  color: #aaa;
+  color: black;
   transition:
     border-color 0.2s,
     border-radius 0.1s;
@@ -380,7 +395,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   left: 0;
   right: 0;
   background: white;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--input-border-color);
   border-top: none;
   border-radius: 0 0 var(--border-radius) var(--border-radius);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -439,7 +454,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .subtask__input-wrap {
   display: flex;
   align-items: center;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--input-border-color);
   border-radius: var(--border-radius);
   background: white;
   transition: border-color 0.2s;

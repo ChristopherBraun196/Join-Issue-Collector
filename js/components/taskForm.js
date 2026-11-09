@@ -74,7 +74,7 @@ function handleTaskFormKey(event) {
 }
 
 /**
- * Creates the task, shows a toast and then closes the dialog or goes to the board.
+ * Creates the task (submit button disabled while saving), shows a toast and then closes the dialog or goes to the board.
  * @param {SubmitEvent} event - The submit event
  * @returns {Promise<void>}
  */
@@ -82,7 +82,22 @@ async function handleTaskFormSubmit(event) {
   event.preventDefault();
   const container = event.currentTarget;
   const status = event.target.dataset.status;
-  if (!(await createTask(status))) return;
+  const button = container.querySelector("button[type='submit']");
+  button.disabled = true;
+  if (!(await createTask(status))) {
+    button.disabled = false;
+    return;
+  }
+  await finishTaskCreation(container, status);
+}
+
+/**
+ * Shows the success toast and closes the dialog or goes to the board.
+ * @param {HTMLElement} container - The add task section or the add task dialog
+ * @param {string} status - The column the task was created in
+ * @returns {Promise<void>}
+ */
+async function finishTaskCreation(container, status) {
   showMessage("Task added to board");
   if (container.classList.contains("add-task-dialog")) {
     closeAddTaskDialog();
