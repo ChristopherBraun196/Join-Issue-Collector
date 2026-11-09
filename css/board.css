@@ -329,8 +329,9 @@
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
   }
 
-  &:active {
+  &.task-card--dragging {
     transform: rotate(3deg);
+    opacity: 0.6;
   }
 }
 

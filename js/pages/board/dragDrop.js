@@ -11,6 +11,7 @@ export function initDragDrop() {
   board.addEventListener("dragleave", handleDragLeave);
   board.addEventListener("drop", handleDrop);
   board.addEventListener("dragstart", handleDragStart);
+  board.addEventListener("dragend", handleDragEnd);
 }
 
 /**
@@ -19,7 +20,18 @@ export function initDragDrop() {
  */
 function handleDragStart(event) {
   const card = event.target.closest(".task-card");
-  if (card) startDragging(card.dataset.id);
+  if (!card) return;
+  card.classList.add("task-card--dragging");
+  startDragging(card.dataset.id);
+}
+
+/**
+ * Removes the dragging style from the card when the drag ends.
+ * @param {DragEvent} event - The dragend event
+ */
+function handleDragEnd(event) {
+  const card = event.target.closest(".task-card");
+  if (card) card.classList.remove("task-card--dragging");
 }
 
 /**
