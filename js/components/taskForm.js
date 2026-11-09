@@ -1,6 +1,6 @@
 import { getInitials } from "../utils/format.js";
 import { loadData } from "../services/database.js";
-import { getAddTaskDialogTemplate } from "../templates/addTaskTemplates.js";
+import { getAddTaskDialogTemplate, getAssignOptionTemplate } from "../templates/addTaskTemplates.js";
 import { validateOnBlur, validateDate, clearFieldError } from "./validation.js";
 import { handleSubtaskAction, handleSubtaskKey, onSubtaskInput } from "./addSubtask.js";
 import { createTask } from "./taskFormData.js";
@@ -184,22 +184,8 @@ async function loadContacts() {
 export async function renderContacts() {
   await loadContacts();
   const container = document.querySelector(".dropdown--assigned .dropdown__list");
-
-  container.innerHTML = contacts
-    .map(
-      (contact) => `
-        <div class="dropdown__option" 
-             data-action="toggle-contact" 
-             data-id="${contact.id}">
-            <div class="dropdown__avatar" style="background:${contact.color}">
-                ${getInitials(contact.name)}
-            </div>
-            <span class="dropdown__label">${contact.name}</span>
-            <input type="checkbox">
-        </div>
-    `,
-    )
-    .join("");
+  if (!container) return;
+  container.innerHTML = contacts.map((contact) => getAssignOptionTemplate(contact, getInitials(contact.name))).join("");
 }
 
 /**

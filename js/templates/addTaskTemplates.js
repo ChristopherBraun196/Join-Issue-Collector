@@ -106,3 +106,19 @@ export function getAddTaskDialogTemplate(status) {
     </section>
   `;
 }
+
+/**
+ * Returns the HTML of one contact option in the "Assigned to" dropdown.
+ * @param {Object} contact - The contact with id, name and color
+ * @param {string} initials - The initials of the contact
+ * @returns {string} HTML string of the option
+ */
+export function getAssignOptionTemplate(contact, initials) {
+  return `
+    <div class="dropdown__option" data-action="toggle-contact" data-id="${contact.id}">
+      <div class="dropdown__avatar" style="background:${contact.color}">${initials}</div>
+      <span class="dropdown__label">${contact.name}</span>
+      <input type="checkbox">
+    </div>
+  `;
+}
