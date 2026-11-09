@@ -8,7 +8,7 @@ import {
   getSubtaskEditItemTemplate,
   getSubtaskEditingStateTemplate,
 } from "../../templates/boardEditTemplates.js";
-import { tasks, initTasks, getAssignedContacts } from "./boardData.js";
+import { tasks, initTasks } from "./boardData.js";
 import { openDialogBoard } from "./taskDialog.js";
 import { renderTaskCard } from "./boardRender.js";
 import { showMessage } from "../../components/toast.js";
@@ -55,18 +55,11 @@ export async function openEditTask(taskId) {
   currentEditTaskId = taskId;
   currentEditPriority = null;
   const element = tasks.find((t) => t.id === taskId);
-  const assignedContacts = await getAssignedContacts(element.assignedTo);
   const allContacts = await loadData("/contacts");
-  const assignedTo = element.assignedTo
-    ? Array.isArray(element.assignedTo)
-      ? element.assignedTo
-      : Object.values(element.assignedTo)
-    : [];
-  const assignedIds = assignedTo.map((a) => a.id);
+  const assignedIds = getNormalizedAssignedTo(element).map((a) => a.id);
   const priorityButtons = getPriorityButtonsTemplate(element.priority);
   const assignedHTML = buildAssignedContactsEdit(allContacts, assignedIds);
   const subtasksHTML = getSubtasksEditTemplate(element.subtasks, taskId);
-
   document.querySelector(".task-dialog").innerHTML = getDialogBoardEditTemplate(
     element,
     priorityButtons,

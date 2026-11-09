@@ -17,23 +17,25 @@ export function validateOnBlur(input, message = "This field is required") {
  * @returns {boolean} True if all required fields are filled, false otherwise
  */
 export function validateForm(form) {
-  const fields = form.querySelectorAll("input[required], textarea[required]");
-  let isValid = true;
-
-  fields.forEach((input) => {
-    const message = input.dataset.errorMsg || "This field is required";
-    if (isFieldEmpty(input)) {
-      showFieldError(input, message);
-      isValid = false;
-    } else if (input.type === "date" && isDateInPast(input)) {
-      showFieldError(input, "The date cannot be in the past.");
-      isValid = false;
-    } else {
-      clearFieldError(input);
-    }
+  const fields = [...form.querySelectorAll("input[required], textarea[required]")];
+  const results = fields.map((input) => {
+    const message = getFieldErrorMessage(input);
+    if (message) showFieldError(input, message);
+    else clearFieldError(input);
+    return !message;
   });
+  return results.every(Boolean);
+}
 
-  return isValid;
+/**
+ * Returns the error message for a required field or an empty string if it is valid.
+ * @param {HTMLInputElement|HTMLTextAreaElement} input - The field to check
+ * @returns {string} The error message or ""
+ */
+function getFieldErrorMessage(input) {
+  if (isFieldEmpty(input)) return input.dataset.errorMsg || "This field is required";
+  if (input.type === "date" && isDateInPast(input)) return "The date cannot be in the past.";
+  return "";
 }
 
 /**

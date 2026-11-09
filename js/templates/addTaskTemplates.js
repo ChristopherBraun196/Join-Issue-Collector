@@ -122,3 +122,23 @@ export function getAssignOptionTemplate(contact, initials) {
     </div>
   `;
 }
+
+/**
+ * Returns the inner HTML of one subtask list item with edit and delete buttons.
+ * @param {string} text - The subtask title
+ * @returns {string} HTML string of the subtask item content
+ */
+export function getSubtaskItemTemplate(text) {
+  return `
+    <span class="subtask__text" data-action="edit-subtask">${text}</span>
+    <div class="subtask__item-actions">
+      <button class="subtask__btn" data-action="edit-subtask" type="button">
+        <img class="subtask__btn-icon" src="./assets/icons/edit.svg" alt="Edit">
+      </button>
+      <div class="subtask__divider"></div>
+      <button class="subtask__btn" data-action="remove-subtask" type="button">
+        <img class="subtask__btn-icon" src="./assets/icons/delete.svg" alt="Delete">
+      </button>
+    </div>
+  `;
+}

@@ -39,22 +39,28 @@ export async function openDialogBoard(id) {
   await initTasks();
   const element = tasks.find((t) => t.id === id);
   const assignedContacts = await getAssignedContacts(element.assignedTo);
-  const contactsData = (await loadData("/contacts")) || {};
-  const contactsList = Object.entries(contactsData).map(([id, contact]) => ({
-    ...contact,
-    id,
-  }));
-
-  const matchedCreator = contactsList.find(
-    (c) =>
-      (c.email && (c.email === element.creatorEmail || c.email === element.creator)) ||
-      (c.name && (c.name === element.creator || c.name === element.creatorName)),
-  );
-
+  const matchedCreator = await findCreatorContact(element);
   const dialogBoard = document.querySelector(".task-dialog");
+
   dialogBoard.innerHTML = getDialogBoardTemplate(element, assignedContacts, element.subtasks, matchedCreator);
   dialogBoard.showModal();
   document.querySelector("body > main").style.overflowY = "hidden";
+}
+
+/**
+ * Finds the contact that created the task, matched by email or name.
+ * @param {Object} element - The task
+ * @returns {Promise<Object|undefined>} The matching contact including its id, if any
+ */
+async function findCreatorContact(element) {
+  const contactsData = (await loadData("/contacts")) || {};
+  return Object.entries(contactsData)
+    .map(([id, contact]) => ({ ...contact, id }))
+    .find(
+      (c) =>
+        (c.email && (c.email === element.creatorEmail || c.email === element.creator)) ||
+        (c.name && (c.name === element.creator || c.name === element.creatorName)),
+    );
 }
 
 /**

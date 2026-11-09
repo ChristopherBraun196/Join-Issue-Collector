@@ -9,6 +9,15 @@ export function confirmAction(message) {
   dialog.returnValue = "false";
   dialog.addEventListener("click", handleConfirmClick);
   dialog.showModal();
+  return waitForAnswer(dialog);
+}
+
+/**
+ * Resolves with the user's answer as soon as the confirm dialog closes.
+ * @param {HTMLDialogElement} dialog - The open confirm dialog
+ * @returns {Promise<boolean>} True if the user confirmed, false otherwise
+ */
+function waitForAnswer(dialog) {
   return new Promise((resolve) => {
     dialog.addEventListener(
       "close",

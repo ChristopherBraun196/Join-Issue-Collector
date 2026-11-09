@@ -162,25 +162,46 @@ function clearDialogAddTaskForm(status) {
  */
 function clearAddTaskForm() {
   document.querySelector(".task-form").reset();
+  resetAssignedContacts();
+  resetCategory();
+  resetPriority();
+  document.querySelector(".subtask__list").innerHTML = "";
+  document.querySelectorAll(".task-form .task-form__input--invalid").forEach((input) => clearFieldError(input));
+  document.querySelectorAll(".task-form .task-form__error").forEach((el) => (el.style.visibility = "hidden"));
+}
+
+/**
+ * Deselects all assigned contacts and removes their badges.
+ */
+function resetAssignedContacts() {
   document.querySelectorAll(".dropdown--assigned .dropdown__option--selected").forEach((opt) => {
     opt.classList.remove("dropdown__option--selected");
     opt.querySelector('input[type="checkbox"]').checked = false;
   });
   document.querySelector(".task-form__badges").innerHTML = "";
+}
+
+/**
+ * Resets the category dropdown to its placeholder.
+ */
+function resetCategory() {
   document
     .querySelectorAll(".dropdown--category .dropdown__option--selected")
     .forEach((opt) => opt.classList.remove("dropdown__option--selected"));
   document.querySelector('.dropdown--category input[name="category"]').value = "";
-  document.querySelector(".dropdown--category .dropdown__placeholder").textContent = "Select task category";
-  document.querySelector(".dropdown--category .dropdown__placeholder").style.color = "";
+  const placeholder = document.querySelector(".dropdown--category .dropdown__placeholder");
+  placeholder.textContent = "Select task category";
+  placeholder.style.color = "";
+}
+
+/**
+ * Sets the priority back to medium.
+ */
+function resetPriority() {
   document
     .querySelectorAll(".task-form__priority-btn")
     .forEach((btn) => btn.classList.remove("task-form__priority-btn--active"));
   document.querySelector(".task-form__priority-btn--medium").classList.add("task-form__priority-btn--active");
-  document.querySelector(".subtask__list").innerHTML = "";
-
-  document.querySelectorAll(".task-form .task-form__input--invalid").forEach((input) => clearFieldError(input));
-  document.querySelectorAll(".task-form .task-form__error").forEach((el) => (el.style.visibility = "hidden"));
 }
 
 /**
@@ -276,27 +297,30 @@ function toggleContact(option) {
  */
 function updateAssignedBadges() {
   const badges = document.querySelector(".task-form__badges");
-  badges.innerHTML = "";
+  const selected = [...document.querySelectorAll(".dropdown--assigned .dropdown__option--selected")];
   const limit = 5;
-  const selected = document.querySelectorAll(".dropdown--assigned .dropdown__option--selected");
-  const total = selected.length;
-
-  selected.forEach((opt, i) => {
-    if (i >= limit) return;
+  badges.innerHTML = "";
+  selected.slice(0, limit).forEach((opt) => {
     const avatar = opt.querySelector(".dropdown__avatar");
-    const badge = document.createElement("div");
-    badge.className = "task-form__badge";
-    badge.style.background = avatar.style.background;
-    badge.textContent = avatar.textContent.trim();
-    badges.appendChild(badge);
+    badges.appendChild(createBadge(avatar.textContent.trim(), avatar.style.background));
   });
+  if (selected.length > limit)
+    badges.appendChild(createBadge(`+${selected.length - limit}`, "", "task-form__badge--overflow"));
+}
 
-  if (total > limit) {
-    const overflow = document.createElement("div");
-    overflow.className = "task-form__badge task-form__badge--overflow";
-    overflow.textContent = `+${total - limit}`;
-    badges.appendChild(overflow);
-  }
+/**
+ * Creates one badge element for the assigned contacts row.
+ * @param {string} text - The initials or the overflow text (e.g. "+3")
+ * @param {string} background - The background color ("" for the overflow badge)
+ * @param {string} [modifier] - An optional BEM modifier class
+ * @returns {HTMLDivElement} The badge element
+ */
+function createBadge(text, background, modifier = "") {
+  const badge = document.createElement("div");
+  badge.className = `task-form__badge ${modifier}`.trim();
+  badge.style.background = background;
+  badge.textContent = text;
+  return badge;
 }
 
 /**

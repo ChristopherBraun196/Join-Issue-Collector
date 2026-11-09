@@ -51,6 +51,21 @@ function handleUnauthenticatedUser(path) {
 }
 
 /**
+ * Sets up the guest user and redirects or loads the sidebar depending on the page.
+ * @param {string} path - The current page path
+ */
+function handleGuestUser(path) {
+  window.currentUser = { name: "Guest" };
+  renderUserMenue();
+  if (homePaths.includes(path)) {
+    if (!cameFromWelcome) window.location.href = "./welcome.html";
+  } else if (publicPaths.includes(path)) {
+    const page = path.includes("privacy") ? "privacy" : path.includes("legal") ? "legal" : "help";
+    loadSidebar(page);
+  }
+}
+
+/**
  * Listens to Firebase auth state changes and routes the user accordingly.
  * Handles three cases: anonymous guest, authenticated user, and unauthenticated user.
  * @listens onAuthStateChanged
@@ -58,24 +73,9 @@ function handleUnauthenticatedUser(path) {
  * @returns {Promise<void>}
  */
 onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    if (user.isAnonymous) {
-      window.currentUser = { name: "Guest" };
-      renderUserMenue();
-      if (homePaths.includes(path)) {
-        if (!cameFromWelcome) {
-          window.location.href = "./welcome.html";
-        }
-      } else if (publicPaths.includes(path)) {
-        const page = path.includes("privacy") ? "privacy" : path.includes("legal") ? "legal" : "help";
-        loadSidebar(page);
-      }
-      return;
-    }
-    await handleAuthenticatedUser(user, path);
-  } else {
-    handleUnauthenticatedUser(path);
-  }
+  if (!user) return handleUnauthenticatedUser(path);
+  if (user.isAnonymous) return handleGuestUser(path);
+  await handleAuthenticatedUser(user, path);
 });
 
 /**

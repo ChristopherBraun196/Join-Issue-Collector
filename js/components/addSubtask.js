@@ -1,4 +1,5 @@
 import { getSubtaskEditActionsTemplate } from "../templates/boardEditTemplates.js";
+import { getSubtaskItemTemplate } from "../templates/addTaskTemplates.js";
 
 /**
  * Runs the subtask action that belongs to the clicked data-action.
@@ -74,18 +75,7 @@ function addSubtask() {
 function createSubtaskItem(text) {
   const li = document.createElement("li");
   li.className = "subtask__item";
-  li.innerHTML = `
-        <span class="subtask__text" data-action="edit-subtask">${text}</span>
-        <div class="subtask__item-actions">
-            <button class="subtask__btn" data-action="edit-subtask" type="button">
-                <img class="subtask__btn-icon" src="./assets/icons/edit.svg" alt="Edit">
-            </button>
-            <div class="subtask__divider"></div>
-            <button class="subtask__btn" data-action="remove-subtask" type="button">
-                <img class="subtask__btn-icon" src="./assets/icons/delete.svg" alt="Delete">
-            </button>
-        </div>
-    `;
+  li.innerHTML = getSubtaskItemTemplate(text);
   return li;
 }
 
@@ -100,22 +90,29 @@ function createSubtaskItem(text) {
 function editSubtask(span) {
   const li = span.closest("li");
   const currentText = span.textContent;
-
-  const input = document.createElement("input");
-  input.type = "text";
-  input.value = currentText;
-  input.className = "subtask__edit-input";
+  const input = createSubtaskEditInput(currentText);
   li.replaceChild(input, span);
   input.focus();
   input.select();
-
   const actions = li.querySelector(".subtask__item-actions");
   actions.innerHTML = getSubtaskEditActionsTemplate();
-
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") confirmEditSubtask(actions.querySelector('[alt="Confirm"]').closest("button"));
     if (e.key === "Escape") cancelEditSubtask(input, currentText);
   });
+}
+
+/**
+ * Creates the input field used to edit a subtask.
+ * @param {string} text - The current subtask title
+ * @returns {HTMLInputElement} The edit input element
+ */
+function createSubtaskEditInput(text) {
+  const input = document.createElement("input");
+  input.type = "text";
+  input.value = text;
+  input.className = "subtask__edit-input";
+  return input;
 }
 
 /**

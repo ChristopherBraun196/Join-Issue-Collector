@@ -233,19 +233,12 @@ function getSubtaskData(element) {
  * @returns {Promise<string>} HTML string of avatar elements
  */
 export async function getAssignedToAvatars(allMembersOfThisTask) {
-  let members = [];
-  if (allMembersOfThisTask == undefined) return "";
+  if (!allMembersOfThisTask) return "";
   const limit = 3;
-  const totalMembers = allMembersOfThisTask.length;
-  const displayCount = Math.min(totalMembers, limit);
-
-  for (let i = 0; i < displayCount; i++) {
-    const memberID = allMembersOfThisTask[i].id;
-    members.push(await getMemberAvatar(memberID));
-  }
-
-  if (totalMembers > limit) {
-    const overflow = totalMembers - limit;
+  const shown = allMembersOfThisTask.slice(0, limit);
+  const members = await Promise.all(shown.map((member) => getMemberAvatar(member.id)));
+  const overflow = allMembersOfThisTask.length - limit;
+  if (overflow > 0) {
     members.push(
       `<div class="task-card__avatar task-card__avatar--overflow" title="+${overflow} more">+${overflow}</div>`,
     );
