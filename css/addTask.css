@@ -331,6 +331,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   width: 100%;
 }
 
+.dropdown--category {
+  margin-bottom: 25px;
+
+  .task-form__error {
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
+}
+
 .dropdown__trigger {
   display: flex;
   align-items: center;
