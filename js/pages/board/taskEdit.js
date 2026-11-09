@@ -41,7 +41,8 @@ export function handleEditSubtaskAction(target, action) {
   if (action === "add-subtask-edit") addSubtaskEdit(id);
   if (action === "edit-subtask-edit") editSubtaskEditMode(target.closest("li").querySelector(".subtask__text"));
   if (action === "delete-subtask-edit") deleteSubtaskEdit(id, Number(index));
-  if (action === "remove-subtask-edit") target.closest("li").remove();
+  if (action === "remove-subtask-edit")
+    deleteSubtaskEdit(target.closest("li").dataset.taskId, Number(target.closest("li").dataset.index));
   if (action === "confirm-subtask-edit") confirmSubtaskEditMode(target);
 }
 
@@ -295,17 +296,33 @@ export function handleSubtaskKeyEdit(event, taskId) {
 function editSubtaskEditMode(span) {
   const li = span.closest("li");
   li.innerHTML = getSubtaskEditingStateTemplate(span.textContent);
-  li.querySelector("input").focus();
+  li.querySelector("input").select();
 }
 
-function confirmSubtaskEditMode(btn) {
-  const li = btn.closest("li");
+/**
+ * Saves the renamed subtask, or deletes it if the text is empty, and refreshes the edit dialog.
+ * @param {HTMLElement} element - The confirm button or the edit input inside the subtask item
+ * @returns {Promise<void>}
+ */
+async function confirmSubtaskEditMode(element) {
+  const li = element.closest("li");
   const text = li.querySelector(".subtask__edit-input").value.trim();
-  if (!text) {
-    li.remove();
-    return;
-  }
-  li.outerHTML = getSubtaskEditItemTemplate({ title: text }, li.dataset.taskId, li.dataset.index);
+  const { taskId, index } = li.dataset;
+  if (!text) return deleteSubtaskEdit(taskId, Number(index));
+  const subtasks = [...tasks.find((t) => t.id === taskId).subtasks];
+  subtasks[index] = { ...subtasks[index], title: text };
+  await putData("/tasks/" + taskId + "/subtasks", subtasks);
+  await initTasks();
+  await openEditTask(taskId);
+}
+
+/**
+ * Confirms the subtask rename with Enter and cancels it with Escape.
+ * @param {KeyboardEvent} event - The keydown event in the edit input
+ */
+export function handleEditSubtaskKey(event) {
+  if (event.key === "Enter") confirmSubtaskEditMode(event.target);
+  if (event.key === "Escape") openEditTask(currentEditTaskId);
 }
 
 /**

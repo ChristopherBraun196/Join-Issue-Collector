@@ -10,6 +10,7 @@ import {
   openEditTask,
   onSubtaskInputEdit,
   handleSubtaskKeyEdit,
+  handleEditSubtaskKey,
 } from "./taskEdit.js";
 
 /**
@@ -26,6 +27,7 @@ export function handleDialogBoardInput(event) {
  */
 export function handleDialogBoardKey(event) {
   if (event.target.matches(".subtask__input")) handleSubtaskKeyEdit(event, event.target.dataset.id);
+  if (event.target.matches(".subtask__edit-input")) handleEditSubtaskKey(event);
 }
 
 /**
