@@ -497,6 +497,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   }
 }
 
+.subtask__plus {
+  color: var(--primary-color);
+}
+
+.subtask__confirm--visible ~ .subtask__plus {
+  display: none;
+}
+
 .subtask__divider {
   width: 1px;
   height: 16px;

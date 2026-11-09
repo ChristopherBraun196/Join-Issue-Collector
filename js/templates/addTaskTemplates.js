@@ -89,6 +89,7 @@ export function getAddTaskDialogTemplate(status) {
                                   <img class="subtask__btn-icon" src="./assets/icons/check-dark.svg" alt="Confirm">
                               </button>
                           </div>
+                          <button class="subtask__btn subtask__plus" data-action="focus-subtask" type="button" aria-label="Add subtask"><svg class="subtask__btn-icon" viewBox="0 0 19 19" aria-hidden="true"><path d="M8 10.6667H0V8H8V0H10.6667V8H18.6667V10.6667H10.6667V18.6667H8V10.6667Z" fill="currentColor"/></svg></button>
                       </div>
                   </div>
                   <ul class="subtask__list"></ul>

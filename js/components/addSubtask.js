@@ -11,6 +11,7 @@ export function handleSubtaskAction(action, target) {
   if (action === "edit-subtask") editSubtask(target.closest("li").querySelector(".subtask__text"));
   if (action === "remove-subtask") removeSubtask(target);
   if (action === "confirm-subtask") confirmEditSubtask(target);
+  if (action === "focus-subtask") focusSubtaskInput();
 }
 
 /**
@@ -62,6 +63,7 @@ function addSubtask() {
   const li = createSubtaskItem(text);
   list.appendChild(li);
   clearSubtaskInput();
+  focusSubtaskInput();
 }
 
 /**
