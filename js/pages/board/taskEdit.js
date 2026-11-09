@@ -9,7 +9,9 @@ import {
   getSubtaskEditingStateTemplate,
 } from "../../templates/boardEditTemplates.js";
 import { tasks, initTasks, getAssignedContacts } from "./boardData.js";
-import { closeDialogBoard } from "./taskDialog.js";
+import { openDialogBoard } from "./taskDialog.js";
+import { renderTaskCard } from "./boardRender.js";
+import { showMessage } from "../../components/toast.js";
 
 let currentEditPriority = null;
 let currentEditTaskId = null;
@@ -50,6 +52,7 @@ export function handleEditSubtaskAction(target, action) {
  */
 export async function openEditTask(taskId) {
   currentEditTaskId = taskId;
+  currentEditPriority = null;
   const element = tasks.find((t) => t.id === taskId);
   const assignedContacts = await getAssignedContacts(element.assignedTo);
   const allContacts = await loadData("/contacts");
@@ -72,26 +75,35 @@ export async function openEditTask(taskId) {
 }
 
 /**
- * Saves the edited task data and closes the dialog.
- * @param {string} taskId - The ID of the task to save
- * @returns {Promise<void>}
+ * Returns the task with the values from the edit form.
+ * @param {Object} element - The task before editing
+ * @returns {Object} The updated task object
  */
-async function saveEditTask(taskId) {
-  const element = tasks.find((t) => t.id === taskId);
-  const updatedData = {
+function getEditedTaskData(element) {
+  return {
     ...element,
     title: document.querySelector(".task-edit__input--title").value,
     description: document.querySelector(".task-edit__input--description").value,
     dueDate: document.querySelector(".task-edit__input--due-date").value,
     priority: currentEditPriority ?? element.priority,
   };
+}
 
-  await putData("/tasks/" + taskId, updatedData);
-
-  const index = tasks.findIndex((t) => t.id === taskId);
-  tasks[index] = updatedData;
-
-  await closeDialogBoard(taskId);
+/**
+ * Saves the edited task, shows its detail view again and updates its card.
+ * @param {string} taskId - The ID of the task to save
+ * @returns {Promise<void>}
+ */
+async function saveEditTask(taskId) {
+  const element = tasks.find((t) => t.id === taskId);
+  try {
+    await putData("/tasks/" + taskId, getEditedTaskData(element));
+  } catch {
+    return;
+  }
+  await openDialogBoard(taskId);
+  await renderTaskCard(taskId);
+  showMessage("Task successfully updated");
 }
 
 /**
