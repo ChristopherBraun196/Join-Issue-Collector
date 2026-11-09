@@ -2,7 +2,7 @@ import "../../components/dialogGuard.js";
 import { init as initLayout } from "../../components/layout.js";
 import { openAddTaskDialog } from "../../components/taskForm.js";
 import { initTasks } from "./boardData.js";
-import { renderAll, scrollColumn, updateScrollArrows, findTask } from "./boardRender.js";
+import { renderAll, reRenderColumns, scrollColumn, updateScrollArrows, findTask } from "./boardRender.js";
 import { toggleMoveOverlay, moveTaskTo, handleOutsideClick } from "./moveOverlay.js";
 import { initDragDrop } from "./dragDrop.js";
 import { handleDialogBoardClick, handleDialogBoardInput, handleDialogBoardKey, openDialogBoard } from "./taskDialog.js";
@@ -42,12 +42,22 @@ function handleBoardClick(event) {
   const target = event.target.closest("[data-action]");
   if (!target) return;
   const { action, id, status, target: columnId, direction } = target.dataset;
-  if (action === "add-task") openAddTaskDialog(status);
+  if (action === "add-task") openAddTaskDialog(status, refreshAfterCreate);
   if (action === "scroll-column") scrollColumn(columnId, Number(direction));
   if (action === "search-task") findTask(target.closest(".board__search").querySelector(".board__search-input"));
   if (action === "open-task") openDialogBoard(id);
   if (action === "toggle-move") toggleMoveOverlay(event, id, status);
   if (action === "move-task") moveTaskTo(event, id, status);
+}
+
+/**
+ * Reloads the tasks and redraws the column a new task was added to.
+ * @param {string} status - The column of the new task
+ * @returns {Promise<void>}
+ */
+async function refreshAfterCreate(status) {
+  await initTasks();
+  await reRenderColumns(status);
 }
 
 /**

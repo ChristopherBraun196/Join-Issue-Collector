@@ -1,4 +1,5 @@
 import { getInitials } from "../utils/format.js";
+import { showMessage } from "./toast.js";
 import { loadData } from "../services/database.js";
 import { getAddTaskDialogTemplate, getAssignOptionTemplate } from "../templates/addTaskTemplates.js";
 import { validateOnBlur, validateDate, clearFieldError } from "./validation.js";
@@ -7,6 +8,7 @@ import { createTask } from "./taskFormData.js";
 
 let addTaskDialog;
 let contacts = [];
+let onTaskCreated;
 
 /**
  * Registers all event listeners of the add task form on the given container.
@@ -72,12 +74,22 @@ function handleTaskFormKey(event) {
 }
 
 /**
- * Prevents the native form submit and creates the task with the form's status.
+ * Creates the task, shows a toast and then closes the dialog or goes to the board.
  * @param {SubmitEvent} event - The submit event
+ * @returns {Promise<void>}
  */
-function handleTaskFormSubmit(event) {
+async function handleTaskFormSubmit(event) {
   event.preventDefault();
-  createTask(event.target.dataset.status);
+  const container = event.currentTarget;
+  const status = event.target.dataset.status;
+  if (!(await createTask(status))) return;
+  showMessage("Task added to board");
+  if (container.classList.contains("add-task-dialog")) {
+    closeAddTaskDialog();
+    await onTaskCreated?.(status);
+  } else {
+    setTimeout(() => (location.href = "./board.html"), 1000);
+  }
 }
 
 /**
@@ -95,8 +107,9 @@ function clearTaskForm(container) {
 /**
  * Opens the add task dialog and renders the contact list.
  * @param {string} status - The initial status for the new task
+ * @param {Function} [onCreated] - Called with the status after a task was created in the dialog
  */
-export function openAddTaskDialog(status) {
+export function openAddTaskDialog(status, onCreated) {
   let main = document.querySelector("main");
   let dialogSection = document.createElement("dialog");
   dialogSection.className = "add-task-dialog";
@@ -105,6 +118,7 @@ export function openAddTaskDialog(status) {
   initTaskForm(dialogSection);
   dialogSection.showModal();
   addTaskDialog = dialogSection;
+  onTaskCreated = onCreated;
   renderContacts();
 }
 

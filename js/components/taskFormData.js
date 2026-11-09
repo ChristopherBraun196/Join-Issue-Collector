@@ -57,7 +57,9 @@ function getTaskDueDate() {
  */
 function getTaskPriority() {
   const priorityBtn = document.querySelector(".task-form__priority-btn--active");
-  const priority = ["urgent", "medium", "low"].find((p) => priorityBtn.classList.contains(`task-form__priority-btn--${p}`));
+  const priority = ["urgent", "medium", "low"].find((p) =>
+    priorityBtn.classList.contains(`task-form__priority-btn--${p}`),
+  );
   return priority;
 }
 
@@ -107,16 +109,17 @@ function getSubtasks() {
 }
 
 /**
- * Creates a new task in Firebase and redirects to the board.
+ * Validates the form and creates a new task in Firebase.
  * @param {string} status - The initial status of the new task
- * @returns {Promise<void>}
+ * @returns {Promise<boolean>} True if the task was saved, false if the form is invalid or saving failed
  */
 export async function createTask(status) {
-  const form = document.querySelector(".task-form");
-  if (!validateForm(form)) return;
-
+  if (!validateForm(document.querySelector(".task-form"))) return false;
   const taskID = generateUUID();
-  let task = generateTaskJson(taskID, status);
-  await putData("/tasks/task-" + taskID, task);
-  location.href = "./board.html";
+  try {
+    await putData("/tasks/task-" + taskID, generateTaskJson(taskID, status));
+  } catch {
+    return false;
+  }
+  return true;
 }
