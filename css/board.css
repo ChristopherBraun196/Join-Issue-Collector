@@ -167,6 +167,7 @@
   align-items: center;
   width: 100%;
   padding-bottom: 12px;
+  min-height: 47px;
 }
 
 .board__plus-btn {

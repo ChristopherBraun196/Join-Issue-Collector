@@ -174,18 +174,20 @@ function updateNoTaskPlaceholders() {
   }
 }
 
+/**
+ * Filters the tasks by title or description.
+ * @param {HTMLInputElement} input - The search input
+ * @returns {Promise<void>}
+ */
 export async function findTask(input) {
   const query = input.value.toLowerCase();
-
   if (query.length < 1) {
     renderAll();
     return;
   }
-
   const matches = tasks.filter(
     (t) => t.title.toLowerCase().includes(query) || t.description.toLowerCase().includes(query),
   );
-
   await renderFilteredTasks(matches);
 }
 
