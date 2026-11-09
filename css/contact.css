@@ -71,7 +71,7 @@
   padding: 8px 6px;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: background 0.1s ease;
   width: 70%;
   margin: 0 auto;
 
@@ -550,7 +550,7 @@
   background: #f8fafc;
   outline: none;
   font-family: "Segoe UI", sans-serif;
-  transition: border-color 0.15s;
+  transition: border-color 0.1s;
 
   &::placeholder {
     color: #9baab8;
@@ -606,7 +606,7 @@
   font-weight: 600;
   cursor: pointer;
   font-family: "Segoe UI", sans-serif;
-  transition: background 0.15s;
+  transition: background 0.1s;
 }
 
 .contact-dialog__cancel {

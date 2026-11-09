@@ -11,7 +11,7 @@
   color: #555;
   padding: 0;
   flex-shrink: 0;
-  transition: background-color 0.15s, border-color 0.15s;
+  transition: background-color 0.1s, border-color 0.1s;
 }
 
 .task-card__move-btn:hover {
@@ -64,7 +64,7 @@
   padding: 10px 12px;
   cursor: pointer;
   border-radius: 12px;
-  transition: background-color 0.15s;
+  transition: background-color 0.1s;
   text-align: left;
 }
 

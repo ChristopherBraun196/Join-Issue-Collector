@@ -27,7 +27,7 @@ function handleBubbleClick(event) {
  * @returns {Object} Object containing all counts and the upcoming deadline
  */
 function getSummaryCounts(tasks) {
-  const urgentTasks = tasks.filter((t) => t.priority === "urgent");
+  const urgentTasks = tasks.filter((t) => t.priority === "urgent" && t.status !== STATUS.DONE);
   return {
     toDoCount: tasks.filter((t) => t.status === STATUS.TO_DO).length,
     doneCount: tasks.filter((t) => t.status === STATUS.DONE).length,

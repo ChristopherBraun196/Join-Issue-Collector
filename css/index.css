@@ -241,8 +241,8 @@
 .login__input-field[type="text"] {
   border-radius: var(--border-radius);
   transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
+    border-color 0.1s,
+    box-shadow 0.1s;
   appearance: none;
 }
 

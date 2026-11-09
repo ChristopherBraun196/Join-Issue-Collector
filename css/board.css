@@ -266,8 +266,8 @@
   justify-content: center;
   cursor: pointer;
   transition:
-    background-color 0.15s,
-    border-color 0.15s;
+    background-color 0.1s,
+    border-color 0.1s;
   padding: 0;
   flex-shrink: 0;
 
@@ -321,7 +321,7 @@
   max-width: 240px;
   width: 100%;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.09);
-  transition: box-shadow 0.2s;
+  transition: box-shadow 0.1s;
   cursor: pointer;
   position: relative;
 

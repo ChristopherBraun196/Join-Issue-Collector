@@ -93,7 +93,7 @@
     background-color: #2f3e4e;
     color: white;
     cursor: pointer;
-    transition: 0.2s;
+    transition: 0.1s;
     transform: scale(1.05);
 
     & a {
@@ -102,22 +102,22 @@
 
     & .summary__icon-bg {
       fill: white;
-      transition: 0.2s;
+      transition: 0.1s;
     }
 
     & .summary__icon-symbol {
       fill: #2a3647;
-      transition: 0.2s;
+      transition: 0.1s;
     }
 
     & .summary__icon-check {
       stroke: #2a3647;
-      transition: 0.2s;
+      transition: 0.1s;
     }
 
     & .summary__deadline {
       color: white;
-      transition: 0.2s;
+      transition: 0.1s;
     }
 
     & .summary__count--gradient {
