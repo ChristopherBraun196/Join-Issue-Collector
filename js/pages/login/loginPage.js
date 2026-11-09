@@ -21,7 +21,7 @@ function init() {
   document.addEventListener("click", handleLoginPageClick);
   section.addEventListener("submit", handleFormSubmit);
   section.addEventListener("focusout", handleFieldBlur);
-  section.addEventListener("input", handlePwdInput);
+  section.addEventListener("input", handleFieldInput);
 }
 
 /**
@@ -40,12 +40,16 @@ function handleLoginPageClick(event) {
 
 /**
  * Submits the login or signup form without reloading the page.
+ * Disables the submit button while sending and enables it again only on failure.
  * @param {SubmitEvent} event - The submit event
  */
-function handleFormSubmit(event) {
+async function handleFormSubmit(event) {
   event.preventDefault();
-  if (event.target.dataset.form === "login") handleLogin();
-  if (event.target.dataset.form === "signup") handleSignup();
+  const button = event.target.querySelector("button[type='submit']");
+  button.disabled = true;
+  const isLogin = event.target.dataset.form === "login";
+  const success = isLogin ? await handleLogin() : await handleSignup();
+  if (!success) button.disabled = false;
 }
 
 /**
@@ -60,11 +64,13 @@ function handleFieldBlur(event) {
 }
 
 /**
- * Shows or hides the password toggle button while typing.
+ * Handles typing in the form: toggles the password button and
+ * re-validates a field that currently shows an error.
  * @param {InputEvent} event - The input event
  */
-function handlePwdInput(event) {
+function handleFieldInput(event) {
   if (event.target.matches("[data-pwd-input]")) togglePwdVisibilityBtn(event.target);
+  if (event.target.parentElement.classList.contains("login__input--invalid")) handleFieldBlur(event);
 }
 
 document.addEventListener("DOMContentLoaded", init);

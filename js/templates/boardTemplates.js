@@ -72,7 +72,7 @@ export function getDialogBoardTemplate(element, assignedContacts, subtasks, matc
             ${
               element.creatorType === "external"
                 ? `<a href="mailto:${element.creatorEmail || ""}" class="task-dialog__creator-link"><img src="./assets/icons/attach_email.svg" alt="Email"> E-mail</a>`
-                : `<a href="./contacts.html?id=${matchedCreator?.id || ""}" class="task-dialog__creator-link"><img src="./assets/icons/member.svg" alt="Member"> Profil</a>`
+                : `<a href="./contacts.html?id=${matchedCreator?.id || ""}" class="task-dialog__creator-link"><img src="./assets/icons/member.svg" alt="Member"> Profile</a>`
             }
         </p>
         <p><span>Due date:</span><span>${formatDate(element.dueDate)}</span></p>

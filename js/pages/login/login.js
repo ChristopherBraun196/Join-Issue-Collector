@@ -14,7 +14,7 @@ const SIGNUP_ERROR_MESSAGES = {
  * @param {string} name - The full name of the user
  * @param {string} email - The email address of the user
  * @param {string} password - The password for the new account
- * @returns {Promise<void>}
+ * @returns {Promise<boolean>} True if the signup was successful
  */
 async function signup(name, email, password) {
   try {
@@ -23,8 +23,10 @@ async function signup(name, email, password) {
     setTimeout(() => {
       switchToLogin();
     }, 1000);
+    return true;
   } catch (error) {
     handleSignupError(error);
+    return false;
   }
 }
 
@@ -65,7 +67,7 @@ function handleLoginError(error) {
  * Signs in a user with email and password and redirects to the summary page.
  * @param {string} email - The email address of the user
  * @param {string} password - The user's password
- * @returns {Promise<void>}
+ * @returns {Promise<boolean>} True if the login was successful
  */
 async function login(email, password) {
   try {
@@ -74,8 +76,10 @@ async function login(email, password) {
     setTimeout(() => {
       window.location.href = "./summary.html";
     }, 2000);
+    return true;
   } catch (error) {
     handleLoginError(error);
+    return false;
   }
 }
 
@@ -198,12 +202,12 @@ function validateLoginInputs(emailInput, passwordInput) {
 
 /**
  * Reads the login form values and triggers the login process.
- * @returns {Promise<void>}
+ * @returns {Promise<boolean>} True if the login was successful
  */
 export async function handleLogin() {
   const { emailInput, passwordInput } = getLoginFormInputs();
-  if (!validateLoginInputs(emailInput, passwordInput)) return;
-  await login(emailInput.value, passwordInput.value);
+  if (!validateLoginInputs(emailInput, passwordInput)) return false;
+  return login(emailInput.value, passwordInput.value);
 }
 
 /**
@@ -283,12 +287,12 @@ function validateSignupInputs({ nameInput, emailInput, passwordInput, passwordCo
 
 /**
  * Reads the signup form values, validates them and triggers the signup process.
- * @returns {Promise<void>}
+ * @returns {Promise<boolean>} True if the signup was successful
  */
 export async function handleSignup() {
   const inputs = getSignupFormInputs();
-  if (!validateSignupInputs(inputs)) return;
-  await signup(inputs.nameInput.value, inputs.emailInput.value, inputs.passwordInput.value);
+  if (!validateSignupInputs(inputs)) return false;
+  return signup(inputs.nameInput.value, inputs.emailInput.value, inputs.passwordInput.value);
 }
 
 /**
@@ -300,6 +304,6 @@ export async function guestLogin() {
     await signInGuest();
     window.location.href = "./summary.html";
   } catch (error) {
-    showMessage("Gast-Login fehlgeschlagen: " + error.message);
+    showMessage("Guest login failed. Please try again.");
   }
 }
