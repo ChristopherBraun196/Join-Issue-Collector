@@ -81,6 +81,7 @@ export function getTopbarTemplate() {
           <div class="topbar__user" data-action="toggle-user-menu">
           </div>
           <div class="topbar__dropdown">
+            <a href="./help.html" class="topbar__dropdown-link">Help</a>
             <a href="./legal.html" class="topbar__dropdown-link">Legal Notice</a>
             <a href="./privacy.html" class="topbar__dropdown-link">Privacy Policy</a>
             <a href="#" class="topbar__dropdown-link" data-action="logout">Log Out</a>

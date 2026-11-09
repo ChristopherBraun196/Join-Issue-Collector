@@ -229,7 +229,6 @@
     top: 100px;
     right: max(80px, calc(100vw - 1720px));
     width: 150px;
-    height: 150px;
     background-color: var(--primary-color);
     border-radius: 16px 0 16px 16px;
 
