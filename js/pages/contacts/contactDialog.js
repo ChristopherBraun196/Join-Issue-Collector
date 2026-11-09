@@ -5,6 +5,7 @@ import { loadData, putData, updateData, deleteData } from "../../services/databa
 import { clearActiveContact, loadContacts, getActiveContactData, isEmailTaken, openContactById } from "./contacts.js";
 import { isValidEmail } from "../../utils/validators.js";
 import { confirmAction } from "../../components/confirmDialog.js";
+import { getInitials } from "../../utils/format.js";
 
 const PHONE_PATTERN = /^[+\d\s\-()]{6,20}$/;
 const CONTACT_FIELDS = {
@@ -196,6 +197,7 @@ export function editContact(contactId) {
   const currentContact = getActiveContactData(contactId);
   openContactDialog();
   fillEditDialogInputs(currentContact);
+  showContactAvatar(currentContact);
   setEditDialogButtons(contactId);
 }
 
@@ -219,6 +221,30 @@ export async function saveContact(contactId) {
 }
 
 /**
+ * Shows the initials of the edited contact in its avatar color instead of the default icon.
+ * @param {Object} contact - The contact with name and color
+ */
+function showContactAvatar(contact) {
+  const initials = document.querySelector(".contact-dialog__avatar--initials");
+  initials.textContent = getInitials(contact.name);
+  initials.style.backgroundColor = contact.color;
+  toggleDialogAvatar(true);
+}
+
+/**
+ * Switches between the default icon and the initials avatar in the contact dialog.
+ * @param {boolean} showInitials - True to show the initials avatar
+ */
+function toggleDialogAvatar(showInitials) {
+  document
+    .querySelector(".contact-dialog__avatar--icon")
+    .classList.toggle("contact-dialog__avatar--hidden", showInitials);
+  document
+    .querySelector(".contact-dialog__avatar--initials")
+    .classList.toggle("contact-dialog__avatar--hidden", !showInitials);
+}
+
+/**
  * Resets the contact dialog to its default "Add contact" state.
  */
 function resetDialog() {
@@ -230,6 +256,7 @@ function resetDialog() {
   submitBtn.dataset.action = "submit";
   delete submitBtn.dataset.id;
   document.querySelector(".contact-dialog__title").textContent = "Add contact";
+  toggleDialogAvatar(false);
 }
 
 /**

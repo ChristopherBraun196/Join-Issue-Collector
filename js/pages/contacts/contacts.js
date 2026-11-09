@@ -214,6 +214,7 @@ export function getActiveContactData(contactId) {
         id: contactId,
         name: item.querySelector(".contacts__name").textContent,
         email: item.querySelector(".contacts__email").textContent,
+        color: item.querySelector(".contacts__avatar").style.backgroundColor,
       };
     }
   });

@@ -503,6 +503,25 @@
   }
 }
 
+.contact-dialog__avatar--initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  color: white;
+  font-family: InterBold;
+  font-size: 47px;
+
+  @media (max-width: 1200px) {
+    font-size: 28px;
+  }
+}
+
+.contact-dialog__avatar--hidden {
+  display: none;
+}
+
 .contact-dialog__fields {
   flex: 1;
   display: flex;
