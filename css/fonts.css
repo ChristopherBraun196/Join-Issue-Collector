@@ -1,39 +1,39 @@
 @font-face {
   font-family: InterRegular;
-  src: url("../assets/fonts/inter/Inter_18pt-Regular.ttf");
+  src: url("../assets/fonts/inter/Inter_18pt-Regular.woff2");
 }
 
 @font-face {
   font-family: InterThin;
-  src: url("../assets/fonts/inter/Inter_18pt-Thin.ttf");
+  src: url("../assets/fonts/inter/Inter_18pt-Thin.woff2");
 }
 
 @font-face {
   font-family: InterBold;
-  src: url("../assets/fonts/inter/Inter_18pt-Bold.ttf");
+  src: url("../assets/fonts/inter/Inter_18pt-Bold.woff2");
 }
 
 @font-face {
   font-family: InterItalic;
-  src: url("../assets/fonts/inter/Inter_18pt-Italic.ttf");
+  src: url("../assets/fonts/inter/Inter_18pt-Italic.woff2");
 }
 
 @font-face {
   font-family: OpenSansRegular;
-  src: url("../assets/fonts/Open_Sans/static/OpenSans-Regular.ttf");
+  src: url("../assets/fonts/Open_Sans/static/OpenSans-Regular.woff2");
 }
 
 @font-face {
   font-family: OpenSansBold;
-  src: url("../assets/fonts/Open_Sans/static/OpenSans-Bold.ttf");
+  src: url("../assets/fonts/Open_Sans/static/OpenSans-Bold.woff2");
 }
 
 @font-face {
   font-family: OpenSansExtraBold;
-  src: url("../assets/fonts/Open_Sans/static/OpenSans-ExtraBold.ttf");
+  src: url("../assets/fonts/Open_Sans/static/OpenSans-ExtraBold.woff2");
 }
 
 @font-face {
   font-family: OpenSansMedium;
-  src: url("../assets/fonts/Open_Sans/static/OpenSans-Medium.ttf");
+  src: url("../assets/fonts/Open_Sans/static/OpenSans-Medium.woff2");
 }
