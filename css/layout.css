@@ -84,7 +84,7 @@
   gap: 12px;
   text-decoration: none;
   color: var(--nav-link-color);
-  font-size: 16px;
+  font-size: var(--fs-s);
   padding: 7px 56px;
   width: 100%;
 
@@ -137,7 +137,7 @@
   background: #f4f4f4;
   box-shadow: 0px 1px 5px rgb(138, 138, 138);
   display: flex;
-  font-size: 20px;
+  font-size: var(--fs-l);
   z-index: 1000;
 
   @media (max-width: 1200px) {
@@ -195,7 +195,7 @@
   justify-content: center;
   color: white;
   font-family: InterBold;
-  font-size: 18px;
+  font-size: var(--fs-m);
   aspect-ratio: 1/1;
   height: 40px;
   border-radius: 50%;
@@ -241,7 +241,7 @@
 .topbar__dropdown-link {
   font-family: InterRegular;
   color: var(--nav-link-color);
-  font-size: 16px;
+  font-size: var(--fs-s);
 
   &:hover {
     color: var(--highligted-color);

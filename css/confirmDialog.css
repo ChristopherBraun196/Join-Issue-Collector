@@ -14,7 +14,7 @@
 
 .confirm-dialog__text {
   margin-bottom: 24px;
-  font-size: 20px;
+  font-size: var(--fs-l);
   color: var(--primary-color);
   outline: none;
 }
@@ -27,7 +27,7 @@
 
 .confirm-dialog__btn {
   padding: 12px 24px;
-  font-size: 16px;
+  font-size: var(--fs-s);
 }
 
 .confirm-dialog__btn--cancel:hover {

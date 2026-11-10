@@ -95,7 +95,7 @@
 }
 
 .login__signup-text {
-  font-size: 20px;
+  font-size: var(--fs-l);
 }
 
 .login__signup-mobile {
@@ -234,7 +234,7 @@
   height: 24px;
   border: none;
   outline: none;
-  font-size: 20px;
+  font-size: var(--fs-l);
   font-family: inherit;
 }
 
@@ -298,7 +298,7 @@
   min-height: 20px;
   margin-top: 4px;
   padding-left: 4px;
-  font-size: 16px;
+  font-size: var(--fs-s);
   color: var(--error-color);
 }
 
@@ -342,7 +342,7 @@
   border: 1px solid var(--primary-color);
   border-radius: 8px;
   font-family: InterBold;
-  font-size: 21px;
+  font-size: var(--fs-xl);
   white-space: nowrap;
   transition: all 0.1s ease-in;
 
@@ -353,14 +353,14 @@
   }
 
   @media (max-width: 575px) {
-    font-size: 16px;
+    font-size: var(--fs-s);
   }
 }
 
 .login__btn--small {
   height: auto;
   padding: 15px 16px;
-  font-size: 16px;
+  font-size: var(--fs-s);
   line-height: 1.2;
 }
 
@@ -389,7 +389,7 @@
 .login__privacy-link {
   display: inline-grid;
   margin: 0 20px;
-  font-size: 18px;
+  font-size: var(--fs-m);
   color: #6d6d6d;
   text-decoration: none;
   transition: all 0.1s ease-in;
@@ -409,7 +409,7 @@
 
   @media (max-width: 480px) {
     margin: 0 10px;
-    font-size: 14px;
+    font-size: var(--fs-xs);
   }
 }
 

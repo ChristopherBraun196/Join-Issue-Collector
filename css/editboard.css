@@ -23,7 +23,7 @@
   border: 1px solid #d1d1d1;
   border-radius: 10px;
   background: white;
-  font-size: 16px;
+  font-size: var(--fs-s);
   cursor: pointer;
   transition: all 0.1s ease;
 
@@ -65,7 +65,7 @@
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 16px;
+  font-size: var(--fs-s);
   font-weight: 700;
   margin-left: -8px;
   border: 2px solid #fff;
@@ -80,7 +80,7 @@
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 16px;
+  font-size: var(--fs-s);
   font-weight: bold;
 }
 
@@ -89,7 +89,7 @@
   align-items: center;
   padding: 6px 10px;
   border-radius: 10px;
-  font-size: 16px;
+  font-size: var(--fs-s);
 
   &::before {
     content: "•";
@@ -119,7 +119,7 @@
     border: none;
     background: transparent;
     padding: 6px 10px;
-    font-size: 16px;
+    font-size: var(--fs-s);
     outline: none;
   }
 
@@ -157,7 +157,7 @@
   color: white;
   border: none;
   border-radius: 10px;
-  font-size: 16px;
+  font-size: var(--fs-s);
   font-weight: 500;
   margin-left: auto;
   z-index: 10;

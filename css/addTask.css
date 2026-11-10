@@ -137,7 +137,7 @@
 
 label {
   display: block;
-  font-size: 16px;
+  font-size: var(--fs-s);
   font-weight: 500;
   margin-bottom: 8px;
 }
@@ -150,7 +150,7 @@ textarea {
   border-radius: var(--border-radius);
   border: 1px solid var(--input-border-color);
   background-color: white;
-  font-size: 16px;
+  font-size: var(--fs-s);
   font-family: inherit;
   transition:
     border-color 0.1s,
@@ -197,7 +197,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border-radius: var(--border-radius);
   cursor: pointer;
   font-weight: 500;
-  font-size: 16px;
+  font-size: var(--fs-s);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -258,7 +258,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 16px;
+  font-size: var(--fs-s);
   font-family: InterBold;
   font-weight: bold;
   border: 2px solid white;
@@ -266,7 +266,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
   &.task-form__badge--overflow {
     background-color: #999;
-    font-size: 16px;
+    font-size: var(--fs-s);
   }
 }
 
@@ -277,11 +277,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   flex-wrap: wrap;
   gap: 15px;
   width: 100%;
-  font-size: 16px;
+  font-size: var(--fs-s);
   padding: 0 60px;
 
   & p {
-    font-size: 14px;
+    font-size: var(--fs-xs);
   }
 
   @media (max-width: 1200px) {
@@ -311,7 +311,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     align-items: center;
     padding: 10px 24px;
     border-radius: var(--border-radius);
-    font-size: 16px;
+    font-size: var(--fs-s);
     cursor: pointer;
     gap: 8px;
     transition: opacity 0.1s;
@@ -365,7 +365,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border-radius: var(--border-radius);
   background: white;
   cursor: pointer;
-  font-size: 16px;
+  font-size: var(--fs-s);
   color: black;
   transition:
     border-color 0.1s,
@@ -420,7 +420,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   padding: 10px 15px;
   cursor: pointer;
   transition: all 0.1s ease-in-out;
-  font-size: 16px;
+  font-size: var(--fs-s);
   color: #2a3647;
 
   &:not(.dropdown__option--selected):hover {
@@ -441,7 +441,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 16px;
+  font-size: var(--fs-s);
   font-family: InterBold;
   font-weight: 700;
   flex-shrink: 0;
@@ -467,7 +467,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     flex: 1;
     border: none;
     outline: none;
-    font-size: 16px;
+    font-size: var(--fs-s);
     font-family: inherit;
     background: transparent;
   }
@@ -490,7 +490,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
   border-radius: 4px;
   transition: background 0.1s;
-  font-size: 16px;
+  font-size: var(--fs-s);
 
   &:hover {
     background: #f0f0f0;
@@ -545,7 +545,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   padding: 6px 10px;
   border: solid 0.5px var(--primary-color-light);
   border-radius: var(--border-radius);
-  font-size: 16px;
+  font-size: var(--fs-s);
   color: #2a3647;
   gap: 8px;
   transition: background 0.1s;
@@ -569,7 +569,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     flex: 1;
     border: none;
     outline: none;
-    font-size: 16px;
+    font-size: var(--fs-s);
     font-family: inherit;
     background: transparent;
     color: #2a3647;
@@ -598,7 +598,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   visibility: hidden;
   display: block;
   color: var(--error-color);
-  font-size: 16px;
+  font-size: var(--fs-s);
   margin-top: 5px;
   min-height: 20px;
 }
