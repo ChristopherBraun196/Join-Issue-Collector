@@ -17,22 +17,6 @@ export async function loadData(path = "") {
 }
 
 /**
- * Creates a new entry at the given path with a generated UUID as key.
- * @param {string} path - The database path to write to
- * @param {Object} data - The data to store
- * @returns {Promise<Object>} An object containing the generated key
- */
-async function postData(path = "", data = {}) {
-  try {
-    const newRef = ref(db, path + "/" + crypto.randomUUID());
-    await set(newRef, data);
-    return { name: newRef.key };
-  } catch (error) {
-    showMessage(error);
-  }
-}
-
-/**
  * Writes data to Firebase at the given path, overwriting existing data.
  * @param {string} path - The database path to write to
  * @param {Object} data - The data to store

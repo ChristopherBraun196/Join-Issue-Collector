@@ -20,6 +20,7 @@ function generateTopbar() {
   header.classList.add("topbar");
   body.appendChild(header);
   header.addEventListener("click", handleTopbarClick);
+  document.addEventListener("click", closeUserMenu);
 
   setTopbar();
 }
@@ -71,11 +72,11 @@ export function renderUserMenue() {
   const um = document.querySelector(".topbar__user");
   if (!um) return;
 
-  if (!user) um.innerText = "G";
+  if (!user) um.textContent = "G";
   else {
     const initials = getInitials(user.name);
     um.style.backgroundColor = user.avatarColor;
-    um.innerText = initials;
+    um.textContent = initials;
   }
   um.classList.add("topbar__user--visible");
 }
@@ -100,7 +101,10 @@ export function toggleUserMenue(event) {
   dropdown.classList.toggle("topbar__dropdown--open");
 }
 
-document.addEventListener("click", function () {
+/**
+ * Closes the user menu dropdown when the user clicks anywhere on the page.
+ */
+function closeUserMenu() {
   const dropdown = document.querySelector(".topbar__dropdown");
   if (dropdown) dropdown.classList.remove("topbar__dropdown--open");
-});
+}

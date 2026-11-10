@@ -21,6 +21,7 @@ export function initTaskForm(container) {
   container.addEventListener("change", handleTaskFormChange);
   container.addEventListener("input", handleTaskFormInput);
   container.addEventListener("keydown", handleTaskFormKey);
+  document.addEventListener("click", closeDropdownsOnOutsideClick);
 }
 
 /**
@@ -324,31 +325,16 @@ function createBadge(text, background, modifier = "") {
 }
 
 /**
- * Renders the avatar icons for all selected contacts.
+ * Closes all open dropdowns when the user clicks outside of them
+ * and validates the category if it was left empty.
+ * @param {MouseEvent} event - The click event on the document
  */
-function renderSelectedAvatars() {
-  const container = document.getElementById("selected-avatars");
-  if (!container) return;
-  container.innerHTML = selectedContacts
-    .map(
-      (c) => `
-        <div class="contact-avatar" style="background:${c.color}" title="${c.name}">
-            ${getInitials(c.name)}
-        </div>
-    `,
-    )
-    .join("");
+function closeDropdownsOnOutsideClick(event) {
+  if (event.target.closest(".dropdown")) return;
+  document.querySelectorAll(".dropdown__menu--open").forEach((menu) => {
+    menu.classList.remove("dropdown__menu--open");
+    const hiddenInput = menu.closest(".dropdown")?.querySelector('input[name="category"]');
+    if (hiddenInput) validateOnBlur(hiddenInput, "Please select a category");
+  });
+  document.querySelectorAll(".dropdown__trigger--open").forEach((t) => t.classList.remove("dropdown__trigger--open"));
 }
-
-document.addEventListener("click", (e) => {
-  if (!e.target.closest(".dropdown")) {
-    document.querySelectorAll(".dropdown__menu--open").forEach((d) => {
-      d.classList.remove("dropdown__menu--open");
-
-      const wrapper = d.closest(".dropdown");
-      const hiddenInput = wrapper?.querySelector('input[name="category"]');
-      if (hiddenInput) validateOnBlur(hiddenInput, "Please select a category");
-    });
-    document.querySelectorAll(".dropdown__trigger--open").forEach((t) => t.classList.remove("dropdown__trigger--open"));
-  }
-});
