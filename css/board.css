@@ -61,7 +61,6 @@
 }
 
 .board__add-btn-mobile {
-  color: var(--primary-color);
   border-radius: 12px;
   border-color: var(--primary-color);
   width: 35px;
@@ -118,7 +117,6 @@
   &:hover {
     -webkit-filter: drop-shadow(1px 1px 1px #22222280);
     filter: drop-shadow(1px 1px 1px #22222280);
-    transition: 0.1s all ease-in;
   }
 }
 
@@ -583,7 +581,6 @@
   font-weight: 600;
 
   &:hover {
-    text-decoration: none;
     cursor: pointer;
   }
 }
