@@ -5,6 +5,7 @@ import { logout } from "../services/authGuard.js";
 /**
  * Initializes the page by generating the topbar and loading the sidebar.
  * @param {string} site - The current page identifier
+ * @param {boolean} [withSidebar=true] - Whether the sidebar should be loaded
  */
 export function init(site, withSidebar = true) {
   generateTopbar();
@@ -94,6 +95,7 @@ function handleTopbarClick(event) {
 
 /**
  * Toggles the visibility of the user menu dropdown.
+ * @param {MouseEvent} event - The click event on the user circle
  */
 export function toggleUserMenue(event) {
   event.stopPropagation();

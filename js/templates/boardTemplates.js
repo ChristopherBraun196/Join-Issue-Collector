@@ -46,6 +46,7 @@ export async function getToDoTemplate(element, solvedSubtasks, totalSubtasks, vi
  * @param {Object} element - The task object
  * @param {Object[]} assignedContacts - Array of assigned contact objects
  * @param {Object[]} subtasks - Array of subtask objects
+ * @param {Object} [matchedCreator] - The contact that created the task, if found
  * @returns {string} HTML string of the task detail dialog
  */
 export function getDialogBoardTemplate(element, assignedContacts, subtasks, matchedCreator) {

@@ -258,6 +258,12 @@ async function toggleAssignedContact(event, option, contactId) {
   await saveAndRefreshAssigned(currentEditTaskId, assignedTo);
 }
 
+/**
+ * Builds the HTML of all contact options for the edit dropdown, sorted by name.
+ * @param {Object} allContacts - All contacts from Firebase, keyed by ID
+ * @param {string[]} assignedIds - IDs of the contacts assigned to the task
+ * @returns {string} HTML string of the contact options
+ */
 function buildContactOptions(allContacts, assignedIds) {
   return Object.entries(allContacts)
     .sort(([, a], [, b]) => a.name.localeCompare(b.name))
@@ -268,6 +274,12 @@ function buildContactOptions(allContacts, assignedIds) {
     .join("");
 }
 
+/**
+ * Builds the HTML of the avatar badges for all assigned contacts.
+ * @param {Object} allContacts - All contacts from Firebase, keyed by ID
+ * @param {string[]} assignedIds - IDs of the contacts assigned to the task
+ * @returns {string} HTML string of the badges
+ */
 function buildContactBadges(allContacts, assignedIds) {
   return Object.entries(allContacts)
     .filter(([id]) => assignedIds.includes(id))
@@ -275,12 +287,23 @@ function buildContactBadges(allContacts, assignedIds) {
     .join("");
 }
 
+/**
+ * Builds the complete "Assigned to" section of the edit dialog.
+ * @param {Object} allContacts - All contacts from Firebase, keyed by ID
+ * @param {string[]} assignedIds - IDs of the contacts assigned to the task
+ * @returns {string} HTML string of the dropdown options and badges
+ */
 function buildAssignedContactsEdit(allContacts, assignedIds) {
   const optionsHTML = buildContactOptions(allContacts, assignedIds);
   const badgesHTML = buildContactBadges(allContacts, assignedIds);
   return getAssignedContactsEditTemplate(optionsHTML, badgesHTML);
 }
 
+/**
+ * Adds the subtask on Enter and clears the input on Escape in the edit dialog.
+ * @param {KeyboardEvent} event - The keydown event of the subtask input
+ * @param {string} taskId - The ID of the edited task
+ */
 export function handleSubtaskKeyEdit(event, taskId) {
   if (event.key === "Enter") {
     event.preventDefault();
@@ -289,6 +312,10 @@ export function handleSubtaskKeyEdit(event, taskId) {
   if (event.key === "Escape") clearSubtaskInputEdit();
 }
 
+/**
+ * Switches a subtask in the edit dialog into editing mode and selects its text.
+ * @param {HTMLElement} span - The text element of the subtask
+ */
 function editSubtaskEditMode(span) {
   const li = span.closest("li");
   li.innerHTML = getSubtaskEditingStateTemplate(span.textContent);

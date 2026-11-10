@@ -141,7 +141,6 @@ export function openAddTaskDialog(status, onCreated) {
 /**
  * Closes and removes the add task dialog.
  */
-
 function closeAddTaskDialog() {
   addTaskDialog.close();
   addTaskDialog.remove();

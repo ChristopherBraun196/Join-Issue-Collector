@@ -40,6 +40,9 @@ export function toggleMoveOverlay(event, taskId, currentStatus) {
 
 /**
  * Returns the HTML for the move overlay content.
+ * @param {string} taskId - The ID of the task to move
+ * @param {Array<{id: string, label: string, direction: string}>} targets - The columns the task can be moved to
+ * @returns {string} HTML string of the overlay content
  */
 function getMoveOverlayHTML(taskId, targets) {
   let html = '<p class="move-overlay__title">Move to</p>';
@@ -53,7 +56,11 @@ function getMoveOverlayHTML(taskId, targets) {
 }
 
 /**
- * Moves a task to a new column via the overlay.
+ * Moves a task to a new column (used by the overlay and by drag and drop).
+ * @param {Event} event - The click or drop event
+ * @param {string} taskId - The ID of the task to move
+ * @param {string} newStatus - The target column status
+ * @returns {Promise<void>}
  */
 export async function moveTaskTo(event, taskId, newStatus) {
   event.stopPropagation();
@@ -81,6 +88,7 @@ function closeAllOverlays() {
 
 /**
  * Handles clicks outside overlays to close them.
+ * @param {MouseEvent} event - The click event
  */
 export function handleOutsideClick(event) {
   if (!event.target.closest(".move-overlay") && !event.target.closest(".task-card__move-btn")) {

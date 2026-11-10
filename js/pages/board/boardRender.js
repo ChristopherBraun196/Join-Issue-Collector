@@ -191,6 +191,11 @@ export async function findTask(input) {
   await renderFilteredTasks(matches);
 }
 
+/**
+ * Renders only the given tasks into their columns (used by the search).
+ * @param {Object[]} filteredTasks - The tasks that match the search
+ * @returns {Promise<void>}
+ */
 async function renderFilteredTasks(filteredTasks) {
   await Promise.all(
     COLUMNS.map((section) =>
