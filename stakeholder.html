@@ -4,98 +4,70 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join | Stakeholder</title>
-    <link rel="stylesheet" href="./main.css" />
-    <link
-      rel="shortcut icon"
-      href="./assets/img/logo-light.svg"
-      type="image/x-icon"
-    />
+    <link rel="stylesheet" href="./css/assets.css" />
+    <link rel="stylesheet" href="./css/fonts.css" />
+    <link rel="stylesheet" href="./css/standard.css" />
+    <link rel="stylesheet" href="./css/welcome.css" />
+    <link rel="stylesheet" href="./css/stakeholder.css" />
+    <link rel="shortcut icon" href="./assets/img/logo-light.svg" type="image/x-icon" />
   </head>
-  <body class="stakeholder-page">
-    <div class="stakeholder-content">
-      <header class="stakeholder-header">
-        <img src="./assets/img/logo-dark.svg" alt="Join logo" class="logo" />
+  <body class="stakeholder">
+    <div class="stakeholder__content">
+      <header class="stakeholder__header">
+        <img src="./assets/img/logo-dark.svg" alt="Join logo" class="stakeholder__logo" />
       </header>
-      <main id="stakeholderMain">
-        <section
-          class="stakeholder-layout"
-          id="stakeholderLayout"
-          aria-labelledby="stakeholderHeading"
-        >
-          <h1 id="stakeholderHeading" class="area-heading">Welcome</h1>
-          <a href="./welcome.html" class="back-link area-arrow">
-            <img
-              src="./assets/icons/arrow-back.svg"
-              alt="Back to welcome page"
-            />
+      <main class="stakeholder__main">
+        <section class="stakeholder__layout" aria-labelledby="stakeholderHeading">
+          <h1 id="stakeholderHeading" class="stakeholder__heading">Welcome</h1>
+          <a href="./welcome.html" class="stakeholder__back">
+            <img src="./assets/icons/arrow-back.svg" alt="Back to welcome page" class="stakeholder__back-icon" />
           </a>
-          <p id="requestCounter" class="area-counter">
-            <span class="counter-number"><strong>0</strong></span> of
-            <span class="counter-number"><strong>10</strong></span> requests
-            used
+          <p class="stakeholder__counter">
+            <span class="stakeholder__count"><strong>0</strong></span> of
+            <span class="stakeholder__count"><strong>10</strong></span> requests used
           </p>
 
-          <p class="area-intro state-normal">
-            Easily create a ticket by sending an email — no extra steps
-            needed.
-          </p>
+          <p class="stakeholder__intro stakeholder__normal">Easily create a ticket by sending an email — no extra steps needed.</p>
           <img
             src="./assets/img/img_person_0.png"
             alt=""
-            id="stakeholderIllustration"
-            class="area-image state-normal"
+            class="stakeholder__image stakeholder__normal"
           />
-          <div class="area-rest state-normal">
-            <p>
-              On this platform, you can submit your feature requests via
-              email. Our AI system will automatically generate a ticket with
-              a deadline and priority level.
+          <div class="stakeholder__rest stakeholder__normal">
+            <p class="stakeholder__text">
+              On this platform, you can submit your feature requests via email. Our AI system will automatically
+              generate a ticket with a deadline and priority level.
             </p>
-            <p>
-              A total of 10 requests can be created per day. After this
-              limit, emails can still be sent, but they will be manually
-              reviewed by our team instead of generating AI tickets.
+            <p class="stakeholder__text">
+              A total of 10 requests can be created per day. After this limit, emails can still be sent, but they will
+              be manually reviewed by our team instead of generating AI tickets.
             </p>
-            <a
-              href="mailto:join@christopher-braun-dev.de"
-              id="createRequestBtn"
-              class="welcome-btn welcome-btn-primary"
+            <a href="mailto:join@christopher-braun-dev.de" class="welcome-btn welcome-btn--primary stakeholder__button"
               >Create Email Request
-              <img src="./assets/icons/check.svg" alt="" />
+              <img src="./assets/icons/check.svg" alt="" class="stakeholder__button-icon" />
             </a>
           </div>
 
-          <div class="area-intro area-warning state-limit">
-            The daily 10-request limit has been reached!
-          </div>
-          <img
-            src="./assets/img/img_person_10.png"
-            alt=""
-            class="area-image state-limit"
-          />
-          <div class="area-rest state-limit">
-            <p>
-              Need more? No worries — you can still send emails, but our team
-              will review them manually instead of using AI to create
-              tickets.
+          <div class="stakeholder__intro stakeholder__intro--warning stakeholder__limit">The daily 10-request limit has been reached!</div>
+          <img src="./assets/img/img_person_10.png" alt="" class="stakeholder__image stakeholder__limit" />
+          <div class="stakeholder__rest stakeholder__limit">
+            <p class="stakeholder__text">
+              Need more? No worries — you can still send emails, but our team will review them manually instead of using
+              AI to create tickets.
             </p>
-            <a
-              href="mailto:join@christopher-braun-dev.de"
-              id="sendEmailBtn"
-              class="welcome-btn welcome-btn-primary"
+            <a href="mailto:join@christopher-braun-dev.de" class="welcome-btn welcome-btn--primary stakeholder__button"
               >Send an email
-              <img src="./assets/icons/check.svg" alt="" />
+              <img src="./assets/icons/check.svg" alt="" class="stakeholder__button-icon" />
             </a>
           </div>
         </section>
       </main>
     </div>
 
-    <footer id="stakeholderFooter">
-      <a href="./privacy.html">Privacy Policy</a>
-      <a href="./legal.html">Legal notice</a>
+    <footer class="stakeholder__footer">
+      <a href="./privacy.html" class="stakeholder__footer-link">Privacy Policy</a>
+      <a href="./legal.html" class="stakeholder__footer-link">Legal notice</a>
     </footer>
   </body>
-
-  <script type="module" src="./js/stakeholder.js"></script>
+  <script type="module" src="./js/pages/stakeholder/stakeholder.js"></script>
 </html>

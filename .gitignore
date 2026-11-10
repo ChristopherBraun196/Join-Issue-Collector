@@ -1,6 +1,6 @@
 .DS_Store
 seedDatabase.html
-js/firebaseAuth.js
+js/services/firebaseAuth.js
 /FirebaseRules.js
 /notes
 /checklist

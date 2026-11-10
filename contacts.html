@@ -4,125 +4,116 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join | Contacts</title>
-    <link rel="stylesheet" href="./main.css" />
-    <link
-      rel="shortcut icon"
-      href="./assets/img/logo-light.png"
-      type="image/x-icon"
-    />
+    <link rel="stylesheet" href="./css/layout.css" />
+    <link rel="stylesheet" href="./css/assets.css" />
+    <link rel="stylesheet" href="./css/contact.css" />
+    <link rel="stylesheet" href="./css/confirmDialog.css" />
+    <link rel="stylesheet" href="./css/fonts.css" />
+    <link rel="stylesheet" href="./css/standard.css" />
+    <link rel="shortcut icon" href="./assets/img/logo-light.png" type="image/x-icon" />
   </head>
 
-  <body onload="init('contact')">
-    <aside id="sidebar"></aside>
-    <aside id="sidebar_contacts">
-      <button class="primary-btn add_contact" onclick="openContactDialog()">
+  <body>
+    <aside class="sidebar"></aside>
+    <aside class="contacts__panel">
+      <button class="primary-btn contacts__add-btn" data-action="open-dialog">
         Add new contact <img src="./assets/icons/person_add.svg" />
       </button>
     </aside>
 
-    <main class="main_contacts">
-      <button class="back-to-contacts" onclick="backToContacts()">
-        <img src="./assets/icons/arrow-back.svg" />
+    <main class="page contacts__main">
+      <button class="contacts__back" data-action="back">
+        <img src="./assets/icons/arrow-back.svg" class="contacts__back-icon" />
       </button>
       <div class="headline">
-        <h1>Contacts</h1>
-        <div class="line"></div>
-        <a>Better with a team</a>
+        <h1 class="headline__title">Contacts</h1>
+        <div class="headline__line"></div>
+        <a class="headline__subtitle">Better with a team</a>
       </div>
     </main>
 
-    <button class="fab-add-contact" onclick="openContactDialog()">
-      <img src="./assets/icons/person_add.svg" class="nav-link-icon active" />
+    <button class="contacts__fab" data-action="open-dialog">
+      <img src="./assets/icons/person_add.svg" class="contacts__fab-icon" />
     </button>
 
-    <div id="dialog-overlay" class="dialog-overlay">
-      <div class="dialog-box">
-        <!-- Links -->
-        <div class="dialog-left">
-          <img src="./assets/img/logo-light.png" class="dialog-logo" />
-          <h1>Add contact</h1>
-          <p>Tasks are better with a team!</p>
-          <div class="logo-underline"></div>
+    <div class="contact-dialog">
+      <div class="contact-dialog__box">
+        <div class="contact-dialog__left">
+          <img src="./assets/img/logo-light.png" class="contact-dialog__logo" />
+          <h1 class="contact-dialog__title">Add contact</h1>
+          <p class="contact-dialog__text">Tasks are better with a team!</p>
+          <div class="contact-dialog__underline"></div>
         </div>
+        <div class="contact-dialog__right">
+          <button class="contact-dialog__close" data-action="close-dialog">&#x2715;</button>
 
-        <!-- Rechts -->
-        <div class="dialog-right">
-          <button class="close-btn" onclick="closeContactDialog()">
-            &#x2715;
-          </button>
+          <div class="contact-dialog__content">
+            <img src="./assets/icons/contact_pb.svg" class="contact-dialog__avatar contact-dialog__avatar--icon" />
+            <div class="contact-dialog__avatar contact-dialog__avatar--initials contact-dialog__avatar--hidden"></div>
 
-          <div class="dialog-content">
-            <img
-              src="./assets/icons/contact_pb.svg"
-              class="new-contact-avatar"
-            />
-
-            <div class="dialog-fields">
-              <div class="field-wrap">
+            <div class="contact-dialog__fields">
+              <div class="contact-dialog__field">
                 <input
-                  id="input-name"
+                  class="contact-dialog__input contact-dialog__input--name"
                   type="text"
                   placeholder="Name"
-                  required
+                  data-field="name"
                 />
-                <svg class="field-icon" viewBox="0 0 24 24" fill="currentColor">
+                <svg class="contact-dialog__icon" viewBox="0 0 24 24" fill="currentColor">
                   <path
                     d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"
                   />
                 </svg>
-                <span class="error-msg" id="err-name"></span>
+                <span class="contact-dialog__error contact-dialog__error--name"></span>
               </div>
 
-              <div class="field-wrap">
+              <div class="contact-dialog__field">
                 <input
-                  id="input-email"
+                  class="contact-dialog__input contact-dialog__input--email"
                   type="email"
                   placeholder="Email"
-                  required
+                  data-field="email"
                 />
-                <svg class="field-icon" viewBox="0 0 24 24" fill="currentColor">
+                <svg class="contact-dialog__icon" viewBox="0 0 24 24" fill="currentColor">
                   <path
                     d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"
                   />
                 </svg>
-                <span class="error-msg" id="err-email"></span>
+                <span class="contact-dialog__error contact-dialog__error--email"></span>
               </div>
 
-              <div class="field-wrap">
+              <div class="contact-dialog__field">
                 <input
-                  id="input-phone"
+                  class="contact-dialog__input contact-dialog__input--phone"
                   type="tel"
                   placeholder="Phone"
-                  required
+                  data-field="phone"
                 />
-                <svg class="field-icon" viewBox="0 0 24 24" fill="currentColor">
+                <svg class="contact-dialog__icon" viewBox="0 0 24 24" fill="currentColor">
                   <path
                     d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"
                   />
                 </svg>
-                <span class="error-msg" id="err-phone"></span>
+                <span class="contact-dialog__error contact-dialog__error--phone"></span>
               </div>
 
-              <div class="dialog-actions">
-                <button class="btn-cancel" onclick="closeContactDialog()">
-                  Cancel &#x2715;
-                </button>
-                <button class="btn-submit" onclick="submitContact()">
-                  Create contact &#x2713;
-                </button>
+              <div class="contact-dialog__actions">
+                <button class="contact-dialog__cancel" data-action="close-dialog">Cancel &#x2715;</button>
+                <button class="contact-dialog__submit" data-action="submit">Create contact &#x2713;</button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <script type="module" src="./js/authGuard.js"></script>
-    <script src="./script.js"></script>
-    <script src="./js/templates.js"></script>
-    <!-- <script src="./js/database.js"></script> -->
-    <script type="module" src="./js/database.js"></script>
-    <script src="./js/contact.js"></script>
-    <div id="message-box"></div>
+    <dialog class="confirm-dialog">
+      <p class="confirm-dialog__text" tabindex="-1" autofocus></p>
+      <div class="confirm-dialog__actions">
+        <button class="secondary-btn confirm-dialog__btn confirm-dialog__btn--cancel" type="button" data-confirm="false">Cancel</button>
+        <button class="primary-btn confirm-dialog__btn" type="button" data-confirm="true">Delete</button>
+      </div>
+    </dialog>
+    <div class="toast"></div>
+    <script type="module" src="./js/pages/contacts/contacts.js"></script>
   </body>
 </html>

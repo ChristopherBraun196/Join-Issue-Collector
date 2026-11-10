@@ -4,52 +4,55 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join | Welcome</title>
-    <link rel="stylesheet" href="./main.css" />
+    <link rel="stylesheet" href="./css/assets.css" />
+    <link rel="stylesheet" href="./css/fonts.css" />
+    <link rel="stylesheet" href="./css/standard.css" />
+    <link rel="stylesheet" href="./css/welcome.css" />
     <link
       rel="shortcut icon"
       href="./assets/img/logo-light.svg"
       type="image/x-icon"
     />
   </head>
-  <body class="welcome-page">
-    <header class="welcome-mobile-header">
-      <img src="./assets/img/logo-light.svg" alt="Join logo" class="logo" />
+  <body class="welcome">
+    <header class="welcome__header">
+      <img src="./assets/img/logo-light.svg" alt="Join logo" class="welcome__logo" />
     </header>
-    <main id="welcomeMain">
-      <p class="welcome-signup-hint">
-        Not a Join user? <a href="./index.html">Sign up</a>
+    <main class="welcome__main">
+      <p class="welcome__hint">
+        Not a Join user? <a href="./index.html" class="welcome__hint-link">Sign up</a>
       </p>
-      <section aria-labelledby="welcome-heading">
-        <h1 id="welcome-heading">Welcome</h1>
-        <p>
+      <section class="welcome__card" aria-labelledby="welcome-heading">
+        <h1 id="welcome-heading" class="welcome__title">Welcome</h1>
+        <p class="welcome__text">
           Pick the option that suits your role: create a request as a
           stakeholder or log in if you're part of the team.
         </p>
-        <div class="welcome-options">
-          <article>
-            <h2>
-              <img src="./assets/icons/work.svg" alt="" />Are you a stakeholder?
+        <div class="welcome__options">
+          <article class="welcome__option">
+            <h2 class="welcome__option-title">
+              <img src="./assets/icons/work.svg" alt="" class="welcome__option-icon" />Are you a stakeholder?
             </h2>
-            <a href="./stakeholder.html" class="welcome-btn welcome-btn-primary"
+            <a href="./stakeholder.html" class="welcome-btn welcome-btn--primary"
               >Create request</a
             >
           </article>
 
-          <article>
-            <h2>
-              <img src="./assets/icons/member.svg" alt="" />Are you a team
+          <article class="welcome__option">
+            <h2 class="welcome__option-title">
+              <img src="./assets/icons/member.svg" alt="" class="welcome__option-icon" />Are you a team
               member?
             </h2>
-            <a href="./index.html" class="welcome-btn welcome-btn-secondary"
+            <a href="./index.html" class="welcome-btn welcome-btn--secondary"
               >Member log in</a
             >
           </article>
         </div>
       </section>
     </main>
-    <footer id="welcomeFooter">
-      <a href="./privacy.html">Privacy Policy</a>
-      <a href="./legal.html">Legal notice</a>
+    <footer class="welcome__footer">
+      <a href="./privacy.html" class="welcome__footer-link">Privacy Policy</a>
+      <a href="./legal.html" class="welcome__footer-link">Legal notice</a>
     </footer>
   </body>
 </html>

@@ -1,0 +1,339 @@
+import { getInitials } from "../utils/format.js";
+import { showMessage } from "./toast.js";
+import { loadData } from "../services/database.js";
+import { getAddTaskDialogTemplate, getAssignOptionTemplate } from "../templates/addTaskTemplates.js";
+import { validateOnBlur, validateDate, clearFieldError } from "./validation.js";
+import { handleSubtaskAction, handleSubtaskKey, onSubtaskInput } from "./addSubtask.js";
+import { createTask } from "./taskFormData.js";
+
+let addTaskDialog;
+let contacts = [];
+let onTaskCreated;
+
+/**
+ * Registers all event listeners of the add task form on the given container.
+ * @param {HTMLElement} container - The add task section or the add task dialog
+ */
+export function initTaskForm(container) {
+  container.addEventListener("click", handleTaskFormClick);
+  container.addEventListener("submit", handleTaskFormSubmit);
+  container.addEventListener("focusout", handleTaskFormBlur);
+  container.addEventListener("change", handleTaskFormChange);
+  container.addEventListener("input", handleTaskFormInput);
+  container.addEventListener("keydown", handleTaskFormKey);
+  document.addEventListener("click", closeDropdownsOnOutsideClick);
+}
+
+/**
+ * Handles all clicks inside the add task form via data-action.
+ * @param {MouseEvent} event - The click event
+ */
+function handleTaskFormClick(event) {
+  const target = event.target.closest("[data-action]");
+  if (!target) return;
+  const { action, dropdown } = target.dataset;
+  if (action === "set-priority") setPriority(target);
+  if (action === "toggle-dropdown") toggleDropdown(dropdown);
+  if (action === "select-category") selectCategory(target);
+  if (action === "clear-form") clearTaskForm(event.currentTarget);
+  if (action === "close-dialog") closeAddTaskDialog();
+  if (action === "toggle-contact") toggleContact(target);
+  handleSubtaskAction(action, target);
+}
+
+/**
+ * Validates a required field when it loses focus.
+ * @param {FocusEvent} event - The focusout event
+ */
+function handleTaskFormBlur(event) {
+  const input = event.target.closest("[data-error-msg]");
+  if (input) validateOnBlur(input, input.dataset.errorMsg);
+}
+
+/**
+ * Validates the due date when its value changes.
+ * @param {Event} event - The change event
+ */
+function handleTaskFormChange(event) {
+  if (event.target.matches("[data-validate-date]")) validateDate(event.target);
+}
+
+/**
+ * Shows or hides the subtask confirm buttons while typing.
+ * @param {InputEvent} event - The input event
+ */
+function handleTaskFormInput(event) {
+  if (event.target.matches(".subtask__input")) onSubtaskInput();
+}
+
+/**
+ * Handles Enter and Escape inside the subtask input.
+ * @param {KeyboardEvent} event - The keydown event
+ */
+function handleTaskFormKey(event) {
+  if (event.target.matches(".subtask__input")) handleSubtaskKey(event);
+}
+
+/**
+ * Creates the task (submit button disabled while saving), shows a toast and then closes the dialog or goes to the board.
+ * @param {SubmitEvent} event - The submit event
+ * @returns {Promise<void>}
+ */
+async function handleTaskFormSubmit(event) {
+  event.preventDefault();
+  const container = event.currentTarget;
+  const status = event.target.dataset.status;
+  const button = container.querySelector("button[type='submit']");
+  button.disabled = true;
+  if (!(await createTask(status))) {
+    button.disabled = false;
+    return;
+  }
+  await finishTaskCreation(container, status);
+}
+
+/**
+ * Shows the success toast and closes the dialog or goes to the board.
+ * @param {HTMLElement} container - The add task section or the add task dialog
+ * @param {string} status - The column the task was created in
+ * @returns {Promise<void>}
+ */
+async function finishTaskCreation(container, status) {
+  showMessage("Task added to board");
+  if (container.classList.contains("add-task-dialog")) {
+    closeAddTaskDialog();
+    await onTaskCreated?.(status);
+  } else {
+    setTimeout(() => (location.href = "./board.html"), 1000);
+  }
+}
+
+/**
+ * Clears the form, either inside the dialog or on the add task page.
+ * @param {HTMLElement} container - The container the listener is registered on
+ */
+function clearTaskForm(container) {
+  if (container.classList.contains("add-task-dialog")) {
+    clearDialogAddTaskForm(container.querySelector("form").dataset.status);
+  } else {
+    clearAddTaskForm();
+  }
+}
+
+/**
+ * Opens the add task dialog and renders the contact list.
+ * @param {string} status - The initial status for the new task
+ * @param {Function} [onCreated] - Called with the status after a task was created in the dialog
+ */
+export function openAddTaskDialog(status, onCreated) {
+  let main = document.querySelector("main");
+  let dialogSection = document.createElement("dialog");
+  dialogSection.className = "add-task-dialog";
+  main.appendChild(dialogSection);
+  dialogSection.innerHTML = getAddTaskDialogTemplate(status);
+  initTaskForm(dialogSection);
+  dialogSection.showModal();
+  addTaskDialog = dialogSection;
+  onTaskCreated = onCreated;
+  renderContacts();
+}
+
+/**
+ * Closes and removes the add task dialog.
+ */
+function closeAddTaskDialog() {
+  addTaskDialog.close();
+  addTaskDialog.remove();
+}
+
+/**
+ * Clears and resets the add task form in add task dialog.
+ * @param {string} status - The initial status for the new task
+ */
+function clearDialogAddTaskForm(status) {
+  const dialogSection = document.querySelector(".add-task-dialog");
+  dialogSection.innerHTML = "";
+  dialogSection.innerHTML = getAddTaskDialogTemplate(status);
+  renderContacts();
+}
+
+/**
+ * Resets the add task form in addtask.html including all custom dropdowns, priority buttons, and subtasks.
+ */
+function clearAddTaskForm() {
+  document.querySelector(".task-form").reset();
+  resetAssignedContacts();
+  resetCategory();
+  resetPriority();
+  document.querySelector(".subtask__list").innerHTML = "";
+  document.querySelectorAll(".task-form .task-form__input--invalid").forEach((input) => clearFieldError(input));
+  document.querySelectorAll(".task-form .task-form__error").forEach((el) => (el.style.visibility = "hidden"));
+}
+
+/**
+ * Deselects all assigned contacts and removes their badges.
+ */
+function resetAssignedContacts() {
+  document.querySelectorAll(".dropdown--assigned .dropdown__option--selected").forEach((opt) => {
+    opt.classList.remove("dropdown__option--selected");
+    opt.querySelector('input[type="checkbox"]').checked = false;
+  });
+  document.querySelector(".task-form__badges").innerHTML = "";
+}
+
+/**
+ * Resets the category dropdown to its placeholder.
+ */
+function resetCategory() {
+  document
+    .querySelectorAll(".dropdown--category .dropdown__option--selected")
+    .forEach((opt) => opt.classList.remove("dropdown__option--selected"));
+  document.querySelector('.dropdown--category input[name="category"]').value = "";
+  const placeholder = document.querySelector(".dropdown--category .dropdown__placeholder");
+  placeholder.textContent = "Select task category";
+  placeholder.style.color = "";
+}
+
+/**
+ * Sets the priority back to medium.
+ */
+function resetPriority() {
+  document
+    .querySelectorAll(".task-form__priority-btn")
+    .forEach((btn) => btn.classList.remove("task-form__priority-btn--active"));
+  document.querySelector(".task-form__priority-btn--medium").classList.add("task-form__priority-btn--active");
+}
+
+/**
+ * Sets the active priority button and removes the active state from the others.
+ * @param {HTMLElement} clickedButton - The priority button that was clicked
+ */
+function setPriority(clickedButton) {
+  const buttons = document.querySelectorAll(".task-form__priority-btn");
+  buttons.forEach((btn) => {
+    btn.classList.remove("task-form__priority-btn--active");
+  });
+  clickedButton.classList.add("task-form__priority-btn--active");
+}
+
+/**
+ * Loads all contacts from the database and stores them globally.
+ * @returns {Promise<void>}
+ */
+async function loadContacts() {
+  const data = (await loadData("/contacts")) || {};
+  contacts = Object.entries(data)
+    .map(([id, contact]) => ({ id, name: contact.name, color: contact.avatarColor }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/**
+ * Loads and renders all contacts into the assignment dropdown.
+ * @returns {Promise<void>}
+ */
+export async function renderContacts() {
+  await loadContacts();
+  const container = document.querySelector(".dropdown--assigned .dropdown__list");
+  if (!container) return;
+  container.innerHTML = contacts.map((contact) => getAssignOptionTemplate(contact, getInitials(contact.name))).join("");
+}
+
+/**
+ * Toggles the open state of a dropdown and closes all other open dropdowns.
+ * @param {string} id - The ID of the dropdown to toggle
+ */
+function toggleDropdown(id) {
+  const wrapper = document.querySelector(`.dropdown--${id}`);
+  const trigger = wrapper.querySelector(".dropdown__trigger");
+  const dropdown = wrapper.querySelector(".dropdown__menu");
+  const isOpen = dropdown.classList.contains("dropdown__menu--open");
+
+  document.querySelectorAll(".dropdown__menu--open").forEach((d) => d.classList.remove("dropdown__menu--open"));
+  document.querySelectorAll(".dropdown__trigger--open").forEach((t) => t.classList.remove("dropdown__trigger--open"));
+
+  if (!isOpen) {
+    dropdown.classList.add("dropdown__menu--open");
+    trigger.classList.add("dropdown__trigger--open");
+  } else if (id === "category") {
+    const hiddenInput = wrapper.querySelector('input[name="category"]');
+    if (hiddenInput) validateOnBlur(hiddenInput, "Please select a category");
+  }
+}
+
+/**
+ * Selects a category option and updates the dropdown display.
+ * @param {HTMLElement} option - The selected category option element
+ */
+function selectCategory(option) {
+  document
+    .querySelectorAll(".dropdown--category .dropdown__option")
+    .forEach((o) => o.classList.remove("dropdown__option--selected"));
+  option.classList.add("dropdown__option--selected");
+
+  const placeholder = document.querySelector(".dropdown--category .dropdown__placeholder");
+  placeholder.textContent = option.querySelector("span").textContent;
+  placeholder.style.color = "#2a3647";
+
+  const hiddenInput = document.querySelector('.dropdown--category input[name="category"]');
+  hiddenInput.value = option.dataset.value;
+  clearFieldError(hiddenInput);
+
+  toggleDropdown("category");
+}
+
+/**
+ * Toggles the selection state of a contact option in the dropdown.
+ * @param {HTMLElement} option - The selected contact option element
+ */
+function toggleContact(option) {
+  const checkbox = option.querySelector('input[type="checkbox"]');
+  const isSelected = option.classList.toggle("dropdown__option--selected");
+  checkbox.checked = isSelected;
+  updateAssignedBadges();
+}
+
+/**
+ * Updates the assigned contact badges based on the selected contacts.
+ */
+function updateAssignedBadges() {
+  const badges = document.querySelector(".task-form__badges");
+  const selected = [...document.querySelectorAll(".dropdown--assigned .dropdown__option--selected")];
+  const limit = 5;
+  badges.innerHTML = "";
+  selected.slice(0, limit).forEach((opt) => {
+    const avatar = opt.querySelector(".dropdown__avatar");
+    badges.appendChild(createBadge(avatar.textContent.trim(), avatar.style.background));
+  });
+  if (selected.length > limit)
+    badges.appendChild(createBadge(`+${selected.length - limit}`, "", "task-form__badge--overflow"));
+}
+
+/**
+ * Creates one badge element for the assigned contacts row.
+ * @param {string} text - The initials or the overflow text (e.g. "+3")
+ * @param {string} background - The background color ("" for the overflow badge)
+ * @param {string} [modifier] - An optional BEM modifier class
+ * @returns {HTMLDivElement} The badge element
+ */
+function createBadge(text, background, modifier = "") {
+  const badge = document.createElement("div");
+  badge.className = `task-form__badge ${modifier}`.trim();
+  badge.style.background = background;
+  badge.textContent = text;
+  return badge;
+}
+
+/**
+ * Closes all open dropdowns when the user clicks outside of them
+ * and validates the category if it was left empty.
+ * @param {MouseEvent} event - The click event on the document
+ */
+function closeDropdownsOnOutsideClick(event) {
+  if (event.target.closest(".dropdown")) return;
+  document.querySelectorAll(".dropdown__menu--open").forEach((menu) => {
+    menu.classList.remove("dropdown__menu--open");
+    const hiddenInput = menu.closest(".dropdown")?.querySelector('input[name="category"]');
+    if (hiddenInput) validateOnBlur(hiddenInput, "Please select a category");
+  });
+  document.querySelectorAll(".dropdown__trigger--open").forEach((t) => t.classList.remove("dropdown__trigger--open"));
+}

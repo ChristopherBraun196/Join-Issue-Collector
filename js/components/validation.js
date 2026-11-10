@@ -1,0 +1,111 @@
+/**
+ * Validates a form field on blur and shows or clears the error message.
+ * @param {HTMLElement} input - The input element to validate
+ * @param {string} message - The error message to display if the field is empty
+ */
+export function validateOnBlur(input, message = "This field is required") {
+  if (isFieldEmpty(input)) {
+    showFieldError(input, message);
+  } else {
+    clearFieldError(input);
+  }
+}
+
+/**
+ * Validates all required fields in a form and returns whether the form is valid.
+ * @param {HTMLFormElement} form - The form element to validate
+ * @returns {boolean} True if all required fields are filled, false otherwise
+ */
+export function validateForm(form) {
+  const fields = [...form.querySelectorAll("input[required], textarea[required]")];
+  const results = fields.map((input) => {
+    const message = getFieldErrorMessage(input);
+    if (message) showFieldError(input, message);
+    else clearFieldError(input);
+    return !message;
+  });
+  return results.every(Boolean);
+}
+
+/**
+ * Returns the error message for a required field or an empty string if it is valid.
+ * @param {HTMLInputElement|HTMLTextAreaElement} input - The field to check
+ * @returns {string} The error message or ""
+ */
+function getFieldErrorMessage(input) {
+  if (isFieldEmpty(input)) return input.dataset.errorMsg || "This field is required";
+  if (input.type === "date" && isDateInPast(input)) return "The date cannot be in the past.";
+  return "";
+}
+
+/**
+ * Checks whether an input field is empty.
+ * @param {HTMLElement} input - The input element to check
+ * @returns {boolean} True if the field is empty, false otherwise
+ */
+function isFieldEmpty(input) {
+  return input.value.trim() === "";
+}
+
+/**
+ * Checks whether a date input's value is in the past.
+ * @param {HTMLInputElement} input - The date input element to check
+ * @returns {boolean} True if the date is before today, false otherwise
+ */
+function isDateInPast(input) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return new Date(input.value) < today;
+}
+
+/**
+ * Validates a date input on blur: checks for empty value and past date.
+ * @param {HTMLInputElement} input - The date input element
+ */
+export function validateDate(input) {
+  if (isFieldEmpty(input)) {
+    showFieldError(input, "Please pick a due date");
+  } else if (isDateInPast(input)) {
+    showFieldError(input, "The date cannot be in the past.");
+  } else {
+    clearFieldError(input);
+  }
+}
+
+/**
+ * Displays an error message below the input field.
+ * @param {HTMLElement} input - The input element to mark as invalid
+ * @param {string} message - The error message to display
+ */
+function showFieldError(input, message) {
+  input.classList.add("task-form__input--invalid");
+
+  let errorEl = getErrorElement(input);
+  if (!errorEl) {
+    errorEl = document.createElement("span");
+    errorEl.className = "task-form__error";
+    input.insertAdjacentElement("afterend", errorEl);
+  }
+  errorEl.textContent = message;
+  errorEl.style.visibility = "visible";
+}
+
+/**
+ * Clears the error state and hides the error message of an input field.
+ * @param {HTMLElement} input - The input element to clear the error from
+ */
+export function clearFieldError(input) {
+  input.classList.remove("task-form__input--invalid");
+  const errorEl = getErrorElement(input);
+  if (errorEl) errorEl.style.visibility = "hidden";
+}
+
+/**
+ * Returns the error message element associated with an input field.
+ * @param {HTMLElement} input - The input element to search from
+ * @returns {HTMLElement|null} The error element or null if not found
+ */
+function getErrorElement(input) {
+  const next = input.nextElementSibling;
+  return next?.classList.contains("task-form__error") ? next : null;
+}
