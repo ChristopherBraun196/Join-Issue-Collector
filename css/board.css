@@ -417,6 +417,7 @@
   font-size: var(--fs-s);
   font-weight: 600;
   max-width: 135px;
+  white-space: nowrap;
   border-radius: var(--border-radius);
   padding: 4px 12px;
 
@@ -515,18 +516,25 @@
 }
 
 .task-dialog__close {
-  background: none;
-  border: none;
-  font-size: var(--fs-s);
-  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 30px;
   height: 30px;
-  margin-bottom: 12px;
+  border-radius: 50%;
 
   &:hover {
     background: rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
   }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.task-dialog__close-icon {
+  width: 16px;
+  height: 16px;
 }
 
 .task-dialog__ai-badge {
@@ -662,6 +670,7 @@
   cursor: pointer;
   font-size: var(--fs-s);
   margin-top: 28px;
+  color: inherit;
 
   &:hover {
     text-decoration: none;
