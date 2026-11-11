@@ -95,11 +95,11 @@ export function getDialogBoardTemplate(element, assignedContacts, subtasks, matc
     <footer class="task-dialog__footer">
         <div class="task-dialog__actions">
             <button class="task-dialog__action-btn" data-action="delete-task" data-id="${element.id}">
-                <img class="task-dialog__action-icon" src="./assets/icons/delete.svg" alt="delete Button">Delete
+              <img class="task-dialog__action-icon" src="./assets/icons/delete.svg" alt="delete Button"><span class="task-dialog__action-label" data-label="Delete">Delete</span>
             </button>
             <div class="task-dialog__divider"></div>
             <button class="task-dialog__action-btn" data-action="edit-task" data-id="${element.id}">
-                <img class="task-dialog__action-icon" src="./assets/icons/edit.svg" alt="edit Button">Edit
+              <img class="task-dialog__action-icon" src="./assets/icons/edit.svg" alt="edit Button"><span class="task-dialog__action-label" data-label="Edit">Edit</span>
             </button>
         </div>
     </footer>

@@ -436,6 +436,7 @@
   max-height: min(800px, calc(100vh - 120px));
   overflow-y: auto;
   scrollbar-gutter: unset;
+  scrollbar-width: none;
   border-radius: calc(2 * var(--border-radius));
   border: none;
   transform: translate(-50%, -50%);
@@ -443,6 +444,12 @@
 
   &[open] {
     display: block;
+  }
+
+  &[open]:has(.task-dialog__body) {
+    display: flex;
+    flex-direction: column;
+    height: min(800px, calc(100vh - 120px));
   }
 
   p {
@@ -492,6 +499,9 @@
 
 .task-dialog__body {
   position: relative;
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
 }
 
 .task-dialog__footer {
@@ -661,5 +671,19 @@
     .task-dialog__action-icon {
       filter: invert(58%) sepia(69%) saturate(456%) hue-rotate(163deg) brightness(95%) contrast(93%);
     }
+  }
+}
+
+.task-dialog__action-label {
+  display: inline-flex;
+  flex-direction: column;
+
+  &::after {
+    content: attr(data-label);
+    font-weight: bolder;
+    height: 0;
+    visibility: hidden;
+    overflow: hidden;
+    user-select: none;
   }
 }
