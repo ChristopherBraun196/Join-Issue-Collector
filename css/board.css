@@ -127,14 +127,11 @@
   margin-top: 80px;
   height: 80%;
   max-width: 1440px;
+  padding-right: 8px;
   overflow-y: auto;
   overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  scrollbar-width: thin;
+  scrollbar-color: #a8a8a8 transparent;
 
   @media (max-width: 1200px) {
     padding: 0 20px;
