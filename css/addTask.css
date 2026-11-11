@@ -171,6 +171,12 @@ textarea {
 
 input[type="date"] {
   cursor: text;
+  min-height: 46px;
+  text-align: left;
+}
+
+input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
