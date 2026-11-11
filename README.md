@@ -12,6 +12,7 @@ This repository extends the existing board with an **AI-powered issue collector*
 
 - `v1.0` – the accepted project state (classic scripts).
 - `v2.0` – full refactor with the same behavior: ES modules, BEM CSS, all known bugs fixed, complete JSDoc.
+- `v2.0.1` – bugfixes: board scrolling, task dialog, toast position, iPhone layout.
 
 ## Tech Stack
 
