@@ -57,6 +57,12 @@
   opacity: 1;
 }
 
+.toast--content {
+  @media (min-width: 1201px) {
+    left: calc(240px + min(100vw - 240px, 1440px) / 2);
+  }
+}
+
 input[type="checkbox"] {
   width: 18px;
   height: 18px;
