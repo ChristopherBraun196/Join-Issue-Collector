@@ -10,7 +10,7 @@ export function getAddTaskDialogTemplate(status) {
         <h1>Add Task</h1>
         <button class="add-task__close" data-action="close-dialog"><img src="../assets/icons/close.svg"></button>
       </header>
-      <form class="task-form" data-status="${status}" id="add-task-form" novalidate>
+           <form class="task-form" data-status="${status}" id="add-task-form" novalidate>
           <div class="task-form__column">
               <div class="task-form__field">
                   <label for="title">Title<span class="task-form__required">*</span></label>
@@ -26,8 +26,6 @@ export function getAddTaskDialogTemplate(status) {
                   <input type="date" class="task-form__input" id="due-date" name="due-date" required data-validate-date data-error-msg="Please pick a due date" />
                   <span class="task-form__error"></span>
               </div>
-          </div>
-          <div class="task-form__column task-form__column--right">
               <div class="task-form__field">
                   <label for="priority">Priority</label>
                   <div class="task-form__priority">
@@ -35,20 +33,6 @@ export function getAddTaskDialogTemplate(status) {
                       <button class="task-form__priority-btn task-form__priority-btn--medium task-form__priority-btn--active" data-action="set-priority" type="button">Medium<span class="task-form__priority-icon"><img class="task-form__priority-img" src="./assets/icons/priority-medium.svg" alt="Medium priority icon"></span></button>
                       <button class="task-form__priority-btn task-form__priority-btn--low" data-action="set-priority" type="button">Low<span class="task-form__priority-icon"><img class="task-form__priority-img" src="./assets/icons/priority-low.svg" alt="Low priority icon"></span></button>
                   </div>
-              </div>
-              <div class="task-form__field">
-                  <label>Assigned to</label>
-                  <div class="dropdown dropdown--assigned">
-                      <div class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="assigned">
-                          <span class="dropdown__placeholder">Select contacts to assign</span>
-                          <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow">
-                      </div>
-                      <div class="dropdown__menu">
-                          <div class="dropdown__list">
-                          </div>
-                      </div>
-                  </div>
-                  <div class="task-form__badges"></div>
               </div>
               <div class="task-form__field">
                   <label>Category<span class="task-form__required">*</span></label>
@@ -71,11 +55,31 @@ export function getAddTaskDialogTemplate(status) {
                       </div>
                   </div>
               </div>
+          </div>
+          <div class="task-form__column task-form__column--right">
+                        <div class="task-form__field attachments">
+                  <div class="attachments__header">
+                      <label for="attachmentsInput">Attachments</label>
+                      <button class="attachments__delete-all" type="button" data-action="delete-all-attachments" hidden>
+                          <img class="attachments__delete-icon" src="./assets/icons/delete.svg" alt="">
+                          Delete all
+                      </button>
+                  </div>
+                  <p class="attachments__hint" id="attachmentsHint">Allowed file types are JPEG and PNG</p>
+                  <label class="attachments__dropzone">
+                      Drag a file or browse
+                      <svg class="attachments__plus-icon" viewBox="0 0 19 19" aria-hidden="true"><path d="M8 10.6667H0V8H8V0H10.6667V8H18.6667V10.6667H10.6667V18.6667H8V10.6667Z" fill="currentColor"/></svg>
+                      <input class="attachments__input" id="attachmentsInput" type="file" accept="image/jpeg, image/png" multiple aria-describedby="attachmentsHint">
+                  </label>
+                  <span class="attachments__error" role="alert"></span>
+                  <ul class="attachments__list"></ul>
+              </div>
+
               <div class="task-form__field">
                   <label>Subtasks</label>
                   <div class="subtask__input-wrap">
-                      <input 
-                          type="text" 
+                      <input
+                          type="text"
                           class="subtask__input"
                           placeholder="Add new subtask"
                       />
@@ -93,6 +97,20 @@ export function getAddTaskDialogTemplate(status) {
                       </div>
                   </div>
                   <ul class="subtask__list"></ul>
+              </div>
+              <div class="task-form__field">
+                  <label>Assigned to</label>
+                  <div class="dropdown dropdown--assigned">
+                      <div class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="assigned">
+                          <span class="dropdown__placeholder">Select contacts to assign</span>
+                          <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow">
+                      </div>
+                      <div class="dropdown__menu">
+                          <div class="dropdown__list">
+                          </div>
+                      </div>
+                  </div>
+                  <div class="task-form__badges"></div>
               </div>
           </div>
       </form>

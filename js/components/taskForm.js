@@ -5,6 +5,7 @@ import { getAddTaskDialogTemplate, getAssignOptionTemplate } from "../templates/
 import { validateOnBlur, validateDate, clearFieldError } from "./validation.js";
 import { handleSubtaskAction, handleSubtaskKey, onSubtaskInput } from "./addSubtask.js";
 import { createTask } from "./taskFormData.js";
+import { addAttachments } from "./attachments.js";
 
 let addTaskDialog;
 let contacts = [];
@@ -56,6 +57,7 @@ function handleTaskFormBlur(event) {
  */
 function handleTaskFormChange(event) {
   if (event.target.matches("[data-validate-date]")) validateDate(event.target);
+  if (event.target.matches(".attachments__input")) addAttachments(event.target.files);
 }
 
 /**

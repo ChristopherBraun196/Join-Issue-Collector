@@ -58,8 +58,6 @@
               />
               <span class="task-form__error"></span>
             </div>
-          </div>
-          <div class="task-form__column task-form__column--right">
             <div class="task-form__field">
               <label for="task-priority-btns">Priority</label>
               <div class="task-form__priority">
@@ -100,19 +98,6 @@
               </div>
             </div>
             <div class="task-form__field">
-              <label>Assigned to</label>
-              <div class="dropdown dropdown--assigned">
-                <div class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="assigned">
-                  <span class="dropdown__placeholder">Select contacts to assign</span>
-                  <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" />
-                </div>
-                <div class="dropdown__menu">
-                  <div class="dropdown__list"></div>
-                </div>
-              </div>
-              <div class="task-form__badges"></div>
-            </div>
-            <div class="task-form__field">
               <label>Category<span class="task-form__required">*</span></label>
               <div class="dropdown dropdown--category">
                 <input
@@ -138,6 +123,37 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="task-form__column task-form__column--right">
+            <div class="task-form__field attachments">
+              <div class="attachments__header">
+                <label for="attachmentsInput">Attachments</label>
+                <button class="attachments__delete-all" type="button" data-action="delete-all-attachments" hidden>
+                  <img class="attachments__delete-icon" src="./assets/icons/delete.svg" alt="" />
+                  Delete all
+                </button>
+              </div>
+              <p class="attachments__hint" id="attachmentsHint">Allowed file types are JPEG and PNG</p>
+              <label class="attachments__dropzone">
+                Drag a file or browse
+                <svg class="attachments__plus-icon" viewBox="0 0 19 19" aria-hidden="true">
+                  <path
+                    d="M8 10.6667H0V8H8V0H10.6667V8H18.6667V10.6667H10.6667V18.6667H8V10.6667Z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <input
+                  class="attachments__input"
+                  id="attachmentsInput"
+                  type="file"
+                  accept="image/jpeg, image/png"
+                  multiple
+                  aria-describedby="attachmentsHint"
+                />
+              </label>
+              <span class="attachments__error" role="alert"></span>
+              <ul class="attachments__list"></ul>
             </div>
             <div class="task-form__field">
               <label>Subtasks</label>
@@ -169,6 +185,19 @@
                 </div>
               </div>
               <ul class="subtask__list"></ul>
+            </div>
+            <div class="task-form__field">
+              <label>Assigned to</label>
+              <div class="dropdown dropdown--assigned">
+                <div class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="assigned">
+                  <span class="dropdown__placeholder">Select contacts to assign</span>
+                  <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" />
+                </div>
+                <div class="dropdown__menu">
+                  <div class="dropdown__list"></div>
+                </div>
+              </div>
+              <div class="task-form__badges"></div>
             </div>
           </div>
         </form>

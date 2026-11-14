@@ -1,16 +1,13 @@
-import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE, MAX_IMAGE_DIMENSION, IMAGE_QUALITY } from "./constants.js";
+import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_DIMENSION, IMAGE_QUALITY } from "./constants.js";
 
 /**
- * Checks whether a file is an allowed image type and within the size limit.
+ * Checks whether a file is an allowed image type (JPG or PNG).
  * @param {File} file - The file selected by the user.
  * @returns {string|null} An error message, or null if the file is valid.
  */
 export function validateImageFile(file) {
   if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
     return `"${file.name}" is not a JPG or PNG file.`;
-  }
-  if (file.size > MAX_IMAGE_SIZE) {
-    return `"${file.name}" is larger than 1 MB.`;
   }
   return null;
 }
@@ -84,4 +81,14 @@ export async function compressImage(file) {
   const dataUrl = await readFileAsDataUrl(file);
   const image = await loadImage(dataUrl);
   return drawImageToDataUrl(image, file.type);
+}
+
+/**
+ * Calculates the size in bytes of the base64 content of a data URL.
+ * @param {string} dataUrl - The data URL, e.g. "data:image/jpeg;base64,...".
+ * @returns {number} The size in bytes.
+ */
+export function getDataUrlSize(dataUrl) {
+  const base64 = dataUrl.split(",")[1];
+  return Math.round((base64.length * 3) / 4);
 }
