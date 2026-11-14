@@ -57,17 +57,18 @@ export function getAddTaskDialogTemplate(status) {
               </div>
           </div>
           <div class="task-form__column task-form__column--right">
-                        <div class="task-form__field attachments">
+              <div class="task-form__field attachments">
+                  <label for="attachmentsInput">Attachments</label>
                   <div class="attachments__header">
-                      <label for="attachmentsInput">Attachments</label>
+                      <p class="attachments__hint" id="attachmentsHint">Allowed file types are JPEG and PNG</p>
                       <button class="attachments__delete-all" type="button" data-action="delete-all-attachments" hidden>
                           <img class="attachments__delete-icon" src="./assets/icons/delete.svg" alt="">
                           Delete all
                       </button>
                   </div>
-                  <p class="attachments__hint" id="attachmentsHint">Allowed file types are JPEG and PNG</p>
                   <label class="attachments__dropzone">
-                      Drag a file or browse
+                      <span class="attachments__text--desktop">Drag a file or browse</span>
+                      <span class="attachments__text--mobile">Upload file</span>
                       <svg class="attachments__plus-icon" viewBox="0 0 19 19" aria-hidden="true"><path d="M8 10.6667H0V8H8V0H10.6667V8H18.6667V10.6667H10.6667V18.6667H8V10.6667Z" fill="currentColor"/></svg>
                       <input class="attachments__input" id="attachmentsInput" type="file" accept="image/jpeg, image/png" multiple aria-describedby="attachmentsHint">
                   </label>
@@ -158,5 +159,23 @@ export function getSubtaskItemTemplate(text) {
         <img class="subtask__btn-icon" src="./assets/icons/delete.svg" alt="Delete">
       </button>
     </div>
+  `;
+}
+
+/**
+ * Returns the HTML of one attachment thumbnail in the preview list.
+ * @param {{name: string, base64: string}} attachment - The compressed image
+ * @param {number} index - The position of the image in the attachments array
+ * @returns {string} HTML string of the list item
+ */
+export function getAttachmentItemTemplate(attachment, index) {
+  return `
+    <li class="attachments__item">
+      <img class="attachments__thumb" src="${attachment.base64}" alt="">
+      <button class="attachments__remove" type="button" data-action="remove-attachment" data-index="${index}" aria-label="Remove ${attachment.name}">
+        <img class="attachments__remove-icon" src="./assets/icons/delete.svg" alt="">
+      </button>
+      <span class="attachments__name">${attachment.name}</span>
+    </li>
   `;
 }

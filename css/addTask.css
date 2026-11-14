@@ -27,8 +27,11 @@
   width: 100%;
 
   @media (max-width: 1200px) {
-    padding: 20px 0 0 0;
-    text-align: center;
+    padding: 20px 40px 0;
+  }
+
+  @media (max-width: 480px) {
+    padding: 20px 20px 0;
   }
 }
 
@@ -104,6 +107,7 @@
     overflow: visible;
     flex-direction: column;
     align-items: stretch;
+    gap: 12px;
     margin: 0;
     padding: 40px;
     height: auto;
@@ -119,18 +123,22 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  min-width: 0;
+
+  &:not(.task-form__column--right) {
+    padding-right: 40px;
+    border-right: 1px solid var(--border-color);
+
+    @media (max-width: 1200px) {
+      padding-right: 0;
+      border-right: none;
+    }
+  }
 }
 
 .task-form__column--right {
-  border-left: 1px solid var(--border-color);
-  padding-left: 40px;
-
   @media (max-width: 1200px) {
-    border-left: none;
-    padding: 0;
-    padding-top: 40px;
     flex: auto;
-    border-top: 1px solid var(--border-color);
   }
 }
 
@@ -297,8 +305,29 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .task-form__footer--page {
   @media (max-width: 1200px) {
-    position: relative;
-    bottom: 0px;
+    display: contents;
+
+    & p {
+      align-self: stretch;
+      margin: 0;
+      padding: 0 40px 20px;
+    }
+
+    .task-form__buttons {
+      position: sticky;
+      bottom: 0;
+      align-self: stretch;
+      justify-content: flex-end;
+      padding: 16px 40px;
+      background-color: #f6f7f8;
+    }
+  }
+
+  @media (max-width: 480px) {
+    & p,
+    .task-form__buttons {
+      padding-inline: 20px;
+    }
   }
 }
 
@@ -614,15 +643,18 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background-color: #fff5f6;
 }
 
+.attachments {
+  @media (max-width: 1200px) {
+    margin-bottom: 20px;
+  }
+}
+
 .attachments__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 4px;
-
-  label {
-    margin-bottom: 0;
-  }
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
 .attachments__delete-all {
@@ -648,7 +680,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .attachments__hint {
-  margin: 0 0 8px;
+  margin: 0;
   font-size: var(--fs-xs);
   color: #767676;
 }
@@ -672,6 +704,29 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   &:focus-within {
     outline: 2px solid var(--highligted-color);
     outline-offset: 2px;
+  }
+
+  &.attachments__dropzone--active {
+    border-color: var(--highligted-color);
+    background-color: #e8f6fc;
+  }
+
+  & > * {
+    pointer-events: none;
+  }
+}
+
+.attachments__text--mobile {
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  .attachments__text--desktop {
+    display: none;
+  }
+
+  .attachments__text--mobile {
+    display: inline;
   }
 }
 
@@ -705,9 +760,68 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   padding: 0;
   list-style: none;
   overflow-x: auto;
-  scrollbar-width: thin;
+  scrollbar-width: none;
+  cursor: grab;
 
   &:empty {
     display: none;
   }
+}
+
+.attachments__item {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  width: 120px;
+  border: 1px solid var(--menu-color);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  background-color: white;
+}
+
+.attachments__thumb {
+  width: 100%;
+  height: 64px;
+  object-fit: cover;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.attachments__name {
+  padding: 2px 6px;
+  font-size: var(--fs-xs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.attachments__remove {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background-color: rgba(42, 54, 71, 0.4);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+
+  &:focus-visible {
+    opacity: 1;
+    outline: 2px solid var(--highligted-color);
+    outline-offset: -2px;
+  }
+}
+
+.attachments__item:hover .attachments__remove {
+  opacity: 1;
+}
+
+.attachments__remove-icon {
+  width: 24px;
+  height: 24px;
+  filter: brightness(0) invert(1);
 }
