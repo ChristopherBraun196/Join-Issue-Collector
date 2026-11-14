@@ -1,4 +1,10 @@
 /**
+ * Number of bytes in one megabyte.
+ * @type {number}
+ */
+const BYTES_PER_MB = 1024 * 1024;
+
+/**
  * Returns the initials of a full name.
  * @param {string} name - The full name to extract initials from
  * @returns {string} The uppercase initials
@@ -41,4 +47,16 @@ export function formatLabel(str) {
     .split("-")
     .map((word) => capitalize(word))
     .join(" ");
+}
+
+/**
+ * Formats a file size in bytes as a readable string.
+ * @param {number} bytes - The file size in bytes.
+ * @returns {string} The size in KB below 1 MB (e.g. "240 KB"), otherwise in MB (e.g. "1.2 MB").
+ */
+export function formatFileSize(bytes) {
+  if (bytes < BYTES_PER_MB) {
+    return `${Math.round(bytes / 1024)} KB`;
+  }
+  return `${(bytes / BYTES_PER_MB).toFixed(1)} MB`;
 }
