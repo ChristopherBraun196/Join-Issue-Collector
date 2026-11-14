@@ -3,6 +3,7 @@ import { formatLabel } from "../utils/format.js";
 import { STATUS } from "../utils/constants.js";
 import { putData } from "../services/database.js";
 import { validateForm } from "./validation.js";
+import { attachments } from "./attachments.js";
 
 /**
  * Generates a task object from the current form values.
@@ -20,6 +21,7 @@ function generateTaskJson(taskID, statusArg = STATUS.TO_DO) {
     category: getTaskCategory(),
     categoryLabelColor: getTaskCategoryLabelColor(getTaskCategory()),
     assignedTo: getAssignedTo(),
+    attachments: [...attachments],
     subtasks: getSubtasks(),
     status: statusArg,
     creatorName: window.currentUser.name,

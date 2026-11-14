@@ -5,7 +5,7 @@ import { getAddTaskDialogTemplate, getAssignOptionTemplate } from "../templates/
 import { validateOnBlur, validateDate, clearFieldError } from "./validation.js";
 import { handleSubtaskAction, handleSubtaskKey, onSubtaskInput } from "./addSubtask.js";
 import { createTask } from "./taskFormData.js";
-import { addAttachments } from "./attachments.js";
+import { addAttachments, initAttachmentDrop, handleAttachmentAction, clearAttachments } from "./attachments.js";
 
 let addTaskDialog;
 let contacts = [];
@@ -23,6 +23,7 @@ export function initTaskForm(container) {
   container.addEventListener("input", handleTaskFormInput);
   container.addEventListener("keydown", handleTaskFormKey);
   document.addEventListener("click", closeDropdownsOnOutsideClick);
+  initAttachmentDrop(container);
 }
 
 /**
@@ -40,6 +41,7 @@ function handleTaskFormClick(event) {
   if (action === "close-dialog") closeAddTaskDialog();
   if (action === "toggle-contact") toggleContact(target);
   handleSubtaskAction(action, target);
+  handleAttachmentAction(action, target);
 }
 
 /**
@@ -115,6 +117,7 @@ async function finishTaskCreation(container, status) {
  * @param {HTMLElement} container - The container the listener is registered on
  */
 function clearTaskForm(container) {
+  clearAttachments();
   if (container.classList.contains("add-task-dialog")) {
     clearDialogAddTaskForm(container.querySelector("form").dataset.status);
   } else {
@@ -134,6 +137,7 @@ export function openAddTaskDialog(status, onCreated) {
   main.appendChild(dialogSection);
   dialogSection.innerHTML = getAddTaskDialogTemplate(status);
   initTaskForm(dialogSection);
+  clearAttachments();
   dialogSection.showModal();
   addTaskDialog = dialogSection;
   onTaskCreated = onCreated;
