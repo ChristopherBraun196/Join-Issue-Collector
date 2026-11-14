@@ -796,7 +796,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   text-overflow: ellipsis;
 }
 
-.attachments__remove {
+.attachments__remove,
+.attachments__download {
   position: absolute;
   inset: 0 0 auto 0;
   height: 64px;
@@ -816,7 +817,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   }
 }
 
-.attachments__item:hover .attachments__remove {
+.attachments__item:hover :is(.attachments__remove, .attachments__download) {
   opacity: 1;
 }
 
@@ -824,4 +825,18 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   width: 24px;
   height: 24px;
   filter: brightness(0) invert(1);
+}
+
+.attachments__download-icon {
+  width: 24px;
+  height: 24px;
+  color: white;
+}
+
+.attachments__download {
+  inset: 12px auto auto 50%;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transform: translateX(-50%);
 }

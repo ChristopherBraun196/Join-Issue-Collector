@@ -86,6 +86,7 @@ export function getDialogBoardTemplate(element, assignedContacts, subtasks, matc
             <p class="task-dialog__label">Assigned To:</p>
             <p>${assignedContacts.map(getAssignedContactTemplate).join("")}</p>
         </div>
+          ${getDialogAttachmentsTemplate(element.attachments)}
         <div>
             <p>Subtasks</p>
             <ul class="task-dialog__subtasks">
@@ -165,5 +166,39 @@ function getSubtasksTemplate(subtask, taskID, subtaskIndex) {
             ${subtask.title}
         </label>
     </li>
+  `;
+}
+
+/**
+ * Returns one attachment thumbnail with a download link for the task detail dialog.
+ * @param {{name: string, base64: string}} attachment - The image
+ * @returns {string} HTML string of the list item
+ */
+function getDialogAttachmentTemplate(attachment) {
+  return `
+    <li class="attachments__item">
+        <img class="attachments__thumb" src="${attachment.base64}" alt="">
+        <a class="attachments__download" href="${attachment.base64}" download="${attachment.name}" aria-label="Download ${attachment.name}">
+            <svg class="attachments__download-icon" viewBox="0 -960 960 960" aria-hidden="true"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z" fill="currentColor"/></svg>
+        </a>
+        <span class="attachments__name">${attachment.name}</span>
+    </li>
+  `;
+}
+
+/**
+ * Returns the attachments section of the task detail dialog, or an empty string if there are none.
+ * @param {{name: string, base64: string}[]} [attachments] - The images of the task
+ * @returns {string} HTML string of the attachments section
+ */
+function getDialogAttachmentsTemplate(attachments = []) {
+  if (attachments.length === 0) return "";
+  return `
+    <div class="task-dialog__attachments">
+        <p class="task-dialog__label">Uploaded files</p>
+        <ul class="attachments__list">
+            ${attachments.map(getDialogAttachmentTemplate).join("")}
+        </ul>
+    </div>
   `;
 }

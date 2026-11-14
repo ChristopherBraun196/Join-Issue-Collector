@@ -696,3 +696,13 @@
     user-select: none;
   }
 }
+
+.task-dialog__attachments {
+  .attachments__list {
+    cursor: default;
+  }
+
+  .attachments__item {
+    cursor: pointer;
+  }
+}
