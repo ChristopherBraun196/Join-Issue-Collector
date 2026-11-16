@@ -6,6 +6,7 @@ import { renderAll, reRenderColumns, scrollColumn, updateScrollArrows, findTask 
 import { toggleMoveOverlay, moveTaskTo, handleOutsideClick } from "./moveOverlay.js";
 import { initDragDrop } from "./dragDrop.js";
 import { handleDialogBoardClick, handleDialogBoardInput, handleDialogBoardKey, openDialogBoard } from "./taskDialog.js";
+import { initImageViewer } from "./imageViewer.js";
 
 /**
  * Entry point for the board page: layout, listeners, tasks and rendering.
@@ -32,6 +33,7 @@ function initBoardListeners() {
   dialog.addEventListener("click", handleDialogBoardClick);
   dialog.addEventListener("input", handleDialogBoardInput);
   dialog.addEventListener("keydown", handleDialogBoardKey);
+  initImageViewer();
 }
 
 /**
