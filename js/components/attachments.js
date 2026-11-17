@@ -25,7 +25,7 @@ export async function addAttachments(files) {
   for (const file of files) {
     await processFile(file);
   }
-  document.querySelector(".task-form .attachments__input").value = "";
+  document.querySelector(".attachments .attachments__input").value = "";
   renderAttachments();
 }
 
@@ -55,17 +55,17 @@ async function processFile(file) {
  * @param {string} message - The message to show, an empty string hides it.
  */
 function showAttachmentError(message) {
-  document.querySelector(".task-form .attachments__error").textContent = message;
+  document.querySelector(".attachments .attachments__error").textContent = message;
 }
 
 /**
  * Renders the thumbnail preview list and shows "Delete all" only if there are images.
  */
 export function renderAttachments() {
-  const list = document.querySelector(".task-form .attachments__list");
+  const list = document.querySelector(".attachments .attachments__list");
 
   list.innerHTML = attachments.map(getAttachmentItemTemplate).join("");
-  document.querySelector(".task-form .attachments__delete-all").hidden = attachments.length === 0;
+  document.querySelector(".attachments .attachments__delete-all").hidden = attachments.length === 0;
 }
 
 /**
@@ -132,6 +132,16 @@ export function clearAttachments() {
 }
 
 /**
+ * Replaces the attachments with the images of an existing task and shows them.
+ * @param {{name: string, type: string, size: number, base64: string}[]} [images] - The images of the task
+ */
+export function loadAttachments(images = []) {
+  attachments.length = 0;
+  attachments.push(...images);
+  renderAttachments();
+}
+
+/**
  * Runs the attachment action that belongs to the clicked data-action.
  * @param {string} action - The data-action value of the clicked element
  * @param {HTMLElement} target - The clicked element with the data-action
@@ -180,4 +190,12 @@ function endListDrag() {
  */
 function stopClick(event) {
   event.stopPropagation();
+}
+
+/**
+ * Adds the selected files when the attachments file input changes.
+ * @param {Event} event - The change event
+ */
+export function handleAttachmentChange(event) {
+  if (event.target.matches(".attachments__input")) addAttachments(event.target.files);
 }

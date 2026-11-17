@@ -12,6 +12,7 @@ import { tasks, initTasks } from "./boardData.js";
 import { openDialogBoard } from "./taskDialog.js";
 import { renderTaskCard } from "./boardRender.js";
 import { showMessage } from "../../components/toast.js";
+import { attachments, loadAttachments } from "../../components/attachments.js";
 
 let currentEditPriority = null;
 let currentEditTaskId = null;
@@ -66,6 +67,7 @@ export async function openEditTask(taskId) {
     assignedHTML,
     subtasksHTML,
   );
+  loadAttachments(element.attachments);
 }
 
 /**
@@ -80,6 +82,7 @@ function getEditedTaskData(element) {
     description: document.querySelector(".task-edit__input--description").value,
     dueDate: document.querySelector(".task-edit__input--due-date").value,
     priority: currentEditPriority ?? element.priority,
+    attachments: [...attachments],
   };
 }
 

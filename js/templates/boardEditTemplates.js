@@ -27,6 +27,24 @@ export function getDialogBoardEditTemplate(element, priorityButtons, assignedHTM
         <div class="task-edit__priority">${priorityButtons}</div>
         <label class="task-edit__label">Assigned To</label>
         <div class="task-edit__contacts">${assignedHTML}</div>
+                <div class="attachments">
+            <label class="task-edit__label" for="attachmentsInput">Attachments</label>
+            <div class="attachments__header">
+                <p class="attachments__hint" id="attachmentsHint">Allowed file types are JPEG and PNG</p>
+                <button class="attachments__delete-all" type="button" data-action="delete-all-attachments" hidden>
+                    <img class="attachments__delete-icon" src="./assets/icons/delete.svg" alt="">
+                    Delete all
+                </button>
+            </div>
+            <label class="attachments__dropzone">
+                <span class="attachments__text--desktop">Drag a file or browse</span>
+                <span class="attachments__text--mobile">Upload file</span>
+                <svg class="attachments__plus-icon" viewBox="0 0 19 19" aria-hidden="true"><path d="M8 10.6667H0V8H8V0H10.6667V8H18.6667V10.6667H10.6667V18.6667H8V10.6667Z" fill="currentColor"/></svg>
+                <input class="attachments__input" id="attachmentsInput" type="file" accept="image/jpeg, image/png" multiple aria-describedby="attachmentsHint">
+            </label>
+            <span class="attachments__error" role="alert"></span>
+            <ul class="attachments__list"></ul>
+        </div>
         <label class="task-edit__label">Subtasks</label>
         <div class="subtask__input-wrap">
            <input type="text" class="subtask__input" placeholder="Add new subtask"

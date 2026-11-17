@@ -13,6 +13,7 @@ import {
   handleEditSubtaskKey,
 } from "./taskEdit.js";
 import { openImageViewer } from "./imageViewer.js";
+import { handleAttachmentAction } from "../../components/attachments.js";
 
 /**
  * Shows or hides the edit subtask confirm buttons while typing.
@@ -128,4 +129,5 @@ export function handleDialogBoardClick(event) {
   if (action === "open-viewer") openImageViewer(tasks.find((task) => task.id === id).attachments, Number(index));
   handleEditTaskAction(event, target, action);
   handleEditSubtaskAction(target, action);
+  handleAttachmentAction(action, target);
 }
