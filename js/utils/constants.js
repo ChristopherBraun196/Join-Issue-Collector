@@ -34,3 +34,9 @@ export const MAX_IMAGE_DIMENSION = 800;
  * @type {number}
  */
 export const IMAGE_QUALITY = 0.8;
+
+/**
+ * Maximum width and height of a contact photo in pixels.
+ * @type {number}
+ */
+export const AVATAR_DIMENSION = 200;

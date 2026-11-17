@@ -1,5 +1,5 @@
 import { init as initLayout } from "../../components/layout.js";
-import { getInitials } from "../../utils/format.js";
+import { getAvatarContent } from "../../utils/avatar.js";
 import { loadData } from "../../services/database.js";
 import { getContactItemTemplate, getContactDetailTemplate } from "../../templates/contactTemplates.js";
 import {
@@ -65,7 +65,7 @@ function groupContactsByLetter(contacts) {
  * @returns {HTMLElement} The created contact item element
  */
 function createContactItem(contact) {
-  const initials = getInitials(contact.name);
+  const initials = getAvatarContent(contact);
   const item = document.createElement("div");
   item.className = "contacts__item";
   item.dataset.id = contact.id;
@@ -167,7 +167,7 @@ export function clearActiveContact() {
  */
 function appendContactDetail(contact) {
   const main = document.querySelector(".contacts__main");
-  const initials = getInitials(contact.name);
+  const initials = getAvatarContent(contact);
   const detail = document.createElement("div");
   detail.className = "contacts__detail";
   detail.innerHTML = getContactDetailTemplate(contact, initials, contact.avatarColor);
@@ -215,6 +215,7 @@ export function getActiveContactData(contactId) {
         name: item.querySelector(".contacts__name").textContent,
         email: item.querySelector(".contacts__email").textContent,
         color: item.querySelector(".contacts__avatar").style.backgroundColor,
+        photo: item.querySelector(".contacts__avatar .avatar-photo")?.getAttribute("src") || null,
       };
     }
   });

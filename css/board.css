@@ -606,16 +606,20 @@
 
 .task-dialog__contacts {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+
+  .task-dialog__label {
+    margin-bottom: 0;
+  }
 }
 
-.task-dialog__contact {
+.task-dialog__avatars {
   display: flex;
-  align-content: center;
-  align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
-  margin-left: 10px;
-  margin-bottom: 12px;
 }
 
 .task-dialog__avatar {
@@ -628,7 +632,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: -8px;
+  flex-shrink: 0;
+  overflow: hidden;
   border: 2px solid #fff;
 }
 

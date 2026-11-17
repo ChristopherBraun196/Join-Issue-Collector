@@ -490,15 +490,22 @@
 .contact-dialog__avatar {
   width: 150px;
   height: 150px;
-  margin-bottom: 80px;
 
   @media (max-width: 1200px) {
     display: block;
     width: 90px;
     height: 90px;
     border-radius: 50%;
+  }
+}
+
+.contact-dialog__photo {
+  position: relative;
+  flex-shrink: 0;
+  margin-bottom: 80px;
+
+  @media (max-width: 1200px) {
     margin-top: -69px;
-    position: relative;
     z-index: 5;
   }
 }
@@ -516,6 +523,68 @@
   @media (max-width: 1200px) {
     font-size: var(--fs-4xl);
   }
+}
+
+.contact-dialog__photo-btn {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: white;
+  color: var(--primary-color);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--highligted-color);
+  }
+
+  &:focus-within,
+  &:focus-visible {
+    outline: 2px solid var(--highligted-color);
+  }
+
+  &[hidden] {
+    display: none;
+  }
+
+  @media (max-width: 1200px) {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.contact-dialog__photo-btn--upload {
+  right: 0;
+}
+
+.contact-dialog__photo-btn--remove {
+  left: 0;
+}
+
+.contact-dialog__photo-icon {
+  width: 22px;
+  height: 22px;
+
+  @media (max-width: 1200px) {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.contact-dialog__photo-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
 }
 
 .contact-dialog__avatar--hidden {

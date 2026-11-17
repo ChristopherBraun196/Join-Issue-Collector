@@ -6,6 +6,7 @@ import { clearActiveContact, loadContacts, getActiveContactData, isEmailTaken, o
 import { isValidEmail } from "../../utils/validators.js";
 import { confirmAction } from "../../components/confirmDialog.js";
 import { getInitials } from "../../utils/format.js";
+import { initContactPhoto, setDialogPhoto, getDialogPhoto } from "./contactPhoto.js";
 
 const PHONE_PATTERN = /^[+\d\s\-()]{6,20}$/;
 const CONTACT_FIELDS = {
@@ -21,6 +22,7 @@ export function initContactDialog() {
   const dialog = document.querySelector(".contact-dialog");
   dialog.addEventListener("click", handleOverlayClick);
   dialog.addEventListener("focusout", handleFieldBlur);
+  initContactPhoto();
 }
 
 /**
@@ -79,6 +81,7 @@ function generateContactJson(contactID) {
     email: getContactEmailAdress(),
     phone: getContactPhone(),
     avatarColor: selectRandomAvatarColor(),
+    photo: getDialogPhoto(),
   };
 }
 
@@ -224,7 +227,12 @@ export function editContact(contactId) {
  */
 export async function saveContact(contactId) {
   if (!validateInputs(contactId)) return;
-  const changes = { name: getContactName(), email: getContactEmailAdress(), phone: getContactPhone() };
+  const changes = {
+    name: getContactName(),
+    email: getContactEmailAdress(),
+    phone: getContactPhone(),
+    photo: getDialogPhoto(),
+  };
   if (!(await saveWithLockedButton(updateData, "/contacts/" + contactId, changes))) return;
   closeContactDialog();
   await loadContacts();
@@ -238,22 +246,9 @@ export async function saveContact(contactId) {
  */
 function showContactAvatar(contact) {
   const initials = document.querySelector(".contact-dialog__avatar--initials");
-  initials.textContent = getInitials(contact.name);
+  initials.dataset.initials = getInitials(contact.name);
   initials.style.backgroundColor = contact.color;
-  toggleDialogAvatar(true);
-}
-
-/**
- * Switches between the default icon and the initials avatar in the contact dialog.
- * @param {boolean} showInitials - True to show the initials avatar
- */
-function toggleDialogAvatar(showInitials) {
-  document
-    .querySelector(".contact-dialog__avatar--icon")
-    .classList.toggle("contact-dialog__avatar--hidden", showInitials);
-  document
-    .querySelector(".contact-dialog__avatar--initials")
-    .classList.toggle("contact-dialog__avatar--hidden", !showInitials);
+  setDialogPhoto(contact.photo);
 }
 
 /**
@@ -268,7 +263,8 @@ function resetDialog() {
   submitBtn.dataset.action = "submit";
   delete submitBtn.dataset.id;
   document.querySelector(".contact-dialog__title").textContent = "Add contact";
-  toggleDialogAvatar(false);
+  delete document.querySelector(".contact-dialog__avatar--initials").dataset.initials;
+  setDialogPhoto(null);
 }
 
 /**

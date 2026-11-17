@@ -1,4 +1,5 @@
-import { getInitials, capitalize } from "../utils/format.js";
+import { capitalize } from "../utils/format.js";
+import { getAvatarContent } from "../utils/avatar.js";
 
 /**
  * Returns the HTML template for the task edit dialog.
@@ -104,7 +105,7 @@ export function getPriorityButtonTemplate(priority, currentPriority) {
 export function getContactOptionTemplate(id, contact, checked) {
   return `
     <div class="dropdown__option" data-action="toggle-edit-contact" data-id="${id}">
-      <span class="task-edit__option-avatar" style="background:${contact.avatarColor}">${getInitials(contact.name)}</span>
+      <span class="task-edit__option-avatar" style="background:${contact.avatarColor}">${getAvatarContent(contact)}</span>
       <span class="dropdown__label">${contact.name}</span>
       <input type="checkbox" value="${id}" ${checked} style="margin-left:auto" />
     </div>`;
@@ -116,7 +117,7 @@ export function getContactOptionTemplate(id, contact, checked) {
  * @returns {string} HTML string of the contact badge
  */
 export function getContactBadgeTemplate(contact) {
-  return `<div class="task-edit__badge" style="background:${contact.avatarColor}">${getInitials(contact.name)}</div>`;
+  return `<div class="task-edit__badge" style="background:${contact.avatarColor}">${getAvatarContent(contact)}</div>`;
 }
 
 /**

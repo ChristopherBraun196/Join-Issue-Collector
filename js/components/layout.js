@@ -1,4 +1,4 @@
-import { getInitials } from "../utils/format.js";
+import { getAvatarContent } from "../utils/avatar.js";
 import { getSidebarTemplate, getSidebarGuestTemplate, getTopbarTemplate } from "../templates/layoutTemplates.js";
 import { logout } from "../services/authGuard.js";
 
@@ -75,9 +75,8 @@ export function renderUserMenue() {
 
   if (!user) um.textContent = "G";
   else {
-    const initials = getInitials(user.name);
     um.style.backgroundColor = user.avatarColor;
-    um.textContent = initials;
+    um.innerHTML = getAvatarContent(user);
   }
   um.classList.add("topbar__user--visible");
 }

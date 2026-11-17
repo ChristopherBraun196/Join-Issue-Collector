@@ -1,5 +1,5 @@
 import { loadData } from "../../services/database.js";
-import { getInitials } from "../../utils/format.js";
+import { getAvatarContent } from "../../utils/avatar.js";
 import { getToDoTemplate } from "../../templates/boardTemplates.js";
 import { tasks, COLUMNS } from "./boardData.js";
 
@@ -259,9 +259,7 @@ export async function getAssignedToAvatars(allMembersOfThisTask) {
 async function getMemberAvatar(id) {
   const member = await loadData("/contacts/" + id);
   if (!member) return "";
-
-  const name = member.name;
-  const htmlTemplate = `<div class="task-card__avatar" style="background:${member["avatarColor"]}">${getInitials(name)}</div>`;
+  const htmlTemplate = `<div class="task-card__avatar" style="background:${member["avatarColor"]}">${getAvatarContent(member)}</div>`;
 
   return htmlTemplate;
 }

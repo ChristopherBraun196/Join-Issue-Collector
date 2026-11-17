@@ -1,4 +1,4 @@
-import { getInitials } from "../utils/format.js";
+import { getAvatarContent } from "../utils/avatar.js";
 import { showMessage } from "./toast.js";
 import { loadData } from "../services/database.js";
 import { getAddTaskDialogTemplate, getAssignOptionTemplate } from "../templates/addTaskTemplates.js";
@@ -229,7 +229,7 @@ function setPriority(clickedButton) {
 async function loadContacts() {
   const data = (await loadData("/contacts")) || {};
   contacts = Object.entries(data)
-    .map(([id, contact]) => ({ id, name: contact.name, color: contact.avatarColor }))
+    .map(([id, contact]) => ({ id, name: contact.name, color: contact.avatarColor, photo: contact.photo }))
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 
@@ -241,7 +241,7 @@ export async function renderContacts() {
   await loadContacts();
   const container = document.querySelector(".dropdown--assigned .dropdown__list");
   if (!container) return;
-  container.innerHTML = contacts.map((contact) => getAssignOptionTemplate(contact, getInitials(contact.name))).join("");
+  container.innerHTML = contacts.map((contact) => getAssignOptionTemplate(contact, getAvatarContent(contact))).join("");
 }
 
 /**
@@ -308,7 +308,7 @@ function updateAssignedBadges() {
   badges.innerHTML = "";
   selected.slice(0, limit).forEach((opt) => {
     const avatar = opt.querySelector(".dropdown__avatar");
-    badges.appendChild(createBadge(avatar.textContent.trim(), avatar.style.background));
+    badges.appendChild(createBadge(avatar.innerHTML.trim(), avatar.style.background));
   });
   if (selected.length > limit)
     badges.appendChild(createBadge(`+${selected.length - limit}`, "", "task-form__badge--overflow"));
@@ -325,7 +325,7 @@ function createBadge(text, background, modifier = "") {
   const badge = document.createElement("div");
   badge.className = `task-form__badge ${modifier}`.trim();
   badge.style.background = background;
-  badge.textContent = text;
+  badge.innerHTML = text;
   return badge;
 }
 

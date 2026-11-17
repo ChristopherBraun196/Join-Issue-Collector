@@ -1,4 +1,5 @@
-import { getInitials, formatDate, capitalize } from "../utils/format.js";
+import { formatDate, capitalize } from "../utils/format.js";
+import { getAvatarContent } from "../utils/avatar.js";
 import { getAssignedToAvatars } from "../pages/board/boardRender.js";
 
 /**
@@ -84,7 +85,8 @@ export function getDialogBoardTemplate(element, assignedContacts, subtasks, matc
         </p>
         <div class="task-dialog__contacts">
             <p class="task-dialog__label">Assigned To:</p>
-            <p>${assignedContacts.map(getAssignedContactTemplate).join("")}</p>
+            <div class="task-dialog__avatars">${assignedContacts.map(getAssignedContactTemplate).join("")}</div>
+
         </div>
         ${getDialogAttachmentsTemplate(element.attachments, element.id)}
 
@@ -116,10 +118,7 @@ export function getDialogBoardTemplate(element, assignedContacts, subtasks, matc
  */
 function getAssignedContactTemplate(contact) {
   return `
-    <div class="task-dialog__contact">
-      <span class="task-dialog__avatar" style="background-color:${contact.avatarColor}">${getInitials(contact.name)}</span>
-      <span>${contact.name}</span>
-    </div>
+    <span class="task-dialog__avatar" style="background-color:${contact.avatarColor}" title="${contact.name}" role="img" aria-label="${contact.name}">${getAvatarContent(contact)}</span>
   `;
 }
 

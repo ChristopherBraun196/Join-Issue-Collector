@@ -75,3 +75,11 @@ input[type="checkbox"] {
 input[type="checkbox"]:checked {
   content: url("../assets/icons/subtask-checked.svg");
 }
+
+.avatar-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}

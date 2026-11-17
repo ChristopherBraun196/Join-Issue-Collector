@@ -42,12 +42,13 @@ function loadImage(dataUrl) {
 
 /**
  * Calculates the scaled size of an image so that its longest side
- * is at most MAX_IMAGE_DIMENSION, keeping the aspect ratio.
+ * is at most maxDimension, keeping the aspect ratio.
  * @param {HTMLImageElement} image - The loaded image.
+ * @param {number} maxDimension - Maximum width and height in pixels.
  * @returns {{width: number, height: number}} The new width and height in pixels.
  */
-function calculateImageSize(image) {
-  const scale = Math.min(1, MAX_IMAGE_DIMENSION / image.width, MAX_IMAGE_DIMENSION / image.height);
+function calculateImageSize(image, maxDimension) {
+  const scale = Math.min(1, maxDimension / image.width, maxDimension / image.height);
   return {
     width: Math.round(image.width * scale),
     height: Math.round(image.height * scale),
@@ -59,10 +60,11 @@ function calculateImageSize(image) {
  * Keeps the original format, the quality is only used for JPEG.
  * @param {HTMLImageElement} image - The loaded image.
  * @param {string} type - The MIME type of the original file, e.g. "image/png".
+ * @param {number} maxDimension - Maximum width and height in pixels.
  * @returns {string} The compressed image as a data URL (base64).
  */
-function drawImageToDataUrl(image, type) {
-  const { width, height } = calculateImageSize(image);
+function drawImageToDataUrl(image, type, maxDimension) {
+  const { width, height } = calculateImageSize(image, maxDimension);
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
@@ -72,15 +74,16 @@ function drawImageToDataUrl(image, type) {
 }
 
 /**
- * Compresses an image file to at most MAX_IMAGE_DIMENSION pixels
+ * Compresses an image file to at most maxDimension pixels
  * and returns it as a data URL in its original format.
  * @param {File} file - A validated JPG or PNG file.
+ * @param {number} [maxDimension] - Maximum width and height in pixels, MAX_IMAGE_DIMENSION by default.
  * @returns {Promise<string>} Resolves with the compressed image as a data URL (base64).
  */
-export async function compressImage(file) {
+export async function compressImage(file, maxDimension = MAX_IMAGE_DIMENSION) {
   const dataUrl = await readFileAsDataUrl(file);
   const image = await loadImage(dataUrl);
-  return drawImageToDataUrl(image, file.type);
+  return drawImageToDataUrl(image, file.type, maxDimension);
 }
 
 /**
