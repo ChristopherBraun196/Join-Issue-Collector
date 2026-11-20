@@ -137,7 +137,7 @@
   right: 0;
   height: 100px;
   background: #f4f4f4;
-  box-shadow: 0px 1px 5px rgb(138, 138, 138);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   font-size: var(--fs-l);
   z-index: 1000;
