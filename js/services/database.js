@@ -59,3 +59,21 @@ export async function deleteData(path = "") {
     throw error;
   }
 }
+
+/**
+ * Removes a contact from the assignedTo list of every task it is assigned to.
+ * @param {string} contactId - The ID of the contact
+ * @returns {Promise<void>}
+ */
+export async function removeContactFromTasks(contactId) {
+  const tasks = (await loadData("/tasks")) || {};
+  const writes = Object.entries(tasks).map(([taskId, task]) => {
+    const assigned = Object.values(task.assignedTo || {});
+    if (!assigned.some((a) => a.id === contactId)) return null;
+    return putData(
+      `/tasks/${taskId}/assignedTo`,
+      assigned.filter((a) => a.id !== contactId),
+    );
+  });
+  await Promise.all(writes);
+}

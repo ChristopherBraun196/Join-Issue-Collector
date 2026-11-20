@@ -1,6 +1,13 @@
 import { getAvatarContent } from "../utils/avatar.js";
-import { getSidebarTemplate, getSidebarGuestTemplate, getTopbarTemplate } from "../templates/layoutTemplates.js";
+import {
+  getSidebarTemplate,
+  getSidebarGuestTemplate,
+  getTopbarTemplate,
+  getContactDialogTemplate,
+} from "../templates/layoutTemplates.js";
 import { logout } from "../services/authGuard.js";
+import { initContactDialog } from "./contactForm.js";
+import { initAccountDialog, openAccountDialog } from "./accountDialog.js";
 
 /**
  * Initializes the page by generating the topbar and loading the sidebar.
@@ -20,6 +27,9 @@ function generateTopbar() {
   let header = document.createElement("header");
   header.classList.add("topbar");
   body.appendChild(header);
+  body.insertAdjacentHTML("beforeend", getContactDialogTemplate());
+  initContactDialog();
+  initAccountDialog();
   header.addEventListener("click", handleTopbarClick);
   document.addEventListener("click", closeUserMenu);
 
@@ -79,6 +89,7 @@ export function renderUserMenue() {
     um.innerHTML = getAvatarContent(user);
   }
   um.classList.add("topbar__user--visible");
+  document.querySelector(".topbar__dropdown-link--account").hidden = !user?.id;
 }
 
 /**
@@ -90,6 +101,7 @@ function handleTopbarClick(event) {
   if (!target) return;
   if (target.dataset.action === "toggle-user-menu") toggleUserMenue(event);
   if (target.dataset.action === "logout") logout();
+  if (target.dataset.action === "open-account") openAccountDialog();
 }
 
 /**

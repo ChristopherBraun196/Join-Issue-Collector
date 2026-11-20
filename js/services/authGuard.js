@@ -9,6 +9,14 @@ const path = window.location.pathname.split("/").pop();
 
 const cameFromWelcome = document.referrer.includes("welcome.html");
 
+let resolveCurrentUser;
+
+/**
+ * Resolves with the current user (or guest) as soon as it is loaded.
+ * @type {Promise<Object>}
+ */
+export const currentUserReady = new Promise((resolve) => (resolveCurrentUser = resolve));
+
 /**
  * Loads the authenticated user's data from Firebase and sets the global current user.
  * Redirects to summary page if on a home path, or loads the sidebar for public paths.
@@ -22,7 +30,8 @@ async function handleAuthenticatedUser(user, path) {
   if (!snapshot.val()) return;
   const { contactId } = snapshot.val();
   const contactSnap = await get(ref(db, `contacts/${contactId}`));
-  window.currentUser = contactSnap.val();
+  window.currentUser = { id: contactId, ...contactSnap.val() };
+  resolveCurrentUser(window.currentUser);
   renderUserMenue();
   if (homePaths.includes(path)) {
     window.location.href = "./summary.html";
@@ -56,6 +65,7 @@ function handleUnauthenticatedUser(path) {
  */
 function handleGuestUser(path) {
   window.currentUser = { name: "Guest" };
+  resolveCurrentUser(window.currentUser);
   renderUserMenue();
   if (homePaths.includes(path)) {
     if (!cameFromWelcome) window.location.href = "./welcome.html";

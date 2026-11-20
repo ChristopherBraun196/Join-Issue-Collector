@@ -1,16 +1,10 @@
 import { init as initLayout } from "../../components/layout.js";
 import { getAvatarContent } from "../../utils/avatar.js";
 import { loadData } from "../../services/database.js";
+import { currentUserReady } from "../../services/authGuard.js";
 import { getContactItemTemplate, getContactDetailTemplate } from "../../templates/contactTemplates.js";
-import {
-  initContactDialog,
-  openContactDialog,
-  closeContactDialog,
-  submitContact,
-  saveContact,
-  editContact,
-  deleteContact,
-} from "./contactDialog.js";
+import { submitContact, saveContact, editContact, deleteContact } from "./contactDialog.js";
+import { setContactList, openContactDialog } from "../../components/contactForm.js";
 
 let mobileActiveContact = null;
 let contactsArray = [];
@@ -20,8 +14,8 @@ let contactsArray = [];
  */
 async function init() {
   initLayout("contact");
-  initContactDialog();
   document.addEventListener("click", handleContactsClick);
+  await currentUserReady;
   await loadContacts();
   openContactFromUrl();
 }
@@ -31,16 +25,17 @@ async function init() {
  * @param {MouseEvent} event - The click event
  */
 function handleContactsClick(event) {
+  closeContactMenu(event);
   const target = event.target.closest("[data-action]");
   if (!target) return;
   const { action, id } = target.dataset;
   if (action === "open-dialog") openContactDialog();
-  if (action === "close-dialog") closeContactDialog();
   if (action === "submit") submitContact();
   if (action === "save") saveContact(id);
   if (action === "edit") editContact(id);
   if (action === "delete") deleteContact(id);
   if (action === "back") backToContacts();
+  if (action === "toggle-menu") toggleContactMenu(target);
 }
 
 /**
@@ -126,7 +121,8 @@ export async function loadContacts() {
   const data = await loadData("/contacts");
   if (!data) return;
   contactsArray = Object.entries(data).map(([id, contact]) => ({ ...contact, id }));
-  renderContacts(contactsArray);
+  setContactList(contactsArray);
+  renderContacts(contactsArray.filter((contact) => contact.id !== window.currentUser.id));
 }
 
 /**
@@ -202,6 +198,27 @@ function backToContacts() {
 }
 
 /**
+ * Opens or closes the edit/delete menu on touch devices.
+ * @param {HTMLElement} button - The more button that was clicked
+ */
+function toggleContactMenu(button) {
+  const menu = document.querySelector(".contacts__detail-actions");
+  const isOpen = menu.classList.toggle("contacts__detail-actions--open");
+  button.setAttribute("aria-expanded", isOpen);
+}
+
+/**
+ * Closes the open edit/delete menu when the click was outside of it.
+ * @param {MouseEvent} event - The click event
+ */
+function closeContactMenu(event) {
+  const menu = document.querySelector(".contacts__detail-actions--open");
+  if (!menu || event.target.closest(".contacts__detail-actions, .contacts__more")) return;
+  menu.classList.remove("contacts__detail-actions--open");
+  document.querySelector(".contacts__more").setAttribute("aria-expanded", false);
+}
+
+/**
  * Returns the data of the currently active contact item.
  * @param {string} contactId - The ID of the contact
  * @returns {Object|null} The active contact data or null if none is active
@@ -220,17 +237,6 @@ export function getActiveContactData(contactId) {
     }
   });
   return currentContact;
-}
-
-/**
- * Checks whether another contact already uses the given email address.
- * @param {string} email - The email address to check
- * @param {string} [contactId] - The contact being edited, it is ignored in the check
- * @returns {boolean} True if the email belongs to a different contact
- */
-export function isEmailTaken(email, contactId) {
-  const wanted = email.trim().toLowerCase();
-  return contactsArray.some((contact) => contact.id !== contactId && contact.email.toLowerCase() === wanted);
 }
 
 document.addEventListener("DOMContentLoaded", init);

@@ -60,3 +60,15 @@ export function formatFileSize(bytes) {
   }
   return `${(bytes / BYTES_PER_MB).toFixed(1)} MB`;
 }
+
+/**
+ * Formats a phone number like "+49 1111 111 11 1" for display.
+ * @param {string} phone - The stored phone number
+ * @returns {string} The grouped phone number, or the original value if it does not match
+ */
+export function formatPhone(phone) {
+  const digits = phone.replace(/\s/g, "");
+  const match = digits.match(/^(\+\d{2})(\d{4})(\d{3})(\d{2})(\d+)$/);
+  if (!match) return phone;
+  return match.slice(1).join(" ");
+}

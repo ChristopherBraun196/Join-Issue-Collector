@@ -1,3 +1,5 @@
+import { formatPhone } from "../utils/format.js";
+
 /**
  * Returns the HTML template for a contact list item.
  * @param {Object} contact - The contact object
@@ -52,7 +54,11 @@ export function getContactDetailTemplate(contact, initials, color) {
 
     <div class="contacts__detail-info">
       <p class="contacts__info-title">Phone</p>
-      <p class="contacts__info-value">${contact.phone || "–"}</p>
+      <p class="contacts__info-value">${contact.phone ? formatPhone(contact.phone) : "–"}</p>
     </div>
+
+    <button class="contacts__more" data-action="toggle-menu" aria-label="More options" aria-expanded="false">
+      <img src="./assets/icons/more-vert.svg" alt="" class="contacts__more-icon">
+    </button>
   `;
 }

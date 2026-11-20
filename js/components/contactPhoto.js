@@ -1,6 +1,6 @@
-import { validateImageFile, compressImage } from "../../utils/imageFiles.js";
-import { AVATAR_DIMENSION } from "../../utils/constants.js";
-import { showMessage } from "../../components/toast.js";
+import { validateImageFile, compressImage } from "../utils/imageFiles.js";
+import { AVATAR_DIMENSION } from "../utils/constants.js";
+import { showMessage } from "./toast.js";
 
 /**
  * Photo of the contact in the dialog as a data URL, or null if there is none.
