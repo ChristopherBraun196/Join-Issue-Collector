@@ -1,3 +1,5 @@
+import { getDisplayName } from "../utils/format.js";
+
 /**
  * Returns the HTML template for the add task dialog.
  * @param {string} status - The initial status for the new task
@@ -136,7 +138,7 @@ export function getAssignOptionTemplate(contact, initials) {
   return `
     <div class="dropdown__option" data-action="toggle-contact" data-id="${contact.id}">
       <div class="dropdown__avatar" style="background:${contact.color}">${initials}</div>
-      <span class="dropdown__label">${contact.name}</span>
+        <span class="dropdown__label">${getDisplayName(contact)}</span>
       <input type="checkbox">
     </div>
   `;

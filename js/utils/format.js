@@ -72,3 +72,12 @@ export function formatPhone(phone) {
   if (!match) return phone;
   return match.slice(1).join(" ");
 }
+
+/**
+ * Returns the contact name, with "(You)" behind it for the logged-in user.
+ * @param {{id: string, name: string}} contact - The contact
+ * @returns {string} The name to display
+ */
+export function getDisplayName(contact) {
+  return contact.id === window.currentUser?.id ? `${contact.name} (You)` : contact.name;
+}

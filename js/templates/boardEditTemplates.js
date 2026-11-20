@@ -1,4 +1,4 @@
-import { capitalize } from "../utils/format.js";
+import { capitalize, getDisplayName } from "../utils/format.js";
 import { getAvatarContent } from "../utils/avatar.js";
 
 /**
@@ -106,7 +106,7 @@ export function getContactOptionTemplate(id, contact, checked) {
   return `
     <div class="dropdown__option" data-action="toggle-edit-contact" data-id="${id}">
       <span class="task-edit__option-avatar" style="background:${contact.avatarColor}">${getAvatarContent(contact)}</span>
-      <span class="dropdown__label">${contact.name}</span>
+      <span class="dropdown__label">${getDisplayName({ id, name: contact.name })}</span>
       <input type="checkbox" value="${id}" ${checked} style="margin-left:auto" />
     </div>`;
 }

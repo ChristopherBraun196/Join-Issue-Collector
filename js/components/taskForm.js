@@ -1,6 +1,7 @@
 import { getAvatarContent } from "../utils/avatar.js";
 import { showMessage } from "./toast.js";
 import { loadData } from "../services/database.js";
+import { currentUserReady } from "../services/authGuard.js";
 import { getAddTaskDialogTemplate, getAssignOptionTemplate } from "../templates/addTaskTemplates.js";
 import { validateOnBlur, validateDate, clearFieldError } from "./validation.js";
 import { handleSubtaskAction, handleSubtaskKey, onSubtaskInput } from "./addSubtask.js";
@@ -239,6 +240,7 @@ async function loadContacts() {
  */
 export async function renderContacts() {
   await loadContacts();
+  await currentUserReady;
   const container = document.querySelector(".dropdown--assigned .dropdown__list");
   if (!container) return;
   container.innerHTML = contacts.map((contact) => getAssignOptionTemplate(contact, getAvatarContent(contact))).join("");
