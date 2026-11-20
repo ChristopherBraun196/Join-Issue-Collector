@@ -89,42 +89,44 @@
     height: 69px;
   }
 
-  &:hover {
-    background-color: #2f3e4e;
-    color: white;
-    cursor: pointer;
-    transition: 0.1s;
-    transform: scale(1.05);
-
-    & a {
+  @media (hover: hover) {
+    &:hover {
+      background-color: #2f3e4e;
       color: white;
-    }
-
-    & .summary__icon-bg {
-      fill: white;
+      cursor: pointer;
       transition: 0.1s;
-    }
+      transform: scale(1.05);
 
-    & .summary__icon-symbol {
-      fill: #2a3647;
-      transition: 0.1s;
-    }
+      & a {
+        color: white;
+      }
 
-    & .summary__icon-check {
-      stroke: #2a3647;
-      transition: 0.1s;
-    }
+      & .summary__icon-bg {
+        fill: white;
+        transition: 0.1s;
+      }
 
-    & .summary__deadline {
-      color: white;
-      transition: 0.1s;
-    }
+      & .summary__icon-symbol {
+        fill: #2a3647;
+        transition: 0.1s;
+      }
 
-    & .summary__count--gradient {
-      background: none;
-      -webkit-background-clip: unset;
-      background-clip: unset;
-      color: white;
+      & .summary__icon-check {
+        stroke: #2a3647;
+        transition: 0.1s;
+      }
+
+      & .summary__deadline {
+        color: white;
+        transition: 0.1s;
+      }
+
+      & .summary__count--gradient {
+        background: none;
+        -webkit-background-clip: unset;
+        background-clip: unset;
+        color: white;
+      }
     }
   }
 

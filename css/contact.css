@@ -75,8 +75,10 @@
   width: 70%;
   margin: 0 auto;
 
-  &:hover {
-    background-color: #f0f4ff;
+  @media (hover: hover) {
+    &:hover {
+      background-color: #f0f4ff;
+    }
   }
 
   &.contacts__item--active {
@@ -292,8 +294,10 @@
   color: #1a202c;
   padding: 0;
 
-  &:hover {
-    color: #4e84c4;
+  @media (hover: hover) {
+    &:hover {
+      color: #4e84c4;
+    }
   }
 }
 
@@ -390,8 +394,10 @@
   color: #4e84c4;
   text-decoration: none;
 
-  &:hover {
-    text-decoration: underline;
+  @media (hover: hover) {
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 

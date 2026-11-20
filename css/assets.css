@@ -7,9 +7,11 @@
   border: none;
 }
 
-.primary-btn:hover {
-  background-color: var(--highligted-color);
-  box-shadow: 0 4px 4px 0 #00000050;
+@media (hover: hover) {
+  .primary-btn:hover {
+    background-color: var(--highligted-color);
+    box-shadow: 0 4px 4px 0 #00000050;
+  }
 }
 
 .secondary-btn {
@@ -20,9 +22,11 @@
   border-radius: var(--border-radius);
 }
 
-.secondary-btn:hover {
-  border: 1px solid var(--highligted-color);
-  box-shadow: 0 4px 4px 0 #00000050;
+@media (hover: hover) {
+  .secondary-btn:hover {
+    border: 1px solid var(--highligted-color);
+    box-shadow: 0 4px 4px 0 #00000050;
+  }
 }
 
 .toast {

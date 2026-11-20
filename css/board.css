@@ -52,10 +52,12 @@
     background-color: var(--primary-color);
     border: none;
 
-    &:hover {
-      background-color: var(--highligted-color);
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-      cursor: pointer;
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--highligted-color);
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+      }
     }
   }
 }
@@ -114,9 +116,11 @@
   height: 20px;
   transition: 0.1s all ease-in;
 
-  &:hover {
-    -webkit-filter: drop-shadow(1px 1px 1px #22222280);
-    filter: drop-shadow(1px 1px 1px #22222280);
+  @media (hover: hover) {
+    &:hover {
+      -webkit-filter: drop-shadow(1px 1px 1px #22222280);
+      filter: drop-shadow(1px 1px 1px #22222280);
+    }
   }
 }
 
@@ -175,9 +179,11 @@
   font-size: var(--fs-3xl);
   font-weight: bold;
 
-  &:hover {
-    color: var(--highligted-color);
-    cursor: pointer;
+  @media (hover: hover) {
+    &:hover {
+      color: var(--highligted-color);
+      cursor: pointer;
+    }
   }
 }
 
@@ -266,10 +272,12 @@
   padding: 0;
   flex-shrink: 0;
 
-  &:hover {
-    background-color: #f0f0f0;
-    border-color: #999;
-    color: #333;
+  @media (hover: hover) {
+    &:hover {
+      background-color: #f0f0f0;
+      border-color: #999;
+      color: #333;
+    }
   }
 
   &.board__arrow--hidden {
@@ -320,8 +328,10 @@
   cursor: pointer;
   position: relative;
 
-  &:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+  @media (hover: hover) {
+    &:hover {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+    }
   }
 
   &.task-card--dragging {
@@ -523,8 +533,10 @@
   height: 30px;
   border-radius: 50%;
 
-  &:hover {
-    background: rgba(0, 0, 0, 0.1);
+  @media (hover: hover) {
+    &:hover {
+      background: rgba(0, 0, 0, 0.1);
+    }
   }
 
   &:focus {
@@ -595,8 +607,10 @@
   text-decoration: none;
   font-weight: 600;
 
-  &:hover {
-    cursor: pointer;
+  @media (hover: hover) {
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 
@@ -677,13 +691,15 @@
   margin-top: 28px;
   color: inherit;
 
-  &:hover {
-    text-decoration: none;
-    font-weight: bolder;
-    color: var(--highligted-color);
+  @media (hover: hover) {
+    &:hover {
+      text-decoration: none;
+      font-weight: bolder;
+      color: var(--highligted-color);
 
-    .task-dialog__action-icon {
-      filter: invert(58%) sepia(69%) saturate(456%) hue-rotate(163deg) brightness(95%) contrast(93%);
+      .task-dialog__action-icon {
+        filter: invert(58%) sepia(69%) saturate(456%) hue-rotate(163deg) brightness(95%) contrast(93%);
+      }
     }
   }
 }
@@ -786,8 +802,10 @@
   color: white;
   cursor: pointer;
 
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+  @media (hover: hover) {
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
   }
 
   &:focus-visible {
@@ -836,8 +854,10 @@
   background-color: white;
   color: var(--primary-color);
 
-  &:hover {
-    background-color: #e0e0e0;
+  @media (hover: hover) {
+    &:hover {
+      background-color: #e0e0e0;
+    }
   }
 
   @media (max-width: 750px) {
@@ -876,7 +896,7 @@
     transform: none;
   }
 }
-@media (min-width: 751px) {
+@media (min-width: 751px) and (hover: hover) {
   .viewer__bar,
   .viewer__arrow,
   .viewer__zoom {

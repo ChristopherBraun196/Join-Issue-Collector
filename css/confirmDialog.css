@@ -30,10 +30,12 @@
   font-size: var(--fs-s);
 }
 
-.confirm-dialog__btn--cancel:hover {
-  color: var(--highligted-color);
-  border-color: var(--highligted-color);
-  box-shadow: none;
+@media (hover: hover) {
+  .confirm-dialog__btn--cancel:hover {
+    color: var(--highligted-color);
+    border-color: var(--highligted-color);
+    box-shadow: none;
+  }
 }
 
 .confirm-dialog--account {
@@ -63,8 +65,10 @@
   font-size: var(--fs-l);
   color: var(--primary-color);
 
-  &:hover {
-    color: var(--highligted-color);
+  @media (hover: hover) {
+    &:hover {
+      color: var(--highligted-color);
+    }
   }
 }
 

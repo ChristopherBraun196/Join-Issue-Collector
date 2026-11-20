@@ -162,8 +162,10 @@
   cursor: pointer;
   padding: 4px;
 
-  &:hover {
-    color: #111;
+  @media (hover: hover) {
+    &:hover {
+      color: #111;
+    }
   }
 
   @media (max-width: 1200px) {
@@ -199,10 +201,6 @@
     height: 126px;
     border: 3px solid white;
     border-radius: 50%;
-
-    &.contact-dialog__avatar--icon {
-      border: none;
-    }
   }
 }
 
@@ -249,11 +247,13 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   cursor: pointer;
 
-  &:hover {
-    background-color: var(--viewer-color);
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--viewer-color);
 
-    .contact-dialog__photo-icon {
-      filter: brightness(0) invert(1);
+      .contact-dialog__photo-icon {
+        filter: brightness(0) invert(1);
+      }
     }
   }
 
@@ -348,7 +348,7 @@
   transition: border-color 0.1s;
 
   &::placeholder {
-    color: var(--input-border-color);
+    color: #686868;
   }
 
   @media (max-width: 1200px) {
@@ -372,6 +372,14 @@
   @media (max-width: 1200px) {
     top: 10px;
     right: 22px;
+  }
+}
+
+.contact-dialog:has(.contact-dialog__submit[data-action="submit"]),
+.contact-dialog--account {
+  .contact-dialog__input--name + .contact-dialog__icon,
+  .contact-dialog__input--email + .contact-dialog__icon {
+    filter: brightness(0) invert(82%);
   }
 }
 
@@ -434,9 +442,22 @@
   border: 1px solid var(--primary-color);
   color: var(--primary-color);
 
-  &:hover {
-    color: #29a9e1;
-    border-color: #29a9e1;
+  @media (hover: hover) {
+    &:hover {
+      color: #29a9e1;
+      border-color: #29a9e1;
+    }
+  }
+
+  &[data-action="close-dialog"],
+  &[data-action="delete-account"] {
+    @media (hover: hover) {
+      &:hover {
+        color: var(--primary-color);
+        border-color: black;
+        box-shadow: inset 0 0 0 1px black;
+      }
+    }
   }
 
   &[data-action="close-dialog"] {
@@ -452,7 +473,37 @@
   color: white;
   font-family: InterBold;
 
-  &:hover {
-    background: #29a9e1;
+  @media (hover: hover) {
+    &:hover {
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    }
+  }
+}
+
+.contact-dialog--account {
+  .contact-dialog__cancel,
+  .contact-dialog__submit {
+    padding-inline: 12px;
+  }
+
+  .contact-dialog__submit::after {
+    content: "✓";
+    display: inline-block;
+    max-width: 0;
+    margin-left: 0;
+    overflow: hidden;
+    vertical-align: bottom;
+    transition:
+      max-width 0.3s ease,
+      margin-left 0.3s ease;
+
+    @media (max-width: 1200px) {
+      content: none;
+    }
+  }
+
+  .contact-dialog__submit[data-action="save-account"]::after {
+    max-width: 1em;
+    margin-left: 8px;
   }
 }
