@@ -13,7 +13,8 @@ let zoomLevel = 1;
 function showCurrentImage() {
   const image = viewerImages[currentIndex];
   document.querySelector(".viewer__image").src = image.base64;
-  document.querySelector(".viewer__info").textContent = `${image.name} / ${formatFileSize(image.size)}`;
+  document.querySelector(".viewer__name").textContent = image.name;
+  document.querySelector(".viewer__size").textContent = formatFileSize(image.size);
   zoomLevel = 1;
   changeZoom(0);
 
@@ -62,14 +63,32 @@ function changeZoom(step) {
 }
 
 /**
+ * Slides the image viewer down and closes it when the animation has finished.
+ * @param {Event} event - The click or keydown event that closes the viewer
+ */
+function closeViewerAnimated(event) {
+  event.preventDefault();
+  const viewer = document.querySelector(".viewer");
+  viewer.classList.add("viewer--closing");
+  viewer.addEventListener(
+    "animationend",
+    () => {
+      viewer.classList.remove("viewer--closing");
+      viewer.close();
+    },
+    { once: true },
+  );
+}
+
+/**
  * Handles all clicks in the image viewer via data-action and closes it on a backdrop click.
  * @param {MouseEvent} event - The click event
  */
 function handleViewerClick(event) {
   const viewer = event.currentTarget;
-  if (event.target === viewer) viewer.close();
+  if (event.target === viewer) closeViewerAnimated(event);
   const action = event.target.closest("[data-action]")?.dataset.action;
-  if (action === "close-viewer") viewer.close();
+  if (action === "close-viewer") closeViewerAnimated(event);
   if (action === "next-image") showNextImage();
   if (action === "previous-image") showPreviousImage();
   if (action === "zoom-in") changeZoom(0.5);
@@ -83,6 +102,7 @@ function handleViewerClick(event) {
 function handleViewerKey(event) {
   if (event.key === "ArrowRight") showNextImage();
   if (event.key === "ArrowLeft") showPreviousImage();
+  if (event.key === "Escape") closeViewerAnimated(event);
 }
 
 /**

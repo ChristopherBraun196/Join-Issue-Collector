@@ -284,6 +284,23 @@
     display: none;
   }
 
+  @media (min-width: 1201px) {
+    align-self: flex-start;
+    width: 64px;
+    margin-left: calc((240px - 64px) / 2);
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    color: var(--primary-color);
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+
   @media (max-width: 1200px) {
     width: 28px;
     min-width: 28px;
@@ -293,7 +310,7 @@
 }
 
 .board__arrow--up {
-  margin-bottom: 8px;
+  margin-bottom: 20px;
 
   @media (max-width: 1200px) {
     margin-bottom: 0;
@@ -302,7 +319,7 @@
 }
 
 .board__arrow--down {
-  margin-top: 8px;
+  margin-top: 20px;
 
   @media (max-width: 1200px) {
     margin-top: 0;
@@ -440,7 +457,10 @@
 .task-dialog {
   position: fixed;
   top: 50%;
-  left: calc(240px + min(100vw - 240px, 1440px) / 2);
+  right: auto;
+  bottom: auto;
+  left: calc(300px + min(100vw - 360px, 1440px) / 2);
+  margin: 0;
   padding: 32px;
   width: 100%;
   max-width: 500px;
@@ -723,7 +743,7 @@
   gap: 8px;
   overflow-x: auto;
   scrollbar-width: none;
-  cursor: grab;
+  cursor: default;
 }
 
 .task-dialog__avatar {
@@ -841,10 +861,21 @@
   &[open] {
     display: flex;
     flex-direction: column;
+    animation: viewerSlideUp 0.3s ease-out;
   }
 
   &::backdrop {
     background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  @media (min-width: 1201px) {
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: calc(300px + min(100vw - 360px, 1440px) / 2);
+    width: min(1100px, calc(100vw - 400px));
+    margin: 0;
+    translate: -50% -50%;
   }
 
   @media (max-width: 750px) {
@@ -873,11 +904,30 @@
 }
 
 .viewer__info {
+  display: flex;
+  min-width: 0;
   margin: 0;
   font-size: var(--fs-s);
   white-space: nowrap;
+
+  @media (min-width: 751px) {
+    max-width: calc(50% - 90px);
+  }
+}
+
+.viewer__name {
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.viewer__size {
+  flex-shrink: 0;
+
+  &::before {
+    content: " / ";
+    white-space: pre;
+  }
 }
 
 .viewer__actions {
@@ -1008,5 +1058,27 @@
     .viewer__zoom {
       opacity: 1;
     }
+  }
+}
+
+.viewer.viewer--closing {
+  animation: viewerSlideDown 0.3s ease-in forwards;
+}
+
+@keyframes viewerSlideDown {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100vh);
+  }
+}
+
+@keyframes viewerSlideUp {
+  from {
+    transform: translateY(100vh);
+  }
+  to {
+    transform: translateY(0);
   }
 }

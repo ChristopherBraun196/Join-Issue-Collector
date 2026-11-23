@@ -21,6 +21,7 @@ async function init() {
   await renderAll();
   document.addEventListener("click", handleOutsideClick);
   window.addEventListener("resize", updateScrollArrows);
+  document.querySelectorAll("[data-cards]").forEach((column) => column.addEventListener("scroll", updateScrollArrows));
 }
 
 /**
