@@ -450,8 +450,10 @@
   scrollbar-width: none;
   border-radius: calc(2 * var(--border-radius));
   border: none;
+  outline: none;
   transform: translate(-50%, -50%);
-  animation: slideIn 0.3s ease-out;
+  transition: max-width 0.3s ease;
+  animation: popUp 0.25s ease-out;
 
   &[open] {
     display: block;
@@ -490,13 +492,13 @@
   }
 }
 
-@keyframes slideIn {
+@keyframes popUp {
   from {
-    transform: translate(100vw, -50%);
+    transform: translate(-50%, -42%) scale(0.95);
     opacity: 0;
   }
   to {
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(1);
     opacity: 1;
   }
 }
@@ -519,10 +521,73 @@
   margin-top: 24px;
 }
 
+.task-dialog:has(.task-edit__columns) {
+  border-radius: 30px;
+
+  &[open] {
+    @media (min-width: 751px) {
+      height: min(800px, calc(100vh - 40px));
+    }
+  }
+
+  @media (min-width: 751px) {
+    max-height: calc(100vh - 40px);
+  }
+
+  @media (min-width: 1201px) {
+    max-width: min(1080px, calc(100vw - 280px));
+    padding: 40px 48px;
+  }
+}
+
+.task-dialog__top.task-dialog__top--edit {
+  justify-content: flex-end;
+}
+
+.task-dialog:has(.task-dialog__row) {
+  border-radius: 30px;
+
+  &[open] {
+    height: auto;
+
+    @media (min-width: 751px) {
+      height: min(800px, calc(100vh - 40px));
+    }
+  }
+
+  @media (min-width: 751px) {
+    max-height: calc(100vh - 40px);
+  }
+
+  @media (min-width: 1201px) {
+    max-width: 525px;
+    padding: 40px;
+  }
+}
+
 .task-dialog__top {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1rem;
+}
+
+.task-dialog__badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.task-dialog .category-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  max-width: none;
+  padding: 4px 24px;
+  border-radius: 8px;
+  font-size: var(--fs-l);
+  font-weight: 400;
 }
 
 .task-dialog__close {
@@ -553,7 +618,7 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: var(--fs-s);
+  font-size: var(--fs-m);
   font-weight: 600;
   background: linear-gradient(to right, #9327ff, #2ea1dc);
   -webkit-background-clip: text;
@@ -567,8 +632,50 @@
 }
 
 .task-dialog__title {
-  font-size: 42px;
-  margin-bottom: 12px;
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 24px;
+}
+
+.task-dialog .task-dialog__description {
+  display: block;
+  margin-bottom: 20px;
+  font-size: var(--fs-m);
+  color: black;
+}
+
+.task-dialog__row {
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+  margin-bottom: 20px;
+  font-size: var(--fs-m);
+  color: black;
+}
+
+.task-dialog__row-label {
+  flex-shrink: 0;
+  min-width: 116px;
+  padding-right: 8px;
+  color: #42526e;
+}
+
+.task-dialog__row-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.task-dialog__section {
+  margin-bottom: 20px;
+}
+
+.task-dialog__section-title {
+  margin-bottom: 8px;
+  font-size: var(--fs-m);
+  font-weight: 400;
+  color: #42526e;
 }
 
 .task-dialog__creator-badge {
@@ -592,16 +699,11 @@
   color: #0b3681;
 }
 
-.task-dialog__creator-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .task-dialog__creator-link {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  margin-left: auto;
   font-size: var(--fs-s);
   color: black;
   text-decoration: none;
@@ -614,31 +716,19 @@
   }
 }
 
-.task-dialog__label {
-  margin-top: 24px;
-}
-
-.task-dialog__contacts {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 16px;
-
-  .task-dialog__label {
-    margin-bottom: 0;
-  }
-}
-
 .task-dialog__avatars {
   display: flex;
-  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
   gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  cursor: grab;
 }
 
 .task-dialog__avatar {
-  width: 34px;
-  height: 34px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   color: #fff;
   font-size: var(--fs-s);
@@ -652,32 +742,33 @@
 }
 
 .task-dialog__subtasks {
-  padding: 16px 0;
+  padding: 8px 0 0 18px;
 }
 
 .task-dialog__subtask {
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .task-dialog__subtask-label {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 24px;
+  font-size: var(--fs-s);
+  color: black;
   cursor: pointer;
 }
 
 .task-dialog__actions {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   gap: 12px;
-  margin-top: 24px;
 }
 
 .task-dialog__divider {
   width: 1px;
   height: 20px;
   background-color: #ccc;
-  margin-top: 28px;
 }
 
 .task-dialog__action-btn {
@@ -688,7 +779,6 @@
   border: none;
   cursor: pointer;
   font-size: var(--fs-s);
-  margin-top: 28px;
   color: inherit;
 
   @media (hover: hover) {
@@ -724,7 +814,14 @@
   }
 
   .attachments__item {
+    border-color: #686868;
+    border-radius: 10px;
     cursor: pointer;
+  }
+
+  .attachments__name {
+    font-size: var(--fs-s);
+    color: #686868;
   }
 }
 

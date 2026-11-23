@@ -13,8 +13,11 @@ import { openDialogBoard } from "./taskDialog.js";
 import { renderTaskCard } from "./boardRender.js";
 import { showMessage } from "../../components/toast.js";
 import { attachments, loadAttachments } from "../../components/attachments.js";
+import { validateForm } from "../../components/validation.js";
+import { getTaskCategoryLabelColor } from "../../components/taskFormData.js";
 
 let currentEditPriority = null;
+let currentEditCategory = null;
 let currentEditTaskId = null;
 
 /**
@@ -28,6 +31,8 @@ export function handleEditTaskAction(event, target, action) {
   if (action === "set-edit-priority") setEditPriority(target, priority);
   if (action === "toggle-edit-dropdown") toggleEditDropdown();
   if (action === "toggle-edit-contact") toggleAssignedContact(event, target, id);
+  if (action === "toggle-edit-category") toggleEditCategory();
+  if (action === "select-edit-category") selectEditCategory(target);
   if (action === "save-task") saveEditTask(id, target);
 }
 
@@ -48,13 +53,22 @@ export function handleEditSubtaskAction(target, action) {
 }
 
 /**
+ * Remembers the edited task and resets the priority and category chosen in the last edit.
+ * @param {string} taskId - The ID of the task to edit
+ */
+function resetEditState(taskId) {
+  currentEditTaskId = taskId;
+  currentEditPriority = null;
+  currentEditCategory = null;
+}
+
+/**
  * Opens the edit dialog for a given task.
  * @param {string} taskId - The ID of the task to edit
  * @returns {Promise<void>}
  */
 export async function openEditTask(taskId) {
-  currentEditTaskId = taskId;
-  currentEditPriority = null;
+  resetEditState(taskId);
   const element = tasks.find((t) => t.id === taskId);
   const allContacts = await loadData("/contacts");
   const assignedIds = getNormalizedAssignedTo(element).map((a) => a.id);
@@ -83,6 +97,8 @@ function getEditedTaskData(element) {
     dueDate: document.querySelector(".task-edit__input--due-date").value,
     priority: currentEditPriority ?? element.priority,
     attachments: [...attachments],
+    category: currentEditCategory ?? element.category,
+    categoryLabelColor: getTaskCategoryLabelColor(currentEditCategory ?? element.category),
   };
 }
 
@@ -93,6 +109,7 @@ function getEditedTaskData(element) {
  * @returns {Promise<void>}
  */
 async function saveEditTask(taskId, button) {
+  if (!validateForm(document.querySelector(".task-edit__columns"))) return;
   const element = tasks.find((t) => t.id === taskId);
   button.disabled = true;
   try {
@@ -183,10 +200,30 @@ async function deleteSubtaskEdit(taskId, subtaskIndex) {
  * Toggles the open state of the assigned contacts dropdown in the edit dialog.
  */
 function toggleEditDropdown() {
-  const dropdown = document.querySelector(".task-dialog .dropdown__menu");
+  const dropdown = document.querySelector(".task-edit__contacts .dropdown__menu");
   const trigger = dropdown.previousElementSibling;
   dropdown.classList.toggle("dropdown__menu--open");
   trigger.classList.toggle("dropdown__trigger--open");
+}
+
+/**
+ * Toggles the open state of the category dropdown in the edit dialog.
+ */
+function toggleEditCategory() {
+  const dropdown = document.querySelector(".task-edit__category .dropdown__menu");
+  const trigger = dropdown.previousElementSibling;
+  dropdown.classList.toggle("dropdown__menu--open");
+  trigger.classList.toggle("dropdown__trigger--open");
+}
+
+/**
+ * Selects a category in the edit dialog and closes the dropdown.
+ * @param {HTMLElement} option - The clicked category option
+ */
+function selectEditCategory(option) {
+  currentEditCategory = option.dataset.value;
+  document.querySelector(".task-edit__category-label").textContent = currentEditCategory;
+  toggleEditCategory();
 }
 
 /**

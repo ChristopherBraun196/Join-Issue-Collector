@@ -79,7 +79,7 @@ function getTaskCategory() {
  * @param {string} category - The category name (e.g. "User Story")
  * @returns {string} The hex color code for the category
  */
-function getTaskCategoryLabelColor(category) {
+export function getTaskCategoryLabelColor(category) {
   switch (category) {
     case "User Story":
       return "#0038FF";

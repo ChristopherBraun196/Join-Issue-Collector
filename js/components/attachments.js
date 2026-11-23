@@ -156,7 +156,7 @@ export function handleAttachmentAction(action, target) {
  * @param {PointerEvent} event - The pointerdown event
  */
 function startListDrag(event) {
-  const list = event.target.closest(".attachments__list");
+  const list = event.target.closest(".attachments__list, .task-dialog__avatars");
   if (!list || event.pointerType !== "mouse") return;
   listDrag = { list, startX: event.clientX, startScroll: list.scrollLeft, moved: false };
 }

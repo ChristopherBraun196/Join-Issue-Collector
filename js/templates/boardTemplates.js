@@ -54,57 +54,63 @@ export function getDialogBoardTemplate(element, assignedContacts, subtasks, matc
   return `
     <header class="task-dialog__header">
         <div class="task-dialog__top">
-            <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
-            ${element.isAiGenerated ? '<span class="task-dialog__ai-badge"><img src="./assets/icons/wand_stars.svg" alt="AI Icon"> Ai-generated</span>' : ""}
+            <div class="task-dialog__badges">
+                <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
+                ${element.isAiGenerated ? '<span class="task-dialog__ai-badge"><img src="./assets/icons/wand_stars.svg" alt=""> Ai-generated</span>' : ""}
+            </div>
             <button class="task-dialog__close" data-action="close-task" data-id="${element.id}" aria-label="Close"><img class="task-dialog__close-icon" src="./assets/icons/close.svg" alt=""></button>
-
         </div>
         <h2 class="task-dialog__title">${element.title}</h2>
     </header>
     <main class="task-dialog__body">
-        <p>${element.description}</p>
-        <p class="task-dialog__creator-badge ${element.creatorType === "external" ? "task-dialog__creator-badge--external" : "task-dialog__creator-badge--internal"}">
-           ${
-             element.creatorType === "external"
-               ? '<img src="./assets/icons/global.svg" alt="Global"> Extern'
-               : '<img src="./assets/icons/member.svg" alt="Member"> Member'
-           }
-        </p>
-        <p class="task-dialog__creator-row">
-            <span>Creator: ${element.creatorName || element.creator || "Unknown"}</span>
+        <p class="task-dialog__description">${element.description}</p>
+        <div class="task-dialog__row">
+            <span class="task-dialog__row-label">Source:</span>
+            <span class="task-dialog__creator-badge ${element.creatorType === "external" ? "task-dialog__creator-badge--external" : "task-dialog__creator-badge--internal"}">
+                ${
+                  element.creatorType === "external"
+                    ? '<img src="./assets/icons/global.svg" alt=""> Extern'
+                    : '<img src="./assets/icons/member.svg" alt=""> Member'
+                }
+            </span>
+        </div>
+        <div class="task-dialog__row">
+            <span class="task-dialog__row-label">Creator:</span>
+            <span class="task-dialog__row-value">${element.creatorName || element.creator || "Unknown"}</span>
             ${
               element.creatorType === "external"
-                ? `<a href="mailto:${element.creatorEmail || ""}" class="task-dialog__creator-link"><img src="./assets/icons/attach_email.svg" alt="Email"> E-mail</a>`
-                : `<a href="./contacts.html?id=${matchedCreator?.id || ""}" class="task-dialog__creator-link"><img src="./assets/icons/member.svg" alt="Member"> Profile</a>`
+                ? `<a href="mailto:${element.creatorEmail || ""}" class="task-dialog__creator-link"><img src="./assets/icons/attach_email.svg" alt=""> E-mail</a>`
+                : `<a href="./contacts.html?id=${matchedCreator?.id || ""}" class="task-dialog__creator-link"><img src="./assets/icons/member.svg" alt=""> Profile</a>`
             }
-        </p>
-        <p><span>Due date:</span><span>${formatDate(element.dueDate)}</span></p>
-        <p>
-            <span>Priority:</span>
-            <span>${capitalize(element["priority"])} <img src="./assets/icons/priority-${element["priority"]}.svg" /></span>
-        </p>
-        <div class="task-dialog__contacts">
-            <p class="task-dialog__label">Assigned To:</p>
+        </div>
+        <div class="task-dialog__row">
+            <span class="task-dialog__row-label">Due date:</span>
+            <span class="task-dialog__row-value">${formatDate(element.dueDate)}</span>
+        </div>
+        <div class="task-dialog__row">
+            <span class="task-dialog__row-label">Priority:</span>
+            <span class="task-dialog__row-value">${capitalize(element["priority"])} <img src="./assets/icons/priority-${element["priority"]}.svg" alt=""></span>
+        </div>
+        <div class="task-dialog__row">
+            <span class="task-dialog__row-label">Assigned To:</span>
             <div class="task-dialog__avatars">${assignedContacts.map(getAssignedContactTemplate).join("")}</div>
-
         </div>
         ${getDialogAttachmentsTemplate(element.attachments, element.id)}
-
-        <div>
-            <p>Subtasks</p>
+        <section class="task-dialog__section">
+            <h3 class="task-dialog__section-title">Subtasks</h3>
             <ul class="task-dialog__subtasks">
                 ${checkIfSubtasksAvaiable(subtasks, element.id)}
             </ul>
-        </div>
+        </section>
     </main>
     <footer class="task-dialog__footer">
         <div class="task-dialog__actions">
             <button class="task-dialog__action-btn" data-action="delete-task" data-id="${element.id}">
-              <img class="task-dialog__action-icon" src="./assets/icons/delete.svg" alt="delete Button"><span class="task-dialog__action-label" data-label="Delete">Delete</span>
+              <img class="task-dialog__action-icon" src="./assets/icons/delete.svg" alt=""><span class="task-dialog__action-label" data-label="Delete">Delete</span>
             </button>
             <div class="task-dialog__divider"></div>
             <button class="task-dialog__action-btn" data-action="edit-task" data-id="${element.id}">
-              <img class="task-dialog__action-icon" src="./assets/icons/edit.svg" alt="edit Button"><span class="task-dialog__action-label" data-label="Edit">Edit</span>
+              <img class="task-dialog__action-icon" src="./assets/icons/edit.svg" alt=""><span class="task-dialog__action-label" data-label="Edit">Edit</span>
             </button>
         </div>
     </footer>
@@ -197,11 +203,11 @@ function getDialogAttachmentTemplate(attachment, index, taskId) {
 function getDialogAttachmentsTemplate(attachments = [], taskId) {
   if (attachments.length === 0) return "";
   return `
-    <div class="task-dialog__attachments">
-        <p class="task-dialog__label">Uploaded files</p>
+    <section class="task-dialog__section task-dialog__attachments">
+        <h3 class="task-dialog__section-title">Attachments</h3>
         <ul class="attachments__list">
             ${attachments.map((attachment, index) => getDialogAttachmentTemplate(attachment, index, taskId)).join("")}
         </ul>
-    </div>
+    </section>
   `;
 }
