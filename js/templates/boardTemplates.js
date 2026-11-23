@@ -66,22 +66,12 @@ export function getDialogBoardTemplate(element, assignedContacts, subtasks, matc
         <p class="task-dialog__description">${element.description}</p>
         <div class="task-dialog__row">
             <span class="task-dialog__row-label">Source:</span>
-            <span class="task-dialog__creator-badge ${element.creatorType === "external" ? "task-dialog__creator-badge--external" : "task-dialog__creator-badge--internal"}">
-                ${
-                  element.creatorType === "external"
-                    ? '<img src="./assets/icons/global.svg" alt=""> Extern'
-                    : '<img src="./assets/icons/member.svg" alt=""> Member'
-                }
-            </span>
+            ${getSourceBadgeTemplate(element)}
         </div>
         <div class="task-dialog__row">
             <span class="task-dialog__row-label">Creator:</span>
             <span class="task-dialog__row-value">${element.creatorName || element.creator || "Unknown"}</span>
-            ${
-              element.creatorType === "external"
-                ? `<a href="mailto:${element.creatorEmail || ""}" class="task-dialog__creator-link"><img src="./assets/icons/attach_email.svg" alt=""> E-mail</a>`
-                : `<a href="./contacts.html?id=${matchedCreator?.id || ""}" class="task-dialog__creator-link"><img src="./assets/icons/member.svg" alt=""> Profile</a>`
-            }
+            ${getCreatorLinkTemplate(element, matchedCreator)}
         </div>
         <div class="task-dialog__row">
             <span class="task-dialog__row-label">Due date:</span>
@@ -115,6 +105,35 @@ export function getDialogBoardTemplate(element, assignedContacts, subtasks, matc
         </div>
     </footer>
   `;
+}
+
+/**
+ * Returns the source badge of a task: Extern (e-mail), Guest or Member.
+ * @param {Object} element - The task object
+ * @returns {string} HTML string of the source badge
+ */
+function getSourceBadgeTemplate(element) {
+  if (element.creatorType === "external") {
+    return `<span class="task-dialog__creator-badge task-dialog__creator-badge--external"><img src="./assets/icons/global.svg" alt=""> Extern</span>`;
+  }
+  if (element.creatorType === "guest" || element.creatorName === "Guest") {
+    return `<span class="task-dialog__creator-badge task-dialog__creator-badge--guest"><img src="./assets/icons/person.svg" alt=""> Guest</span>`;
+  }
+  return `<span class="task-dialog__creator-badge task-dialog__creator-badge--internal"><img src="./assets/icons/member.svg" alt=""> Member</span>`;
+}
+
+/**
+ * Returns the link to the creator: e-mail for external creators, profile for known contacts, nothing for guests.
+ * @param {Object} element - The task object
+ * @param {Object} [matchedCreator] - The contact that created the task, if found
+ * @returns {string} HTML string of the creator link or an empty string
+ */
+function getCreatorLinkTemplate(element, matchedCreator) {
+  if (element.creatorType === "external") {
+    return `<a href="mailto:${element.creatorEmail || ""}" class="task-dialog__creator-link"><img src="./assets/icons/attach_email.svg" alt=""> E-mail</a>`;
+  }
+  if (!matchedCreator) return "";
+  return `<a href="./contacts.html?id=${matchedCreator.id}" class="task-dialog__creator-link"><img src="./assets/icons/member.svg" alt=""> Profile</a>`;
 }
 
 /**

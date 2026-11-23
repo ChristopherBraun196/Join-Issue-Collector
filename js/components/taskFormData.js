@@ -25,7 +25,7 @@ function generateTaskJson(taskID, statusArg = STATUS.TO_DO) {
     subtasks: getSubtasks(),
     status: statusArg,
     creatorName: window.currentUser.name,
-    creatorType: "internal",
+    creatorType: window.currentUser.id ? "internal" : "guest",
   };
 }
 

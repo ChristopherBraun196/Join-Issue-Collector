@@ -719,6 +719,15 @@
   color: #0b3681;
 }
 
+.task-dialog__creator-badge--guest {
+  background-color: #e7e7e7;
+  color: var(--primary-color);
+
+  img {
+    filter: brightness(0) invert(20%);
+  }
+}
+
 .task-dialog__creator-link {
   display: inline-flex;
   align-items: center;
