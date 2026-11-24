@@ -19,107 +19,120 @@
 
     <main class="page legal">
       <h1>Privacy Policy</h1>
-      <p>Last updated: March 8, 2026</p>
+      <p>Last updated: November 24, 2026</p>
 
-      <div>
+      <section>
         <p>
-          This Privacy Policy describes how Todo App ("we", "us", or "our") collects, uses, and handles your personal
-          information when you use our todo management website. This is a demo project created for educational purposes
-          only and is not intended for commercial use.
+          This Privacy Policy describes how Join ("we", "us", or "our") collects, uses, and handles personal information
+          when you use Join, a Kanban project management tool with an issue collector. Join is a demo project created for
+          educational purposes at the Developer Akademie and is not intended for commercial use.
         </p>
-      </div>
+      </section>
 
-      <div>
+      <section>
         <h3>1. Information We Collect</h3>
-        When you use our service, we may collect the following types of information:
+        When you use Join, we process the following information:
         <br /><br />
-        <strong>Account Information:</strong> If you register, we collect your email address and a hashed version of
-        your password.<br />
-        <strong>Todo Data:</strong> The tasks, descriptions, due dates, and status information you enter into the
-        application.<br />
-        <strong>Usage Data:</strong> Basic interaction data such as login timestamps and feature usage, to improve the
-        application.<br />
-        <strong>Technical Data:</strong> Browser type, operating system, and IP address collected automatically through
-        server logs.
-      </div>
+        <strong>Account Information:</strong> If you sign up, we store your name, your email address and your login.
+        Your password is handled by Firebase Authentication and is never visible to us.<br />
+        <strong>Guest Login:</strong> If you log in as a guest, an anonymous account without name or email is created.<br />
+        <strong>Contacts:</strong> Names, email addresses, phone numbers and optional profile photos of the contacts
+        you create, including your own account.<br />
+        <strong>Tasks:</strong> Titles, descriptions, due dates, priorities, categories, subtasks, assigned contacts and
+        the name of the creator.<br />
+        <strong>Attachments:</strong> Images you add to tasks (JPEG or PNG), stored together with their file name, type
+        and size. Images are compressed in your browser before they are saved.<br />
+        <strong>Requests via the Issue Collector:</strong> If you send a request by email or through the stakeholder
+        form, we store your name, your email address and the content of your request.<br />
+        <strong>Technical Data:</strong> When you visit the website, the web server automatically records technical
+        data such as your IP address, browser type and the time of access in server logs.
+      </section>
 
-      <div>
+      <section>
         <h3>2. How We Use Your Information</h3>
         We use the information we collect solely to:
         <br /><br />
-        + Provide and maintain the todo management functionality<br />
-        + Authenticate your account and keep your data secure<br />
-        + Improve the performance and user experience of the application<br />
-        + Debug technical issues and prevent abuse
-      </div>
+        + Provide the board, task, contact and file upload functionality<br />
+        + Log you in and keep your data secure<br />
+        + Turn requests from the issue collector into tasks on the board<br />
+        + Allow team members to reply to the sender of a request by email<br />
+        + Fix technical issues and prevent abuse
+      </section>
 
-      <div>
-        <h3>3. Data Storage and Security</h3>
-        Your data is stored on secure servers. We implement reasonable technical and organizational measures to protect
-        your personal information against unauthorized access, alteration, disclosure, or destruction. However, no
-        method of transmission over the internet is 100% secure. As this is a demo project, we strongly advise against
-        storing sensitive personal information.
-      </div>
-
-      <div>
-        <h3>4. Data Retention</h3>
-        We retain your personal information only for as long as necessary to provide the service. You may request
-        deletion of your account and associated data at any time by contacting us. Upon deletion, your todo data and
-        personal information will be permanently removed from our systems within 30 days.
-      </div>
-
-      <div>
-        <h3>5. Sharing of Information</h3>
-        We do not sell, trade, or rent your personal information to third parties. We may share data only in the
-        following limited circumstances:
+      <section>
+        <h3>3. Service Providers</h3>
+        We use the following services to run Join:
         <br /><br />
-        <strong>Legal requirements:</strong> If required by law or in response to valid legal process.<br />
-        <strong>Protection of rights:</strong> To protect the rights, property, or safety of our users or the public.
-      </div>
+        <strong>Firebase (Google):</strong> Firebase Authentication handles the login and the Firebase Realtime
+        Database stores all tasks, contacts and attachments. The database is located in the EU (europe-west1).<br />
+        <strong>n8n on our own server at netcup:</strong> Emails sent to the issue collector are processed by an n8n
+        workflow that we host ourselves on a server of netcup GmbH in Germany.<br />
+        <strong>Google Gemini:</strong> To turn an incoming email into a task, its content is sent to Google Gemini,
+        which creates the title, description and subtasks. Such tasks are marked as "Ai-generated".<br />
+        <strong>Hosting:</strong> The website itself is hosted by ALL-INKL.COM - Neue Medien Münnich in Germany.
+      </section>
 
-      <div>
-        <h3>6. Cookies and Local Storage</h3>
-        We may use cookies or browser local storage to maintain your session and remember your preferences (such as
-        theme or display settings). These are strictly functional and do not track you across other websites. You can
-        clear cookies and local storage at any time through your browser settings.
-      </div>
+      <section>
+        <h3>4. Data Storage and Security</h3>
+        Access to the data requires a login, and the database only accepts data in the expected format. We take
+        reasonable technical measures to protect your data, but no transmission over the internet is 100% secure. As
+        this is a demo project, please do not store sensitive personal information or private images in Join.
+      </section>
 
-      <div>
-        <h3>7. Your Rights</h3>
-        Depending on your location, you may have the following rights regarding your personal data:
+      <section>
+        <h3>5. Data Retention and Deletion</h3>
+        We keep your data as long as your account exists. You can delete your account yourself at any time under
+        "My account" &rarr; "Delete my account". This removes your contact, your login and your assignment to all tasks.
+        Tasks, contacts and attachments can be deleted directly in the application. You can also ask us to delete your
+        data by email.
+      </section>
+
+      <section>
+        <h3>6. Sharing of Information</h3>
+        We do not sell, trade, or rent your personal information. Apart from the service providers listed above, we only
+        share data if required by law.
+      </section>
+
+      <section>
+        <h3>7. Local Storage</h3>
+        Join does not use tracking or advertising cookies. Firebase stores your login session in your browser so that
+        you stay logged in. You can remove it at any time by logging out or clearing your browser data.
+      </section>
+
+      <section>
+        <h3>8. Your Rights</h3>
+        Under the GDPR you have the following rights regarding your personal data:
         <br /><br />
         <strong>Access:</strong> Request a copy of the personal data we hold about you.<br />
-        <strong>Rectification:</strong> Request correction of inaccurate or incomplete data.<br />
-        <strong>Erasure:</strong> Request deletion of your personal data.<br />
+        <strong>Rectification:</strong> Correct inaccurate data, most of it directly under "My account".<br />
+        <strong>Erasure:</strong> Delete your account and data as described above.<br />
         <strong>Portability:</strong> Request your data in a structured, machine-readable format.<br />
-        <strong>Objection:</strong> Object to certain types of data processing.
-      </div>
+        <strong>Objection:</strong> Object to certain types of data processing.<br />
+        <strong>Complaint:</strong> Lodge a complaint with a data protection supervisory authority.
+      </section>
 
-      <div>
-        <h3>8. Children's Privacy</h3>
-        This service is not intended for use by individuals under the age of 13. We do not knowingly collect personal
-        information from children. If we become aware that a child under 13 has provided us with personal data, we will
-        take steps to delete that information promptly.
-      </div>
+      <section>
+        <h3>9. Children's Privacy</h3>
+        Join is not intended for children under the age of 16. We do not knowingly collect personal information from
+        children.
+      </section>
 
-      <div>
-        <h3>9. Changes to This Policy</h3>
-        We may update this Privacy Policy from time to time. We will notify you of any significant changes by updating
-        the "Last updated" date at the top of this document. Your continued use of the service after any changes
-        constitutes acceptance of the new policy.
-      </div>
+      <section>
+        <h3>10. Changes to This Policy</h3>
+        We may update this Privacy Policy when Join changes. The date at the top shows the last update.
+      </section>
 
-      <div>
-        <h3>10. Disclaimer</h3>
-        This is a demo/educational project and is not intended for production use. This privacy policy is provided as a
-        template for demonstration purposes only and does not constitute legal advice.
-      </div>
+      <section>
+        <h3>11. Disclaimer</h3>
+        Join is a demo/educational project and is not intended for production use. This privacy policy is provided for
+        demonstration purposes only and does not constitute legal advice.
+      </section>
 
-      <div>
-        <h3>11. Contact</h3>
+      <section>
+        <h3>12. Contact</h3>
         If you have any questions about this Privacy Policy or how we handle your data, please contact us at:
-        [your-email@example.com]
-      </div>
+        <a href="mailto:kontakt@christopher-braun-dev.de">kontakt@christopher-braun-dev.de</a>
+      </section>
     </main>
     <div class="toast toast--content" popover="manual"></div>
     <script type="module" src="./js/pages/legal/legal.js"></script>
