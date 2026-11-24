@@ -411,10 +411,10 @@
   visibility: hidden;
 
   @media (max-width: 1200px) {
-    height: 16px;
-    line-height: 16px;
+    height: 20px;
+    line-height: 20px;
     margin-top: 2px;
-    font-size: var(--fs-xs);
+    font-size: var(--fs-s);
   }
 
   &.contact-dialog__error--visible {

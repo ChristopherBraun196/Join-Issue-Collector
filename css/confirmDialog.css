@@ -50,7 +50,7 @@
 
   .confirm-dialog__btn {
     padding: 6px 12px;
-    font-size: var(--fs-xs);
+    font-size: var(--fs-s);
   }
 
   .secondary-btn {

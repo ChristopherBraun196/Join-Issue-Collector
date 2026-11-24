@@ -759,7 +759,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border: none;
   background: none;
   color: inherit;
-  font-size: var(--fs-xs);
+  font-size: var(--fs-s);
   font-family: inherit;
   cursor: pointer;
 
@@ -839,7 +839,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .attachments__error {
-  font-size: var(--fs-xs);
+  font-size: var(--fs-s);
   color: var(--error-color);
 
   &:empty {
@@ -872,6 +872,19 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border-radius: var(--border-radius);
   overflow: hidden;
   background-color: white;
+}
+
+.attachments__open {
+  display: block;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--highligted-color);
+    outline-offset: -2px;
+  }
 }
 
 .attachments__thumb {

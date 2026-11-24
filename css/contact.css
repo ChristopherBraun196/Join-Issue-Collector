@@ -82,6 +82,11 @@
 }
 
 .contacts__item {
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
   display: flex;
   align-items: center;
   gap: 30px;
@@ -136,7 +141,7 @@
     width: 42px;
     height: 42px;
     border: 2px solid white;
-    font-size: 12px;
+    font-size: var(--fs-xs);
     font-family: InterRegular;
     font-weight: 400;
   }

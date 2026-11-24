@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -29,6 +29,7 @@
               <input
                 type="text"
                 class="task-form__input"
+                id="title"
                 name="title"
                 placeholder="Enter a title"
                 required
@@ -112,7 +113,7 @@
                 <span class="task-form__error"></span>
                 <div class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="category">
                   <span class="dropdown__placeholder">Select task category</span>
-                  <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" />
+                  <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" alt="" />
                 </div>
                 <div class="dropdown__menu">
                   <div class="dropdown__list">
@@ -159,9 +160,9 @@
               <ul class="attachments__list"></ul>
             </div>
             <div class="task-form__field">
-              <label>Subtasks</label>
+              <label for="subtaskInput">Subtasks</label>
               <div class="subtask__input-wrap">
-                <input type="text" class="subtask__input" placeholder="Add new subtask" />
+                <input type="text" class="subtask__input" id="subtaskInput" placeholder="Add new subtask" />
                 <div class="subtask__actions">
                   <div class="subtask__confirm">
                     <button class="subtask__btn" data-action="clear-subtask" type="button">
@@ -194,7 +195,7 @@
               <div class="dropdown dropdown--assigned">
                 <div class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="assigned">
                   <span class="dropdown__placeholder">Select contacts to assign</span>
-                  <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" />
+                  <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" alt="" />
                 </div>
                 <div class="dropdown__menu">
                   <div class="dropdown__list"></div>

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,23 +18,23 @@
     <aside class="sidebar"></aside>
     <aside class="contacts__panel">
       <button class="primary-btn contacts__add-btn" data-action="open-dialog">
-        Add new contact <img src="./assets/icons/person_add.svg" />
+        Add new contact <img src="./assets/icons/person_add.svg" alt="" />
       </button>
     </aside>
 
     <main class="page contacts__main">
-      <button class="contacts__back" data-action="back">
-        <img src="./assets/icons/arrow-back.svg" class="contacts__back-icon" />
+      <button class="contacts__back" data-action="back" aria-label="Back to contact list">
+        <img src="./assets/icons/arrow-back.svg" class="contacts__back-icon" alt="" />
       </button>
       <div class="headline">
         <h1 class="headline__title">Contacts</h1>
         <div class="headline__line"></div>
-        <a class="headline__subtitle">Better with a team</a>
+        <p class="headline__subtitle">Better with a team</p>
       </div>
     </main>
 
-    <button class="contacts__fab" data-action="open-dialog">
-      <img src="./assets/icons/person_add.svg" class="contacts__fab-icon" />
+    <button class="contacts__fab" data-action="open-dialog" aria-label="Add new contact">
+      <img src="./assets/icons/person_add.svg" class="contacts__fab-icon" alt="" />
     </button>
 
     <dialog class="confirm-dialog">

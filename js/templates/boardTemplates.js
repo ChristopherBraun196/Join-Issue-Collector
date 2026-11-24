@@ -17,8 +17,8 @@ export async function getToDoTemplate(element, solvedSubtasks, totalSubtasks, vi
 
   <div class="task-card__topbar">
     <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
-   <button class="task-card__move-btn" data-action="toggle-move" data-id="${element["id"]}" data-status="${element["status"]}" title="Move to">
-      <img src="./assets/icons/move-task.svg" />
+   <button class="task-card__move-btn" data-action="toggle-move" data-id="${element["id"]}" data-status="${element["status"]}" title="Move to" aria-label="Move task">
+      <img src="./assets/icons/move-task.svg" alt="" />
     </button>
   </div>
 
@@ -37,7 +37,7 @@ export async function getToDoTemplate(element, solvedSubtasks, totalSubtasks, vi
     <div class="task-card__avatars">
       ${await getAssignedToAvatars(element.assignedTo)}
     </div>
-    <span><img src="./assets/icons/priority-${element["priority"]}.svg" /></span>
+    <span><img src="./assets/icons/priority-${element["priority"]}.svg" alt="Priority ${element["priority"]}" /></span>
   </div>
 </div>`;
 }
@@ -204,7 +204,9 @@ function getSubtasksTemplate(subtask, taskID, subtaskIndex) {
 function getDialogAttachmentTemplate(attachment, index, taskId) {
   return `
     <li class="attachments__item">
-        <img class="attachments__thumb" src="${attachment.base64}" alt="Open ${attachment.name}" data-action="open-viewer" data-id="${taskId}" data-index="${index}">
+        <button class="attachments__open" type="button" data-action="open-viewer" data-id="${taskId}" data-index="${index}" aria-label="Open ${attachment.name}">
+            <img class="attachments__thumb" src="${attachment.base64}" alt="">
+        </button>
         <a class="attachments__download" href="${attachment.base64}" download="${attachment.name}" aria-label="Download ${attachment.name}">
             <svg class="attachments__download-icon" viewBox="0 -960 960 960" aria-hidden="true"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z" fill="currentColor"/></svg>
         </a>

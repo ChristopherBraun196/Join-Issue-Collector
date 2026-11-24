@@ -130,7 +130,7 @@ function getPriorityActiveClass(priority, currentPriority) {
 export function getPriorityButtonTemplate(priority, currentPriority) {
   const active = getPriorityActiveClass(priority, currentPriority);
   return `<button class="task-edit__priority-btn ${active}" data-priority="${priority}" data-action="set-edit-priority">
-    ${capitalize(priority)} <span><img class="task-edit__priority-img" src="./assets/icons/priority-${priority}.svg" /></span>
+    ${capitalize(priority)} <span><img class="task-edit__priority-img" src="./assets/icons/priority-${priority}.svg" alt="" /></span>
   </button>`;
 }
 
@@ -146,7 +146,7 @@ export function getContactOptionTemplate(id, contact, checked) {
     <div class="dropdown__option" data-action="toggle-edit-contact" data-id="${id}">
       <span class="task-edit__option-avatar" style="background:${contact.avatarColor}">${getAvatarContent(contact)}</span>
       <span class="dropdown__label">${getDisplayName({ id, name: contact.name })}</span>
-      <input type="checkbox" value="${id}" ${checked} style="margin-left:auto" />
+      <input type="checkbox" value="${id}" ${checked} style="margin-left:auto" aria-label="Assign ${contact.name}" />
     </div>`;
 }
 
@@ -170,7 +170,7 @@ export function getAssignedContactsEditTemplate(optionsHTML, badgesHTML) {
     <div class="dropdown">
       <div class="dropdown__trigger" data-action="toggle-edit-dropdown">
         <span>Select contacts to assign</span>
-        <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow">
+        <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" alt="">
       </div>
       <div class="dropdown__menu">
         <div class="dropdown__list">${optionsHTML}</div>
@@ -192,12 +192,12 @@ export function getSubtaskEditItemTemplate(subtask, taskId, index) {
     <li class="task-edit__subtask" data-task-id="${taskId}" data-index="${index}">
       <span class="subtask__text" data-action="edit-subtask-edit">${subtask.title}</span>
       <div class="subtask__item-actions">
-        <button class="subtask__btn" type="button" data-action="edit-subtask-edit">
-          <img class="subtask__btn-icon" src="./assets/icons/edit.svg">
+        <button class="subtask__btn" type="button" data-action="edit-subtask-edit" aria-label="Edit subtask">
+          <img class="subtask__btn-icon" src="./assets/icons/edit.svg" alt="">
         </button>
         <div class="subtask__divider"></div>
-        <button class="subtask__btn" type="button" data-action="delete-subtask-edit" data-id="${taskId}" data-index="${index}">
-          <img class="subtask__btn-icon" src="./assets/icons/delete.svg">
+        <button class="subtask__btn" type="button" data-action="delete-subtask-edit" data-id="${taskId}" data-index="${index}" aria-label="Delete subtask">
+          <img class="subtask__btn-icon" src="./assets/icons/delete.svg" alt="">
         </button>
       </div>
     </li>
@@ -213,12 +213,12 @@ export function getSubtaskEditingStateTemplate(currentText) {
   return `
     <input class="subtask__edit-input" type="text" value="${currentText}">
     <div class="subtask__item-actions">
-      <button class="subtask__btn" type="button" data-action="remove-subtask-edit">
-        <img class="subtask__btn-icon" src="./assets/icons/delete.svg">
+      <button class="subtask__btn" type="button" data-action="remove-subtask-edit" aria-label="Delete subtask">
+        <img class="subtask__btn-icon" src="./assets/icons/delete.svg" alt="">
       </button>
       <div class="subtask__divider"></div>
-      <button class="subtask__btn" type="button" data-action="confirm-subtask-edit">
-        <img class="subtask__btn-icon" src="./assets/icons/check-dark.svg">
+      <button class="subtask__btn" type="button" data-action="confirm-subtask-edit" aria-label="Save subtask">
+        <img class="subtask__btn-icon" src="./assets/icons/check-dark.svg" alt="">
       </button>
     </div>
   `;

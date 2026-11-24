@@ -236,6 +236,10 @@
   }
 }
 
-.task-dialog .attachments__thumb[data-action="open-edit-viewer"] {
+.attachments__open[data-action="open-edit-viewer"] {
+  cursor: default;
+}
+
+.task-dialog .attachments__open[data-action="open-edit-viewer"] {
   cursor: pointer;
 }

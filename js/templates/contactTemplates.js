@@ -9,13 +9,13 @@ import { formatPhone } from "../utils/format.js";
  */
 export function getContactItemTemplate(contact, initials, color) {
   return `
-    <div class="contacts__avatar" style="background-color: ${color};">
+    <span class="contacts__avatar" style="background-color: ${color};">
       ${initials}
-    </div>
-    <div class="contacts__info">
+    </span>
+    <span class="contacts__info">
       <span class="contacts__name">${contact.name}</span>
       <span class="contacts__email">${contact.email}</span>
-    </div>
+    </span>
   `;
 }
 

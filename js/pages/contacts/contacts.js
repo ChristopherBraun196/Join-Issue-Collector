@@ -61,7 +61,8 @@ function groupContactsByLetter(contacts) {
  */
 function createContactItem(contact) {
   const initials = getAvatarContent(contact);
-  const item = document.createElement("div");
+  const item = document.createElement("button");
+  item.type = "button";
   item.className = "contacts__item";
   item.dataset.id = contact.id;
   item.innerHTML = getContactItemTemplate(contact, initials, contact.avatarColor);

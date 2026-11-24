@@ -38,7 +38,8 @@
     font-weight: bold;
   }
 
-  & h3 {
+  & h3,
+  & .legal__section-title {
     font-size: var(--fs-l);
     font-family: InterBold;
   }

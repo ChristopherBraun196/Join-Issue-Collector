@@ -10,13 +10,13 @@ export function getAddTaskDialogTemplate(status) {
     <section class="add-task add-task--dialog">
       <header class="add-task__dialog-header">
         <h1>Add Task</h1>
-        <button class="add-task__close" data-action="close-dialog"><img src="../assets/icons/close.svg"></button>
+        <button class="add-task__close" data-action="close-dialog" aria-label="Close"><img src="./assets/icons/close.svg" alt=""></button>
       </header>
            <form class="task-form" data-status="${status}" id="add-task-form" novalidate>
           <div class="task-form__column">
               <div class="task-form__field">
                   <label for="title">Title<span class="task-form__required">*</span></label>
-                  <input type="text" class="task-form__input" name="title" placeholder="Enter a title" required data-error-msg="Please enter a title" autofocus />
+                  <input type="text" class="task-form__input" id="title" name="title" placeholder="Enter a title" required data-error-msg="Please enter a title" autofocus />
                   <span class="task-form__error"></span>
               </div>
               <div class="task-form__field">
@@ -43,7 +43,7 @@ export function getAddTaskDialogTemplate(status) {
                       <span class="task-form__error"></span>
                       <div class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="category">
                           <span class="dropdown__placeholder">Select task category</span>
-                          <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow">
+                          <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" alt="">
                       </div>
                       <div class="dropdown__menu">
                           <div class="dropdown__list">
@@ -79,11 +79,12 @@ export function getAddTaskDialogTemplate(status) {
               </div>
 
               <div class="task-form__field">
-                  <label>Subtasks</label>
+                  <label for="subtaskInput">Subtasks</label>
                   <div class="subtask__input-wrap">
                       <input
                           type="text"
                           class="subtask__input"
+                          id="subtaskInput"
                           placeholder="Add new subtask"
                       />
                       <div class="subtask__actions">
@@ -106,7 +107,7 @@ export function getAddTaskDialogTemplate(status) {
                   <div class="dropdown dropdown--assigned">
                       <div class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="assigned">
                           <span class="dropdown__placeholder">Select contacts to assign</span>
-                          <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow">
+                          <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" alt="">
                       </div>
                       <div class="dropdown__menu">
                           <div class="dropdown__list">
@@ -139,7 +140,7 @@ export function getAssignOptionTemplate(contact, initials) {
     <div class="dropdown__option" data-action="toggle-contact" data-id="${contact.id}">
       <div class="dropdown__avatar" style="background:${contact.color}">${initials}</div>
         <span class="dropdown__label">${getDisplayName(contact)}</span>
-      <input type="checkbox">
+      <input type="checkbox" aria-label="Assign ${contact.name}">
     </div>
   `;
 }
@@ -173,7 +174,9 @@ export function getSubtaskItemTemplate(text) {
 export function getAttachmentItemTemplate(attachment, index) {
   return `
     <li class="attachments__item">
-      <img class="attachments__thumb" src="${attachment.base64}" alt="Open ${attachment.name}" data-action="open-edit-viewer" data-index="${index}">
+      <button class="attachments__open" type="button" data-action="open-edit-viewer" data-index="${index}" aria-label="Open ${attachment.name}">
+        <img class="attachments__thumb" src="${attachment.base64}" alt="">
+      </button>
       <button class="attachments__remove" type="button" data-action="remove-attachment" data-index="${index}" aria-label="Remove ${attachment.name}">
         <img class="attachments__remove-icon" src="./assets/icons/delete.svg" alt="">
       </button>

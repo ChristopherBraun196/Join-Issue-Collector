@@ -160,6 +160,16 @@
   }
 }
 
+.board__column-title {
+  font-size: var(--fs-3xl);
+  font-family: InterBold;
+  color: var(--menu-color);
+
+  @media (max-width: 768px) {
+    font-size: var(--fs-m);
+  }
+}
+
 .board__column-header {
   display: flex;
   justify-content: space-between;

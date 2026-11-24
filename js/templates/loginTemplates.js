@@ -14,15 +14,15 @@ export function getLoginTemplate() {
             <div class="login__fields">
                 <div class="login__field">
                     <div class="login__input login__input--email">
-                        <input class="login__input-field" type="email" placeholder="Email" name="email" autocomplete="additional-name" data-validate="email"/>
-                        <span><img class="login__icon" src="./assets/icons/mail.svg" alt="Email icon"></span>
+                        <input class="login__input-field" type="email" placeholder="Email" name="email" autocomplete="email" aria-label="Email" data-validate="email"/>
+                        <span><img class="login__icon" src="./assets/icons/mail.svg" alt=""></span>
                     </div>
                     <span class="login__error login__error--email"></span>
                 </div>
                 <div class="login__field">
                     <div class="login__input login__input--password">
-                        <input class="login__input-field" type="password" placeholder="Password" name="password" data-validate="password" data-pwd-input/>
-                        <span class="login__lock"><img class="login__icon" src="./assets/icons/lock.svg" alt="Lock icon"></span>
+                        <input class="login__input-field" type="password" placeholder="Password" name="password" aria-label="Password" data-validate="password" data-pwd-input/>
+                        <span class="login__lock"><img class="login__icon" src="./assets/icons/lock.svg" alt=""></span>
                         <button type="button" class="login__pwd-toggle" data-action="toggle-pwd" tabindex="-1">
                             <img class="login__icon login__eye login__eye--off" src="./assets/icons/visibility-off.svg" alt="Hide password">
                             <img class="login__icon login__eye login__eye--on" src="./assets/icons/visibility-on.svg" alt="Show password">
@@ -56,24 +56,24 @@ export function getSignupTemplate() {
             <div class="login__fields">
                 <div class="login__field">
                     <div class="login__input login__input--name">
-                        <input class="login__input-field" type="text" placeholder="Full Name" name="fullname" autocomplete="name" data-validate="fullname"/>
-                        <span><img class="login__icon" src="./assets/icons/person.svg" alt="User icon"></span>
+                        <input class="login__input-field" type="text" placeholder="Full Name" name="fullname" autocomplete="name" aria-label="Full name" data-validate="fullname"/>
+                        <span><img class="login__icon" src="./assets/icons/person.svg" alt=""></span>
                     </div>
                     <span class="login__error login__error--fullname"></span>
                 </div>
 
                 <div class="login__field">
                     <div class="login__input login__input--email">
-                        <input class="login__input-field" type="email" placeholder="Email" name="email" autocomplete="email" data-validate="email"/>
-                        <span><img class="login__icon" src="./assets/icons/mail.svg" alt="Email icon"></span>
+                        <input class="login__input-field" type="email" placeholder="Email" name="email" autocomplete="email" aria-label="Email" data-validate="email"/>
+                        <span><img class="login__icon" src="./assets/icons/mail.svg" alt=""></span>
                     </div>
                     <span class="login__error login__error--email"></span>
                 </div>
 
                 <div class="login__field">
                     <div class="login__input login__input--password">
-                        <input class="login__input-field" type="password" placeholder="Password" name="password" data-validate="password" data-pwd-input/>
-                        <span class="login__lock"><img class="login__icon" src="./assets/icons/lock.svg" alt="Lock icon"></span>
+                        <input class="login__input-field" type="password" placeholder="Password" name="password" aria-label="Password" data-validate="password" data-pwd-input/>
+                        <span class="login__lock"><img class="login__icon" src="./assets/icons/lock.svg" alt=""></span>
                         <button type="button" class="login__pwd-toggle" data-action="toggle-pwd" tabindex="-1">
                             <img class="login__icon login__eye login__eye--off" src="./assets/icons/visibility-off.svg" alt="Hide password">
                             <img class="login__icon login__eye login__eye--on" src="./assets/icons/visibility-on.svg" alt="Show password">
@@ -84,8 +84,8 @@ export function getSignupTemplate() {
 
                 <div class="login__field">
                     <div class="login__input login__input--password">
-                        <input class="login__input-field" type="password" placeholder="Confirm Password" name="password_confirm" data-validate="confirm" data-pwd-input/>
-                        <span class="login__lock"><img class="login__icon" src="./assets/icons/lock.svg" alt="Lock icon"></span>
+                        <input class="login__input-field" type="password" placeholder="Confirm Password" name="password_confirm" aria-label="Confirm password" data-validate="confirm" data-pwd-input/>
+                        <span class="login__lock"><img class="login__icon" src="./assets/icons/lock.svg" alt=""></span>
                         <button type="button" class="login__pwd-toggle" data-action="toggle-pwd" tabindex="-1">
                             <img class="login__icon login__eye login__eye--off" src="./assets/icons/visibility-off.svg" alt="Hide password">
                             <img class="login__icon login__eye login__eye--on" src="./assets/icons/visibility-on.svg" alt="Show password">
@@ -95,7 +95,7 @@ export function getSignupTemplate() {
                 </div>
                 <div class="login__field">
                     <div class="login__accept">
-                        <input type="checkbox" class="login__checkbox"/><p>I accept the <a class="highlighted" href="./privacy.html">Privacy policy</a></p>
+                        <input type="checkbox" class="login__checkbox" aria-label="I accept the privacy policy"/><p>I accept the <a class="highlighted" href="./privacy.html">Privacy policy</a></p>
                     </div>
                     <span class="login__error login__error--center login__error--accept"></span>
                 </div>

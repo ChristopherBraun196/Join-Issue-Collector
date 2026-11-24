@@ -10,25 +10,25 @@
  */
 export function getSidebarTemplate(summary, addtask, board, contact, privacy, legal) {
   return `
-        <img src="./assets/img/logo-light.svg" class="sidebar__logo" />
+        <img src="./assets/img/logo-light.svg" class="sidebar__logo" alt="Join logo" />
         <nav class="sidebar__nav">
             <a class="sidebar__link ${summary}" href="./summary.html">
-                <img src="./assets/icons/summary_icon.svg" class="sidebar__icon" />
+                <img src="./assets/icons/summary_icon.svg" class="sidebar__icon" alt="" />
                 Summary
             </a>
 
             <a class="sidebar__link ${addtask}" href="./addtask.html">
-                <img src="./assets/icons/addtask_icon.svg" class="sidebar__icon" />
+                <img src="./assets/icons/addtask_icon.svg" class="sidebar__icon" alt="" />
                 Add Task
             </a>
 
             <a class="sidebar__link ${board}" href="./board.html">
-                <img src="./assets/icons/board_icon.svg" class="sidebar__icon" />
+                <img src="./assets/icons/board_icon.svg" class="sidebar__icon" alt="" />
                 Board
             </a>
 
             <a class="sidebar__link ${contact}" href="./contacts.html">
-                <img src="./assets/icons/contacts_icon.svg" class="sidebar__icon" />
+                <img src="./assets/icons/contacts_icon.svg" class="sidebar__icon" alt="" />
                 Contacts
             </a>
         </nav>
@@ -50,10 +50,10 @@ export function getSidebarTemplate(summary, addtask, board, contact, privacy, le
  */
 export function getSidebarGuestTemplate(privacy, legal) {
   return `
-        <img src="./assets/img/logo-light.svg" class="sidebar__logo" />
+        <img src="./assets/img/logo-light.svg" class="sidebar__logo" alt="Join logo" />
         <nav class="sidebar__nav">
             <a class="sidebar__link" href="./welcome.html">
-                <img src="./assets/icons/login.svg" class="sidebar__icon" />
+                <img src="./assets/icons/login.svg" class="sidebar__icon" alt="" />
                 Log In
             </a>
         </nav>
@@ -72,14 +72,11 @@ export function getTopbarTemplate() {
   return `
   <div class="topbar__content">
     <p class="topbar__slogan">Kanban Project Management Tool</p>
-    <img src="./assets/img/logo-dark.svg" class="topbar__logo">
+    <img src="./assets/img/logo-dark.svg" class="topbar__logo" alt="Join logo">
 
     <div class="topbar__actions">
-          <button class="topbar__help">
-              <a href="help.html"><img src="./assets/icons/help.svg" /></a>
-          </button>
-          <div class="topbar__user" data-action="toggle-user-menu">
-          </div>
+          <a class="topbar__help" href="help.html" aria-label="Help"><img src="./assets/icons/help.svg" alt="" /></a>
+          <button class="topbar__user" type="button" data-action="toggle-user-menu" aria-label="Open user menu" aria-haspopup="true"></button>
           <div class="topbar__dropdown">
             <a href="#" class="topbar__dropdown-link topbar__dropdown-link--account" data-action="open-account">Account</a>
             <a href="./legal.html" class="topbar__dropdown-link">Legal Notice</a>
@@ -97,16 +94,16 @@ export function getTopbarTemplate() {
  */
 export function getContactDialogTemplate() {
   return `
-    <div class="contact-dialog">
+    <div class="contact-dialog" role="dialog" aria-modal="true" aria-labelledby="contactDialogTitle">
       <div class="contact-dialog__box">
         <div class="contact-dialog__left">
-          <img src="./assets/img/logo-light.png" class="contact-dialog__logo" />
-          <h1 class="contact-dialog__title">Add contact</h1>
+          <img src="./assets/img/logo-light.png" class="contact-dialog__logo" alt="" />
+          <h1 class="contact-dialog__title" id="contactDialogTitle">Add contact</h1>
           <p class="contact-dialog__text">Tasks are better with a team!</p>
           <div class="contact-dialog__underline"></div>
         </div>
         <div class="contact-dialog__right">
-          <button class="contact-dialog__close" data-action="close-dialog">&#x2715;</button>
+          <button class="contact-dialog__close" data-action="close-dialog" aria-label="Close">&#x2715;</button>
 
           <div class="contact-dialog__content">
             <div class="contact-dialog__photo">
@@ -138,6 +135,7 @@ export function getContactDialogTemplate() {
                   type="text"
                   placeholder="Name"
                   data-field="name"
+                  aria-label="Name"
                 />
                 <img class="contact-dialog__icon" src="./assets/icons/person.svg" alt="" />
                 <span class="contact-dialog__error contact-dialog__error--name"></span>
@@ -149,6 +147,7 @@ export function getContactDialogTemplate() {
                   type="email"
                   placeholder="Email"
                   data-field="email"
+                  aria-label="Email"
                 />
                 <img class="contact-dialog__icon" src="./assets/icons/mail.svg" alt="" />
                 <span class="contact-dialog__error contact-dialog__error--email"></span>
@@ -160,6 +159,7 @@ export function getContactDialogTemplate() {
                   type="tel"
                   placeholder="Phone"
                   data-field="phone"
+                  aria-label="Phone"
                 />
                 <img class="contact-dialog__icon" src="./assets/icons/call.svg" alt="" />
                 <span class="contact-dialog__error contact-dialog__error--phone"></span>
