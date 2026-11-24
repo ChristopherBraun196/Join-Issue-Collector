@@ -154,6 +154,8 @@
 }
 
 .login__back {
+  padding: 0;
+  background: none;
   position: absolute;
   top: 50%;
   left: 12px;

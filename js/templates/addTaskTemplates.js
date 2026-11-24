@@ -41,10 +41,10 @@ export function getAddTaskDialogTemplate(status) {
                   <div class="dropdown dropdown--category">
                       <input type="hidden" class="task-form__input" name="category" required data-error-msg="Please select a category" />
                       <span class="task-form__error"></span>
-                      <div class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="category">
+                      <button type="button" class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="category">
                           <span class="dropdown__placeholder">Select task category</span>
                           <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" alt="">
-                      </div>
+                      </button>
                       <div class="dropdown__menu">
                           <div class="dropdown__list">
                               <div class="dropdown__option" data-action="select-category" data-value="technical-task">
@@ -105,10 +105,10 @@ export function getAddTaskDialogTemplate(status) {
               <div class="task-form__field">
                   <label>Assigned to</label>
                   <div class="dropdown dropdown--assigned">
-                      <div class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="assigned">
+                      <button type="button" class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="assigned">
                           <span class="dropdown__placeholder">Select contacts to assign</span>
                           <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" alt="">
-                      </div>
+                      </button>
                       <div class="dropdown__menu">
                           <div class="dropdown__list">
                           </div>

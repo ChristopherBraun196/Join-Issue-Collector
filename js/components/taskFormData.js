@@ -24,9 +24,17 @@ function generateTaskJson(taskID, statusArg = STATUS.TO_DO) {
     attachments: [...attachments],
     subtasks: getSubtasks(),
     status: statusArg,
-    creatorName: window.currentUser.name,
-    creatorType: window.currentUser.id ? "internal" : "guest",
+    ...getCreatorData(),
   };
+}
+
+/**
+ * Returns who created the task: the name and whether it was a logged-in user or a guest.
+ * @returns {{creatorName: string, creatorType: string}} The creator fields of the task
+ */
+function getCreatorData() {
+  const user = window.currentUser;
+  return { creatorName: user.name, creatorType: user.id ? "internal" : "guest" };
 }
 
 /**

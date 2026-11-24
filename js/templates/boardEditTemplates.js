@@ -40,10 +40,10 @@ export function getDialogBoardEditTemplate(element, priorityButtons, assignedHTM
                 <div class="task-edit__field">
                     <p class="task-edit__label">Category<span class="task-form__required">*</span></p>
                     <div class="dropdown dropdown--category task-edit__category">
-                        <div class="dropdown__trigger" data-action="toggle-edit-category">
+                        <button type="button" class="dropdown__trigger" data-action="toggle-edit-category">
                             <span class="task-edit__category-label">${element.category}</span>
                             <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" alt="">
-                        </div>
+                        </button>
                         <div class="dropdown__menu">
                             <div class="dropdown__list">
                                 <div class="dropdown__option" data-action="select-edit-category" data-value="Technical Task">
@@ -168,10 +168,10 @@ export function getContactBadgeTemplate(contact) {
 export function getAssignedContactsEditTemplate(optionsHTML, badgesHTML) {
   return `
     <div class="dropdown">
-      <div class="dropdown__trigger" data-action="toggle-edit-dropdown">
+      <button type="button" class="dropdown__trigger" data-action="toggle-edit-dropdown">
         <span>Select contacts to assign</span>
         <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" alt="">
-      </div>
+      </button>
       <div class="dropdown__menu">
         <div class="dropdown__list">${optionsHTML}</div>
       </div>

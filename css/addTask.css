@@ -471,6 +471,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .dropdown__trigger {
+  width: 100%;
+  font: inherit;
+  text-align: left;
   display: flex;
   align-items: center;
   justify-content: space-between;

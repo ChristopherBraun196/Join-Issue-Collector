@@ -4,7 +4,7 @@ import { getAttachmentItemTemplate } from "../templates/addTaskTemplates.js";
 
 /**
  * Compressed images of the task that is being created or edited.
- * @type {{name: string, type: string, size: number, base64: string}[]}
+ * @type {Array<{name: string, type: string, size: number, base64: string}>}
  */
 export const attachments = [];
 
@@ -133,7 +133,7 @@ export function clearAttachments() {
 
 /**
  * Replaces the attachments with the images of an existing task and shows them.
- * @param {{name: string, type: string, size: number, base64: string}[]} [images] - The images of the task
+ * @param {Array<{name: string, type: string, size: number, base64: string}>} [images] - The images of the task
  */
 export function loadAttachments(images = []) {
   attachments.length = 0;

@@ -33,10 +33,10 @@ export function getSidebarTemplate(summary, addtask, board, contact, privacy, le
             </a>
         </nav>
 
-        <div class="sidebar__legal">
+        <nav class="sidebar__legal" aria-label="Legal">
             <a class="sidebar__link ${privacy}" href="privacy.html">Privacy Policy</a>
             <a class="sidebar__link ${legal}" href="legal.html">Legal notice</a>
-        </div>
+        </nav>
 
     `;
 }
@@ -57,10 +57,10 @@ export function getSidebarGuestTemplate(privacy, legal) {
                 Log In
             </a>
         </nav>
-        <div class="sidebar__legal">
+        <nav class="sidebar__legal" aria-label="Legal">
             <a class="sidebar__link ${privacy}" href="privacy.html">Privacy Policy</a>
             <a class="sidebar__link ${legal}" href="legal.html">Legal notice</a>
-        </div>
+        </nav>
     `;
 }
 

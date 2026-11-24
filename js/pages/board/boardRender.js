@@ -102,13 +102,10 @@ export function updateScrollArrows() {
     const container = document.querySelector(`[data-cards="${col}"]`);
     const body = document.querySelector(`.board__column-body[data-column="${col}"]`);
     if (!container || !body) continue;
-
     const arrowUp = body.querySelector(".board__arrow--up");
     const arrowDown = body.querySelector(".board__arrow--down");
     if (!arrowUp || !arrowDown) continue;
-
     const isMobile = window.innerWidth <= 1200;
-
     if (isMobile) {
       handleMobileArrows(container, arrowUp, arrowDown);
     } else {

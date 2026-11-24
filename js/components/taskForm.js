@@ -255,10 +255,8 @@ function toggleDropdown(id) {
   const trigger = wrapper.querySelector(".dropdown__trigger");
   const dropdown = wrapper.querySelector(".dropdown__menu");
   const isOpen = dropdown.classList.contains("dropdown__menu--open");
-
   document.querySelectorAll(".dropdown__menu--open").forEach((d) => d.classList.remove("dropdown__menu--open"));
   document.querySelectorAll(".dropdown__trigger--open").forEach((t) => t.classList.remove("dropdown__trigger--open"));
-
   if (!isOpen) {
     dropdown.classList.add("dropdown__menu--open");
     trigger.classList.add("dropdown__trigger--open");

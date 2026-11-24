@@ -47,7 +47,7 @@ export function getSignupTemplate() {
   return `
     
         <div class="login__form-header">
-            <span data-action="show-login" class="login__back" aria-label="Back to login"><svg class="login__back-icon" width="21" height="20" viewBox="0 0 21 20" aria-hidden="true"><path d="M4.27563 8.48509H19.1716C19.908 8.48509 20.505 9.08204 20.505 9.81842C20.505 10.5548 19.908 11.1518 19.1716 11.1518H4.27563L10.485 17.3611C11.0056 17.8817 11.0056 18.7258 10.485 19.2464C9.96434 19.767 9.12025 19.767 8.59963 19.2464L0.585843 11.2326C-0.195206 10.4516 -0.195204 9.18526 0.585844 8.40421L8.59963 0.39042C9.12025 -0.130201 9.96434 -0.1302 10.485 0.39042C11.0056 0.911041 11.0056 1.75513 10.485 2.27575L4.27563 8.48509Z" fill="currentColor"/></svg></span>
+            <button type="button" data-action="show-login" class="login__back" aria-label="Back to login"><svg class="login__back-icon" width="21" height="20" viewBox="0 0 21 20" aria-hidden="true"><path d="M4.27563 8.48509H19.1716C19.908 8.48509 20.505 9.08204 20.505 9.81842C20.505 10.5548 19.908 11.1518 19.1716 11.1518H4.27563L10.485 17.3611C11.0056 17.8817 11.0056 18.7258 10.485 19.2464C9.96434 19.767 9.12025 19.767 8.59963 19.2464L0.585843 11.2326C-0.195206 10.4516 -0.195204 9.18526 0.585844 8.40421L8.59963 0.39042C9.12025 -0.130201 9.96434 -0.1302 10.485 0.39042C11.0056 0.911041 11.0056 1.75513 10.485 2.27575L4.27563 8.48509Z" fill="currentColor"/></svg></button>
             <h1>Sign Up</h1>
             <div class="login__divider"></div>
         </div>

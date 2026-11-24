@@ -12,7 +12,7 @@ export function selectRandomAvatarColor() {
 
 /**
  * Returns the inner HTML of an avatar: the contact photo if there is one, otherwise the initials.
- * @param {{name: string, photo?: string}} contact - The contact
+ * @param {{name: string, photo: (string|undefined)}} contact - The contact
  * @returns {string} HTML string of the photo or the initials
  */
 export function getAvatarContent(contact) {

@@ -25,7 +25,7 @@ function showCurrentImage() {
 
 /**
  * Opens the image viewer with the given images at the given position.
- * @param {{name: string, size: number, base64: string}[]} images - The images of the task
+ * @param {Array<{name: string, size: number, base64: string}>} images - The images of the task
  * @param {number} index - The position of the image to show first
  */
 export function openImageViewer(images, index) {

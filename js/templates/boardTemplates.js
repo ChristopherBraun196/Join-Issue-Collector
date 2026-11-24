@@ -217,7 +217,7 @@ function getDialogAttachmentTemplate(attachment, index, taskId) {
 
 /**
  * Returns the attachments section of the task detail dialog, or an empty string if there are none.
- * @param {{name: string, base64: string}[]} [attachments] - The images of the task
+ * @param {Array<{name: string, base64: string}>} [attachments] - The images of the task
  * @param {string} taskId - The ID of the task
  * @returns {string} HTML string of the attachments section
  */
