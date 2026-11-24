@@ -41,6 +41,18 @@ function initBoardListeners() {
 }
 
 /**
+ * Opens the add task page on smartphones and the add task dialog on bigger screens.
+ * @param {string} status - The column the new task is created in
+ */
+function openAddTask(status) {
+  if (window.matchMedia("(max-width: 750px) and (pointer: coarse)").matches) {
+    location.href = `./addtask.html?status=${status}`;
+  } else {
+    openAddTaskDialog(status, refreshAfterCreate);
+  }
+}
+
+/**
  * Handles all clicks on the board page via data-action.
  * @param {MouseEvent} event - The click event
  */
@@ -48,7 +60,7 @@ function handleBoardClick(event) {
   const target = event.target.closest("[data-action]");
   if (!target) return;
   const { action, id, status, target: columnId, direction } = target.dataset;
-  if (action === "add-task") openAddTaskDialog(status, refreshAfterCreate);
+  if (action === "add-task") openAddTask(status);
   if (action === "scroll-column") scrollColumn(columnId, Number(direction));
   if (action === "search-task") findTask(target.closest(".board__search").querySelector(".board__search-input"));
   if (action === "open-task") openDialogBoard(id);

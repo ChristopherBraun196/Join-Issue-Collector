@@ -30,6 +30,12 @@
 }
 
 .toast {
+  inset: auto;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  overflow: visible;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,6 +61,10 @@
     font-size: var(--fs-l);
     white-space: nowrap;
   }
+}
+
+.toast:not(:popover-open) {
+  display: none;
 }
 
 .toast.toast--visible {

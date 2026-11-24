@@ -235,3 +235,7 @@
     min-height: 0;
   }
 }
+
+.task-dialog .attachments__thumb[data-action="open-edit-viewer"] {
+  cursor: pointer;
+}

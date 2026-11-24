@@ -502,12 +502,11 @@
   }
 
   @media (max-width: 1200px) {
-    position: fixed;
-    bottom: 90px;
-    right: 16px;
-    z-index: 1001;
-    max-height: calc(100vh - 170px);
+    top: calc(50% + 15px);
     left: 50%;
+    width: calc(100vw - 32px);
+    max-height: calc(100vh - 200px);
+    z-index: 1001;
     transform: translate(-50%, -50%);
   }
 }
@@ -733,6 +732,9 @@
   align-items: center;
   gap: 6px;
   margin-left: auto;
+  padding-left: 8px;
+  flex-shrink: 0;
+  white-space: nowrap;
   font-size: var(--fs-s);
   color: black;
   text-decoration: none;
@@ -1091,3 +1093,134 @@
     transform: translateY(0);
   }
 }
+
+@media (max-width: 750px) {
+  .task-dialog.task-dialog[open] {
+    inset: 124px 16px 94px;
+    width: auto;
+    max-width: none;
+    max-height: none;
+    height: auto;
+    padding: 24px 20px;
+    border-radius: 30px;
+    transform: none;
+    animation: dialogSlideInRight 0.3s ease-out;
+  }
+
+  .task-dialog__title {
+    font-size: var(--fs-5xl);
+    margin-bottom: 16px;
+  }
+
+  .task-dialog .category-badge {
+    height: 28px;
+    padding: 2px 16px;
+    font-size: var(--fs-s);
+  }
+
+  .task-dialog .task-dialog__description,
+  .task-dialog__row,
+  .task-dialog__section-title {
+    font-size: var(--fs-s);
+  }
+
+  .task-dialog__row {
+    margin-bottom: 16px;
+  }
+
+  .task-dialog__row-label {
+    min-width: 100px;
+  }
+
+  .task-dialog__avatar {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 380px) {
+  .task-dialog.task-dialog[open] {
+    inset: 112px 12px 82px;
+    padding: 20px 16px;
+    border-radius: 24px;
+  }
+
+  .task-dialog__top {
+    margin-bottom: 12px;
+  }
+
+  .task-dialog__badges {
+    gap: 8px;
+  }
+
+  .task-dialog .category-badge {
+    height: 26px;
+    padding: 2px 12px;
+  }
+
+  .task-dialog__ai-badge {
+    font-size: var(--fs-xs);
+  }
+
+  .task-dialog__title {
+    font-size: var(--fs-3xl);
+    margin-bottom: 12px;
+  }
+
+  .task-dialog .task-dialog__description,
+  .task-dialog__row,
+  .task-dialog__section {
+    margin-bottom: 12px;
+  }
+
+  .task-dialog__row-label {
+    min-width: 92px;
+  }
+
+  .task-dialog__avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .task-dialog__footer {
+    margin-top: 12px;
+  }
+}
+
+@keyframes dialogSlideInRight {
+  from {
+    transform: translateX(100vw);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.task-dialog.task-dialog[open].task-dialog--closing {
+  animation: popDown 0.2s ease-in forwards;
+
+  @media (max-width: 750px) {
+    animation: dialogSlideOutRight 0.3s ease-in forwards;
+  }
+}
+
+@keyframes popDown {
+  from {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translate(-50%, -42%) scale(0.95);
+    opacity: 0;
+  }
+}
+
+@keyframes dialogSlideOutRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100vw);
+  }
+}
+

@@ -173,7 +173,7 @@ export function getSubtaskItemTemplate(text) {
 export function getAttachmentItemTemplate(attachment, index) {
   return `
     <li class="attachments__item">
-      <img class="attachments__thumb" src="${attachment.base64}" alt="">
+      <img class="attachments__thumb" src="${attachment.base64}" alt="Open ${attachment.name}" data-action="open-edit-viewer" data-index="${index}">
       <button class="attachments__remove" type="button" data-action="remove-attachment" data-index="${index}" aria-label="Remove ${attachment.name}">
         <img class="attachments__remove-icon" src="./assets/icons/delete.svg" alt="">
       </button>
