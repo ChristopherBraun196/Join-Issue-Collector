@@ -30,5 +30,16 @@ function removeMessage(messageElement, msgNode) {
   msgNode.remove();
   if (messageElement.children.length > 0) return;
   messageElement.classList.remove("toast--visible");
-  messageElement.hidePopover();
+  if (messageElement.matches(":popover-open")) messageElement.hidePopover();
+}
+
+/**
+ * Removes a shown message right away, e.g. "No tasks found" once the search finds tasks again.
+ * @param {string} message - The text of the message to remove
+ */
+export function hideMessage(message) {
+  const messageElement = document.querySelector(".toast");
+  [...messageElement.children]
+    .filter((msgNode) => msgNode.textContent === message)
+    .forEach((msgNode) => removeMessage(messageElement, msgNode));
 }

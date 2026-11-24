@@ -123,7 +123,7 @@ export async function loadContacts() {
   if (!data) return;
   contactsArray = Object.entries(data).map(([id, contact]) => ({ ...contact, id }));
   setContactList(contactsArray);
-  renderContacts(contactsArray.filter((contact) => contact.id !== window.currentUser.id));
+  renderContacts(contactsArray);
 }
 
 /**

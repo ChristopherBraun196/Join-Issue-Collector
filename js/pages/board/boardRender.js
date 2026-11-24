@@ -2,6 +2,7 @@ import { loadData } from "../../services/database.js";
 import { getAvatarContent } from "../../utils/avatar.js";
 import { getToDoTemplate } from "../../templates/boardTemplates.js";
 import { tasks, COLUMNS } from "./boardData.js";
+import { showMessage, hideMessage } from "../../components/toast.js";
 
 /**
  * Renders all task sections on the board.
@@ -178,6 +179,7 @@ function updateNoTaskPlaceholders() {
  */
 export async function findTask(input) {
   const query = input.value.toLowerCase();
+  hideMessage("No tasks found");
   if (query.length < 1) {
     renderAll();
     return;
@@ -186,6 +188,7 @@ export async function findTask(input) {
     (t) => t.title.toLowerCase().includes(query) || t.description.toLowerCase().includes(query),
   );
   await renderFilteredTasks(matches);
+  if (matches.length === 0 && !document.querySelector(".toast--visible")) showMessage("No tasks found");
 }
 
 /**
