@@ -1,4 +1,4 @@
-import { formatFileSize } from "../../utils/format.js";
+import { formatFileSize } from "../utils/format.js";
 
 /**
  * Images, current position and zoom level of the open image viewer.

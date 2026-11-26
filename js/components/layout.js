@@ -4,10 +4,12 @@ import {
   getSidebarGuestTemplate,
   getTopbarTemplate,
   getContactDialogTemplate,
+  getImageViewerTemplate,
 } from "../templates/layoutTemplates.js";
 import { logout } from "../services/authGuard.js";
 import { initContactDialog } from "./contactForm.js";
 import { initAccountDialog, openAccountDialog } from "./accountDialog.js";
+import { initImageViewer } from "./imageViewer.js";
 
 /**
  * Initializes the page by generating the topbar and loading the sidebar.
@@ -28,8 +30,10 @@ function generateTopbar() {
   header.classList.add("topbar");
   body.appendChild(header);
   body.insertAdjacentHTML("beforeend", getContactDialogTemplate());
+  body.insertAdjacentHTML("beforeend", getImageViewerTemplate());
   initContactDialog();
   initAccountDialog();
+  initImageViewer();
   header.addEventListener("click", handleTopbarClick);
   document.addEventListener("click", closeUserMenu);
 

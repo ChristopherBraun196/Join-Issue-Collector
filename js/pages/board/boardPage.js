@@ -6,7 +6,6 @@ import { renderAll, reRenderColumns, scrollColumn, updateScrollArrows, findTask 
 import { toggleMoveOverlay, moveTaskTo, handleOutsideClick } from "./moveOverlay.js";
 import { initDragDrop } from "./dragDrop.js";
 import { handleDialogBoardClick, handleDialogBoardInput, handleDialogBoardKey, openDialogBoard } from "./taskDialog.js";
-import { initImageViewer } from "./imageViewer.js";
 import { handleAttachmentChange, initAttachmentDrop } from "../../components/attachments.js";
 
 /**
@@ -37,7 +36,6 @@ function initBoardListeners() {
   dialog.addEventListener("keydown", handleDialogBoardKey);
   dialog.addEventListener("change", handleAttachmentChange);
   initAttachmentDrop(dialog);
-  initImageViewer();
 }
 
 /**

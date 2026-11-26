@@ -227,12 +227,14 @@
   }
 }
 
-.task-dialog:has(.task-edit__columns .dropdown__menu--open) {
-  overflow: visible;
-
-  .task-dialog__body {
+@media (min-width: 751px) {
+  .task-dialog:has(.task-edit__columns .dropdown__menu--open) {
     overflow: visible;
-    min-height: 0;
+
+    .task-dialog__body {
+      overflow: visible;
+      min-height: 0;
+    }
   }
 }
 

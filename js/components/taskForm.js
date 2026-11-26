@@ -6,7 +6,14 @@ import { getAddTaskDialogTemplate, getAssignOptionTemplate } from "../templates/
 import { validateOnBlur, validateDate, clearFieldError } from "./validation.js";
 import { handleSubtaskAction, handleSubtaskKey, onSubtaskInput } from "./addSubtask.js";
 import { createTask } from "./taskFormData.js";
-import { addAttachments, initAttachmentDrop, handleAttachmentAction, clearAttachments } from "./attachments.js";
+import {
+  attachments,
+  addAttachments,
+  initAttachmentDrop,
+  handleAttachmentAction,
+  clearAttachments,
+} from "./attachments.js";
+import { openImageViewer } from "./imageViewer.js";
 
 let addTaskDialog;
 let contacts = [];
@@ -41,6 +48,7 @@ function handleTaskFormClick(event) {
   if (action === "clear-form") clearTaskForm(event.currentTarget);
   if (action === "close-dialog") closeAddTaskDialog();
   if (action === "toggle-contact") toggleContact(target);
+  if (action === "open-edit-viewer") openImageViewer(attachments, Number(target.dataset.index));
   handleSubtaskAction(action, target);
   handleAttachmentAction(action, target);
 }

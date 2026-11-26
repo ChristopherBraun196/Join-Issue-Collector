@@ -12,7 +12,7 @@ import {
   handleSubtaskKeyEdit,
   handleEditSubtaskKey,
 } from "./taskEdit.js";
-import { openImageViewer } from "./imageViewer.js";
+import { openImageViewer } from "../../components/imageViewer.js";
 import { attachments, handleAttachmentAction } from "../../components/attachments.js";
 
 /**
