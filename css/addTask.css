@@ -452,10 +452,18 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.16);
     border-radius: 0 0 10px 10px;
     max-height: 300px;
+
+    @media (max-width: 750px) {
+      max-height: 180px;
+    }
   }
 
   .dropdown__list {
     max-height: 300px;
+
+    @media (max-width: 750px) {
+      max-height: 180px;
+    }
   }
 
   .dropdown__option {

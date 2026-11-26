@@ -249,6 +249,13 @@
   }
 }
 
+@media (max-width: 750px) {
+  .task-edit__contacts .dropdown__menu,
+  .task-edit__contacts .dropdown__list {
+    max-height: 180px;
+  }
+}
+
 .attachments__open[data-action="open-edit-viewer"] {
   cursor: default;
 }
