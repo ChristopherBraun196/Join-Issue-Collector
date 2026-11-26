@@ -15,6 +15,7 @@ let contactsArray = [];
 async function init() {
   initLayout("contact");
   document.addEventListener("click", handleContactsClick);
+  window.addEventListener("resize", resetMobileView);
   await currentUserReady;
   await loadContacts();
   openContactFromUrl();
@@ -196,6 +197,16 @@ function openContactDetail(contact, event) {
  */
 function backToContacts() {
   clearActiveContact();
+}
+
+/**
+ * Shows the contact list again when the screen gets wider than 1200px (e.g. tablet rotated to landscape).
+ */
+function resetMobileView() {
+  if (window.innerWidth <= 1200) return;
+  document.querySelector(".contacts__main").classList.remove("contacts__main--open");
+  document.querySelector(".contacts__panel").style.display = "";
+  document.querySelector(".contacts__fab").style.display = "";
 }
 
 /**

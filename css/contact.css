@@ -309,6 +309,12 @@
     height: 80px;
     font-size: var(--fs-4xl);
   }
+
+  @media (max-width: 375px) {
+    width: 64px;
+    height: 64px;
+    font-size: var(--fs-3xl);
+  }
 }
 
 .contacts__detail-name-actions {
@@ -326,6 +332,10 @@
   @media (max-width: 1200px) {
     font-size: var(--fs-6xl);
     font-family: InterBold;
+  }
+
+  @media (max-width: 375px) {
+    font-size: var(--fs-4xl);
   }
 }
 
@@ -362,7 +372,7 @@
   display: none;
 }
 
-@media (max-width: 1200px) and (pointer: coarse) {
+@media (max-width: 1400px) and (pointer: coarse) {
   .contacts__more {
     display: flex;
     position: fixed;
@@ -410,6 +420,13 @@
   .contacts__action-icon {
     width: 24px;
     height: 24px;
+  }
+}
+
+@media (min-width: 1201px) and (max-width: 1400px) and (pointer: coarse) {
+  .contacts__more,
+  .contacts__detail-actions {
+    bottom: 24px;
   }
 }
 

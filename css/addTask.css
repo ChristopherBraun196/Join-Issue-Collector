@@ -93,6 +93,13 @@
   }
 }
 
+@media (min-width: 751px) and (max-width: 1200px) {
+  .add-task-dialog {
+    max-width: min(600px, calc(100vw - 64px));
+    height: auto;
+  }
+}
+
 .task-form :is(input, textarea) {
   cursor: pointer;
 }
@@ -356,6 +363,15 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     cursor: pointer;
     gap: 8px;
     transition: opacity 0.1s;
+
+    @media (max-width: 375px) {
+      padding: 10px 14px;
+      white-space: nowrap;
+    }
+  }
+
+  @media (max-width: 375px) {
+    gap: 10px;
   }
 
   .task-form__btn--clear {

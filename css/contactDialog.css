@@ -613,3 +613,42 @@
   }
 }
 
+
+@media (max-width: 750px) {
+  .contact-dialog__photo-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .contact-dialog__photo-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .contact-dialog__photo-btn--remove .contact-dialog__photo-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (min-width: 751px) and (max-width: 1200px) {
+  .contact-dialog {
+    align-items: center;
+    padding: 32px;
+  }
+
+  .contact-dialog__box {
+    width: min(520px, 100%);
+    max-height: 100%;
+  }
+
+  .contact-dialog__left {
+    flex: 0 0 auto;
+    min-height: 0;
+    padding: 56px 32px 90px;
+  }
+
+  .contact-dialog__right {
+    padding: 0 32px 32px;
+  }
+}
