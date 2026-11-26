@@ -238,7 +238,7 @@
   }
 }
 
-@media (min-width: 751px) {
+@media (min-width: 1201px) and (min-height: 900px) {
   .task-dialog:has(.task-edit__columns .dropdown__menu--open) {
     overflow: visible;
 
@@ -249,10 +249,24 @@
   }
 }
 
-@media (max-width: 750px) {
+@media (max-width: 1200px) {
   .task-edit__contacts .dropdown__menu,
   .task-edit__contacts .dropdown__list {
-    max-height: 180px;
+    max-height: 136px;
+  }
+
+  .task-edit__columns {
+    padding-bottom: 70px;
+
+    @media (max-width: 750px) {
+      padding-bottom: 26px;
+    }
+  }
+}
+
+@media (min-width: 1201px) and (max-height: 899px) {
+  .task-edit__columns {
+    padding-bottom: 85px;
   }
 }
 
