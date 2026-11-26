@@ -356,6 +356,14 @@
     }
   }
 
+  &:disabled {
+    border-color: var(--primary-color);
+    background-color: var(--primary-color);
+    box-shadow: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
   @media (max-width: 575px) {
     font-size: var(--fs-s);
   }

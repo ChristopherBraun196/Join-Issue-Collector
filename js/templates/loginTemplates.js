@@ -102,7 +102,7 @@ export function getSignupTemplate() {
             </div>
 
             <div class="login__buttons">
-                <button class="primary-btn login__btn" type="submit">Sign Up</button>
+                <button class="primary-btn login__btn" type="submit" disabled>Sign Up</button>
             </div>
         </form>
     `;

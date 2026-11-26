@@ -8,6 +8,7 @@ import {
   handleLogin,
   handleSignup,
   guestLogin,
+  updateSignupButton,
 } from "./login.js";
 import { initLogoAnimation } from "./logoAnimation.js";
 
@@ -71,6 +72,7 @@ function handleFieldBlur(event) {
 function handleFieldInput(event) {
   if (event.target.matches("[data-pwd-input]")) togglePwdVisibilityBtn(event.target);
   if (event.target.parentElement.classList.contains("login__input--invalid")) handleFieldBlur(event);
+  updateSignupButton();
 }
 
 document.addEventListener("DOMContentLoaded", init);

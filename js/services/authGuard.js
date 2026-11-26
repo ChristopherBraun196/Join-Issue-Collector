@@ -6,8 +6,7 @@ import { renderUserMenue, loadSidebar, switchToGuestSidebar } from "../component
 const homePaths = ["", "index.html"];
 const publicPaths = ["privacy.html", "legal.html", "help.html"];
 const path = window.location.pathname.split("/").pop();
-
-const cameFromWelcome = document.referrer.includes("welcome.html");
+const cameFromWelcome = document.referrer.includes("welcome.html") || window.location.search.includes("login");
 
 let resolveCurrentUser;
 
@@ -55,7 +54,7 @@ function handleUnauthenticatedUser(path) {
       window.location.href = "./welcome.html";
     }
   } else {
-    window.location.href = "./welcome.html";
+    window.location.href = "./index.html?login";
   }
 }
 
@@ -94,5 +93,5 @@ onAuthStateChanged(auth, async (user) => {
  */
 export async function logout() {
   await signOut(auth);
-  window.location.href = "./welcome.html";
+  window.location.href = "./index.html?login";
 }
