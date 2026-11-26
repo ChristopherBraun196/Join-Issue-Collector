@@ -53,6 +53,10 @@
   text-align: center;
   color: white;
 
+  @media (max-width: 375px) {
+    width: max-content;
+  }
+
   & p {
     padding: 25px;
     background-color: var(--primary-color);
@@ -60,6 +64,14 @@
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
     font-size: var(--fs-l);
     white-space: nowrap;
+
+    @media (max-width: 375px) {
+      max-width: calc(100vw - 32px);
+      padding: 14px 18px;
+      border-radius: 16px;
+      font-size: var(--fs-s);
+      white-space: normal;
+    }
   }
 }
 
