@@ -1,0 +1,146 @@
+.subtask__input-wrap {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background: white;
+  transition: border-color 0.1s;
+
+  &:focus-within {
+    border-color: #aaa;
+  }
+
+  .subtask__input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: var(--fs-s);
+    font-family: inherit;
+    background: transparent;
+
+    &::placeholder {
+      color: var(--border-color);
+    }
+  }
+}
+
+.subtask__actions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding-right: 8px;
+}
+
+.subtask__btn {
+  background: transparent;
+  border: none;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.1s;
+  font-size: var(--fs-s);
+
+  @media (hover: hover) {
+    &:hover {
+      background: #f0f0f0;
+    }
+  }
+}
+
+.subtask__btn-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.subtask__confirm {
+  display: none;
+  align-items: center;
+  gap: 4px;
+
+  &.subtask__confirm--visible {
+    display: flex;
+  }
+}
+
+.subtask__plus {
+  display: none;
+}
+
+.subtask__confirm--visible ~ .subtask__plus {
+  display: none;
+}
+
+.subtask__divider {
+  width: 1px;
+  height: 16px;
+  background: var(--border-color);
+  margin: 0 2px;
+}
+
+.subtask__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+  padding-right: 8px;
+  max-height: 250px;
+  overflow: auto;
+  gap: 8px;
+}
+
+.subtask__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px 6px 27px;
+  border: solid 0.5px transparent;
+  border-radius: var(--border-radius);
+  font-size: var(--fs-s);
+  color: black;
+  gap: 12px;
+  transition: background 0.1s;
+
+  &::before {
+    content: "•";
+    flex-shrink: 0;
+    color: black;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background: #f0f4f8;
+      cursor: text;
+
+      .subtask__item-actions {
+        opacity: 1;
+      }
+    }
+  }
+
+  .subtask__edit-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: var(--fs-s);
+    font-family: inherit;
+    background: transparent;
+    color: #2a3647;
+    width: 100%;
+  }
+}
+
+.subtask__text {
+  flex: 1;
+}
+
+.subtask__item-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.1s;
+  margin-left: auto;
+}

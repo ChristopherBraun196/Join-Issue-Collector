@@ -90,7 +90,7 @@ Once set up, sending an email to the configured inbox creates a ticket in the bo
 - **One entry module per page** (e.g. `js/pages/board/boardPage.js`), loaded with a single `<script type="module">` tag. Each entry module has an `init()` that runs on `DOMContentLoaded`.
 - **Event delegation** with `data-action` attributes instead of inline handlers (`onclick` etc.); DOM access via `querySelector` only.
 - **Templates** (HTML strings) live in `js/templates/`, separate from the logic.
-- **CSS in BEM** with native nesting. `css/layout.css` is loaded first, then each page links only its own stylesheet. Font sizes are CSS variables (`--fs-xs` … `--fs-8xl`) in `css/standard.css`.
+- **CSS in BEM** with native nesting. `css/layout.css` is loaded first, then each page links only the stylesheets it needs. Font sizes are CSS variables (`--fs-xs` … `--fs-8xl`) in `css/standard.css`.
 - Clean-code rules: max. 14 lines per function (templates excluded), max. 400 lines per file, English everywhere.
 
 ## Project Structure
@@ -104,7 +104,7 @@ Once set up, sending an email to the configured inbox creates a ticket in the bo
 - `js/services/` – Firebase setup (`firebaseAuth.js`), auth (`authService.js`), route guarding (`authGuard.js`) and a thin Realtime Database wrapper (`database.js`: `loadData`/`putData`/`updateData`/`deleteData`)
 - `js/templates/` – HTML template functions per area
 - `js/utils/` – small helpers (formatting, IDs, avatar colors and photos, image reading/compression, validators, constants)
-- `css/` – one stylesheet per page plus shared `layout.css`, `standard.css`, `assets.css`, `fonts.css`
+- `css/` – stylesheets per page and component (max. 400 lines each), e.g. `board.css`, `taskCard.css`, `taskDialog.css`, `dropdown.css`, `attachments.css`, `contactDialog.css`, plus shared `layout.css`, `standard.css`, `assets.css`, `fonts.css`
 - `n8n/` – exported n8n workflow JSON (email pipeline + status-change notifications)
 - `docs/` – JSDoc-generated API documentation, open `docs/index.html` in a browser to browse it
 

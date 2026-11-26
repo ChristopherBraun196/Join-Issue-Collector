@@ -1,0 +1,332 @@
+.contact-dialog__fields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 400px;
+
+  @media (max-width: 1200px) {
+    width: 100%;
+    max-width: none;
+    gap: 0;
+  }
+}
+
+.contact-dialog__field {
+  position: relative;
+}
+
+.contact-dialog__input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 8px;
+  padding: 11px 42px 11px 14px;
+  font-size: var(--fs-l);
+  color: black;
+  background: white;
+  outline: none;
+  font-family: InterRegular;
+  transition: border-color 0.1s;
+
+  &::placeholder {
+    color: #686868;
+  }
+
+  @media (max-width: 1200px) {
+    padding: 7px 48px 7px 21px;
+  }
+
+  &:focus {
+    border-color: var(--viewer-color);
+  }
+}
+
+.contact-dialog__icon {
+  position: absolute;
+  right: 16px;
+  top: 14px;
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(30%);
+  pointer-events: none;
+
+  @media (max-width: 1200px) {
+    top: 10px;
+    right: 22px;
+  }
+}
+
+.contact-dialog:has(.contact-dialog__submit[data-action="submit"]),
+.contact-dialog--account {
+  .contact-dialog__input--name + .contact-dialog__icon,
+  .contact-dialog__input--email + .contact-dialog__icon {
+    filter: brightness(0) invert(82%);
+  }
+}
+
+.contact-dialog__error {
+  display: block;
+  height: 20px;
+  line-height: 20px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: var(--fs-s);
+  color: #c0392b;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  visibility: hidden;
+
+  @media (max-width: 1200px) {
+    height: 20px;
+    line-height: 20px;
+    margin-top: 2px;
+    font-size: var(--fs-s);
+  }
+
+  &.contact-dialog__error--visible {
+    visibility: visible;
+  }
+}
+
+.contact-dialog__actions {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 24px;
+  margin-top: 24px;
+
+  @media (max-width: 1200px) {
+    justify-content: center;
+    margin-top: 8px;
+    gap: 20px;
+  }
+}
+
+.contact-dialog__cancel,
+.contact-dialog__submit {
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-size: var(--fs-xl);
+  cursor: pointer;
+  font-family: InterRegular;
+  transition: background 0.1s;
+
+  @media (max-width: 1200px) {
+    padding: 12px 10px;
+    font-size: var(--fs-xl);
+  }
+}
+
+.contact-dialog__cancel {
+  background: white;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+
+  @media (hover: hover) {
+    &:hover {
+      color: #29a9e1;
+      border-color: #29a9e1;
+    }
+  }
+
+  &[data-action="close-dialog"],
+  &[data-action="delete"],
+  &[data-action="delete-account"] {
+    @media (hover: hover) {
+      &:hover {
+        color: var(--primary-color);
+        border-color: black;
+        box-shadow: inset 0 0 0 1px black;
+      }
+    }
+  }
+
+  &[data-action="close-dialog"] {
+    @media (max-width: 1200px) {
+      display: none;
+    }
+  }
+}
+
+.contact-dialog__submit {
+  background: var(--primary-color);
+  border: none;
+  color: white;
+  font-family: InterBold;
+
+  @media (hover: hover) {
+    &:hover {
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    }
+  }
+}
+
+.contact-dialog--account {
+  .contact-dialog__cancel,
+  .contact-dialog__submit {
+    padding-inline: 12px;
+  }
+
+  .contact-dialog__submit::after {
+    content: "✓";
+    display: inline-block;
+    max-width: 0;
+    margin-left: 0;
+    overflow: hidden;
+    vertical-align: bottom;
+    transition:
+      max-width 0.3s ease,
+      margin-left 0.3s ease;
+
+    @media (max-width: 1200px) {
+      content: none;
+    }
+  }
+
+  .contact-dialog__submit[data-action="save-account"]::after {
+    max-width: 1em;
+    margin-left: 8px;
+  }
+}
+
+@media (max-width: 1200px) and (max-height: 760px) {
+  .contact-dialog__title {
+    font-size: var(--fs-5xl);
+  }
+
+  .contact-dialog__left {
+    min-height: 110px;
+    padding-bottom: 50px;
+  }
+
+  .contact-dialog__avatar {
+    width: 96px;
+    height: 96px;
+  }
+
+  .contact-dialog__avatar--initials {
+    font-size: var(--fs-5xl);
+  }
+
+  .contact-dialog__photo {
+    margin-top: -60px;
+  }
+
+  .contact-dialog__input {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    font-size: var(--fs-s);
+  }
+
+  .contact-dialog__icon {
+    top: 9px;
+  }
+
+  .contact-dialog__right {
+    padding-bottom: 16px;
+  }
+
+  .contact-dialog__cancel,
+  .contact-dialog__submit {
+    padding: 10px 12px;
+    font-size: var(--fs-s);
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 1200px) and (max-height: 600px) {
+  .contact-dialog {
+    align-items: center;
+    padding: 16px;
+  }
+
+  .contact-dialog__box {
+    max-height: 100%;
+  }
+
+  .contact-dialog__left {
+    flex: 0 0 auto;
+    justify-content: flex-start;
+    min-height: 90px;
+    padding-top: 20px;
+    padding-bottom: 40px;
+  }
+
+  .contact-dialog__close {
+    top: 21px;
+  }
+
+  .contact-dialog__title {
+    font-size: var(--fs-4xl);
+  }
+
+  .contact-dialog__underline {
+    margin-top: 4px;
+  }
+
+  .contact-dialog__avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .contact-dialog__avatar--initials {
+    font-size: var(--fs-4xl);
+  }
+
+  .contact-dialog__photo {
+    margin-top: -52px;
+    margin-bottom: 4px;
+  }
+
+  .contact-dialog__photo-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .contact-dialog__photo-icon {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+
+@media (max-width: 750px) {
+  .contact-dialog__photo-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .contact-dialog__photo-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .contact-dialog__photo-btn--remove .contact-dialog__photo-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (min-width: 751px) and (max-width: 1200px) {
+  .contact-dialog {
+    align-items: center;
+    padding: 32px;
+  }
+
+  .contact-dialog__box {
+    width: min(520px, 100%);
+    max-height: 100%;
+  }
+
+  .contact-dialog__left {
+    flex: 0 0 auto;
+    min-height: 0;
+    padding: 56px 32px 90px;
+  }
+
+  .contact-dialog__right {
+    padding: 0 32px 32px;
+  }
+}

@@ -26,7 +26,7 @@ export async function getToDoTemplate(element, solvedSubtasks, totalSubtasks, vi
 
   <p class="task-card__description">${element["description"]}</p>
 
-  <div class="task-card__progress ${visibility}">
+  <div class="task-card__progress ${visibility}" title="${solvedSubtasks} of ${totalSubtasks} subtasks done">
     <div class="task-card__progress-bar">
       <div class="task-card__progress-fill" style="width: ${progress}%"></div>
     </div>
