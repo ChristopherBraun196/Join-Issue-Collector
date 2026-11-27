@@ -6,9 +6,34 @@ This repository extends the existing board with an **AI-powered issue collector*
 
 On top of that, tasks can carry **image attachments** (file upload with automatic compression, preview, image viewer and download), and contacts and the own account can have a **profile photo**.
 
-**Live demo:** [join.christopher-braun-dev.de](https://join.christopher-braun-dev.de)
+**Live demo:** [join.christopher-braun-dev.de](https://join.christopher-braun-dev.de) (currently v2.0, v3.0 will follow after the project review)
 
 > **Status:** complete. Base Kanban board, stakeholder landing page, and the full email/AI pipeline (n8n workflow, Triage column, daily throttling, error handling, status-change notifications) are all implemented and tested end to end.
+
+## Screenshots
+
+**Board** – Kanban board with the Triage column for AI-generated tickets
+
+![Board](assets/screenshots/board-desktop.png)
+
+**Task detail** – ticket with source, creator, priority and image attachments
+
+![Task detail with attachments](assets/screenshots/task-detail.png)
+
+**Image viewer** – file name and size, paging, zoom and download
+
+![Image viewer](assets/screenshots/image-viewer.png)
+
+**Add Task with file upload** – drop zone and preview of the compressed images
+
+![Add Task with file upload](assets/screenshots/add-task-upload.png)
+
+**Mobile** – summary and task detail on a smartphone
+
+<p>
+  <img src="assets/screenshots/mobile-summary.png" alt="Summary on mobile" width="280">
+  <img src="assets/screenshots/mobile-task.png" alt="Task detail on mobile" width="280">
+</p>
 
 ## Versions
 
