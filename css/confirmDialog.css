@@ -79,3 +79,13 @@
   margin: 0 auto 12px;
   color: var(--error-color);
 }
+
+@media (min-width: 1201px) {
+  .confirm-dialog {
+    position: fixed;
+    top: 50%;
+    left: calc(300px + min(100vw - 360px, 1440px) / 2);
+    margin: 0;
+    transform: translate(-50%, -50%);
+  }
+}
