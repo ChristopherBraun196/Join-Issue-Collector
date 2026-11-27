@@ -1,6 +1,15 @@
-import { getInitials } from "../utils/format.js";
-import { getSidebarTemplate, getSidebarGuestTemplate, getTopbarTemplate } from "../templates/layoutTemplates.js";
+import { getAvatarContent } from "../utils/avatar.js";
+import {
+  getSidebarTemplate,
+  getSidebarGuestTemplate,
+  getTopbarTemplate,
+  getContactDialogTemplate,
+  getImageViewerTemplate,
+} from "../templates/layoutTemplates.js";
 import { logout } from "../services/authGuard.js";
+import { initContactDialog } from "./contactForm.js";
+import { initAccountDialog, openAccountDialog } from "./accountDialog.js";
+import { initImageViewer } from "./imageViewer.js";
 
 /**
  * Initializes the page by generating the topbar and loading the sidebar.
@@ -20,6 +29,11 @@ function generateTopbar() {
   let header = document.createElement("header");
   header.classList.add("topbar");
   body.appendChild(header);
+  body.insertAdjacentHTML("beforeend", getContactDialogTemplate());
+  body.insertAdjacentHTML("beforeend", getImageViewerTemplate());
+  initContactDialog();
+  initAccountDialog();
+  initImageViewer();
   header.addEventListener("click", handleTopbarClick);
   document.addEventListener("click", closeUserMenu);
 
@@ -75,11 +89,11 @@ export function renderUserMenue() {
 
   if (!user) um.textContent = "G";
   else {
-    const initials = getInitials(user.name);
     um.style.backgroundColor = user.avatarColor;
-    um.textContent = initials;
+    um.innerHTML = getAvatarContent(user);
   }
   um.classList.add("topbar__user--visible");
+  document.querySelector(".topbar__dropdown-link--account").hidden = !user?.id;
 }
 
 /**
@@ -91,6 +105,7 @@ function handleTopbarClick(event) {
   if (!target) return;
   if (target.dataset.action === "toggle-user-menu") toggleUserMenue(event);
   if (target.dataset.action === "logout") logout();
+  if (target.dataset.action === "open-account") openAccountDialog();
 }
 
 /**

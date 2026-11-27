@@ -1,12 +1,20 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
     <title>Join | Add Task</title>
     <link rel="stylesheet" href="./css/layout.css" />
     <link rel="stylesheet" href="./css/addTask.css" />
+    <link rel="stylesheet" href="./css/dropdown.css" />
+    <link rel="stylesheet" href="./css/subtask.css" />
+    <link rel="stylesheet" href="./css/attachments.css" />
     <link rel="stylesheet" href="./css/assets.css" />
+    <link rel="stylesheet" href="./css/contactDialog.css" />
+    <link rel="stylesheet" href="./css/contactDialogForm.css" />
+    <link rel="stylesheet" href="./css/confirmDialog.css" />
+    <link rel="stylesheet" href="./css/imageViewer.css" />
     <link rel="stylesheet" href="./css/fonts.css" />
     <link rel="stylesheet" href="./css/standard.css" />
     <link rel="shortcut icon" href="./assets/img/logo-light.svg" type="image/x-icon" />
@@ -27,6 +35,7 @@
               <input
                 type="text"
                 class="task-form__input"
+                id="title"
                 name="title"
                 placeholder="Enter a title"
                 required
@@ -58,8 +67,6 @@
               />
               <span class="task-form__error"></span>
             </div>
-          </div>
-          <div class="task-form__column task-form__column--right">
             <div class="task-form__field">
               <label for="task-priority-btns">Priority</label>
               <div class="task-form__priority">
@@ -100,19 +107,6 @@
               </div>
             </div>
             <div class="task-form__field">
-              <label>Assigned to</label>
-              <div class="dropdown dropdown--assigned">
-                <div class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="assigned">
-                  <span class="dropdown__placeholder">Select contacts to assign</span>
-                  <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" />
-                </div>
-                <div class="dropdown__menu">
-                  <div class="dropdown__list"></div>
-                </div>
-              </div>
-              <div class="task-form__badges"></div>
-            </div>
-            <div class="task-form__field">
               <label>Category<span class="task-form__required">*</span></label>
               <div class="dropdown dropdown--category">
                 <input
@@ -123,10 +117,10 @@
                   data-error-msg="Please select a category"
                 />
                 <span class="task-form__error"></span>
-                <div class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="category">
+                <button type="button" class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="category">
                   <span class="dropdown__placeholder">Select task category</span>
-                  <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" />
-                </div>
+                  <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" alt="" />
+                </button>
                 <div class="dropdown__menu">
                   <div class="dropdown__list">
                     <div class="dropdown__option" data-action="select-category" data-value="technical-task">
@@ -139,10 +133,42 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div class="task-form__column task-form__column--right">
+            <div class="task-form__field attachments">
+              <label for="attachmentsInput">Attachments</label>
+              <div class="attachments__header">
+                <p class="attachments__hint" id="attachmentsHint">Allowed file types are JPEG and PNG</p>
+                <button class="attachments__delete-all" type="button" data-action="delete-all-attachments" hidden>
+                  <img class="attachments__delete-icon" src="./assets/icons/delete.svg" alt="" />
+                  Delete all
+                </button>
+              </div>
+              <label class="attachments__dropzone">
+                <span class="attachments__text--desktop">Drag a file or browse</span>
+                <span class="attachments__text--mobile">Upload file</span>
+                <svg class="attachments__plus-icon" viewBox="0 0 19 19" aria-hidden="true">
+                  <path
+                    d="M8 10.6667H0V8H8V0H10.6667V8H18.6667V10.6667H10.6667V18.6667H8V10.6667Z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <input
+                  class="attachments__input"
+                  id="attachmentsInput"
+                  type="file"
+                  accept="image/jpeg, image/png"
+                  multiple
+                  aria-describedby="attachmentsHint"
+                />
+              </label>
+              <span class="attachments__error" role="alert"></span>
+              <ul class="attachments__list"></ul>
+            </div>
             <div class="task-form__field">
-              <label>Subtasks</label>
+              <label for="subtaskInput">Subtasks</label>
               <div class="subtask__input-wrap">
-                <input type="text" class="subtask__input" placeholder="Add new subtask" />
+                <input type="text" class="subtask__input" id="subtaskInput" placeholder="Add new subtask" />
                 <div class="subtask__actions">
                   <div class="subtask__confirm">
                     <button class="subtask__btn" data-action="clear-subtask" type="button">
@@ -170,6 +196,19 @@
               </div>
               <ul class="subtask__list"></ul>
             </div>
+            <div class="task-form__field">
+              <label>Assigned to</label>
+              <div class="dropdown dropdown--assigned">
+                <button type="button" class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="assigned">
+                  <span class="dropdown__placeholder">Select contacts to assign</span>
+                  <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" alt="" />
+                </button>
+                <div class="dropdown__menu">
+                  <div class="dropdown__list"></div>
+                </div>
+              </div>
+              <div class="task-form__badges"></div>
+            </div>
           </div>
         </form>
         <div class="task-form__footer task-form__footer--page">
@@ -193,7 +232,7 @@
           </div>
         </div>
       </section>
-      <span class="toast toast--content"></span>
+      <span class="toast toast--content" popover="manual"></span>
     </main>
     <script type="module" src="./js/pages/addTask/addTaskPage.js"></script>
   </body>

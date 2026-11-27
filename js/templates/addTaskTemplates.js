@@ -1,3 +1,5 @@
+import { getDisplayName } from "../utils/format.js";
+
 /**
  * Returns the HTML template for the add task dialog.
  * @param {string} status - The initial status for the new task
@@ -8,13 +10,13 @@ export function getAddTaskDialogTemplate(status) {
     <section class="add-task add-task--dialog">
       <header class="add-task__dialog-header">
         <h1>Add Task</h1>
-        <button class="add-task__close" data-action="close-dialog"><img src="../assets/icons/close.svg"></button>
+        <button class="add-task__close" data-action="close-dialog" aria-label="Close"><img src="./assets/icons/close.svg" alt=""></button>
       </header>
-      <form class="task-form" data-status="${status}" id="add-task-form" novalidate>
+           <form class="task-form" data-status="${status}" id="add-task-form" novalidate>
           <div class="task-form__column">
               <div class="task-form__field">
                   <label for="title">Title<span class="task-form__required">*</span></label>
-                  <input type="text" class="task-form__input" name="title" placeholder="Enter a title" required data-error-msg="Please enter a title" autofocus />
+                  <input type="text" class="task-form__input" id="title" name="title" placeholder="Enter a title" required data-error-msg="Please enter a title" autofocus />
                   <span class="task-form__error"></span>
               </div>
               <div class="task-form__field">
@@ -26,8 +28,6 @@ export function getAddTaskDialogTemplate(status) {
                   <input type="date" class="task-form__input" id="due-date" name="due-date" required data-validate-date data-error-msg="Please pick a due date" />
                   <span class="task-form__error"></span>
               </div>
-          </div>
-          <div class="task-form__column task-form__column--right">
               <div class="task-form__field">
                   <label for="priority">Priority</label>
                   <div class="task-form__priority">
@@ -37,28 +37,14 @@ export function getAddTaskDialogTemplate(status) {
                   </div>
               </div>
               <div class="task-form__field">
-                  <label>Assigned to</label>
-                  <div class="dropdown dropdown--assigned">
-                      <div class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="assigned">
-                          <span class="dropdown__placeholder">Select contacts to assign</span>
-                          <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow">
-                      </div>
-                      <div class="dropdown__menu">
-                          <div class="dropdown__list">
-                          </div>
-                      </div>
-                  </div>
-                  <div class="task-form__badges"></div>
-              </div>
-              <div class="task-form__field">
                   <label>Category<span class="task-form__required">*</span></label>
                   <div class="dropdown dropdown--category">
                       <input type="hidden" class="task-form__input" name="category" required data-error-msg="Please select a category" />
                       <span class="task-form__error"></span>
-                      <div class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="category">
+                      <button type="button" class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="category">
                           <span class="dropdown__placeholder">Select task category</span>
-                          <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow">
-                      </div>
+                          <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" alt="">
+                      </button>
                       <div class="dropdown__menu">
                           <div class="dropdown__list">
                               <div class="dropdown__option" data-action="select-category" data-value="technical-task">
@@ -71,12 +57,34 @@ export function getAddTaskDialogTemplate(status) {
                       </div>
                   </div>
               </div>
+          </div>
+          <div class="task-form__column task-form__column--right">
+              <div class="task-form__field attachments">
+                  <label for="attachmentsInput">Attachments</label>
+                  <div class="attachments__header">
+                      <p class="attachments__hint" id="attachmentsHint">Allowed file types are JPEG and PNG</p>
+                      <button class="attachments__delete-all" type="button" data-action="delete-all-attachments" hidden>
+                          <img class="attachments__delete-icon" src="./assets/icons/delete.svg" alt="">
+                          Delete all
+                      </button>
+                  </div>
+                  <label class="attachments__dropzone">
+                      <span class="attachments__text--desktop">Drag a file or browse</span>
+                      <span class="attachments__text--mobile">Upload file</span>
+                      <svg class="attachments__plus-icon" viewBox="0 0 19 19" aria-hidden="true"><path d="M8 10.6667H0V8H8V0H10.6667V8H18.6667V10.6667H10.6667V18.6667H8V10.6667Z" fill="currentColor"/></svg>
+                      <input class="attachments__input" id="attachmentsInput" type="file" accept="image/jpeg, image/png" multiple aria-describedby="attachmentsHint">
+                  </label>
+                  <span class="attachments__error" role="alert"></span>
+                  <ul class="attachments__list"></ul>
+              </div>
+
               <div class="task-form__field">
-                  <label>Subtasks</label>
+                  <label for="subtaskInput">Subtasks</label>
                   <div class="subtask__input-wrap">
-                      <input 
-                          type="text" 
+                      <input
+                          type="text"
                           class="subtask__input"
+                          id="subtaskInput"
                           placeholder="Add new subtask"
                       />
                       <div class="subtask__actions">
@@ -93,6 +101,20 @@ export function getAddTaskDialogTemplate(status) {
                       </div>
                   </div>
                   <ul class="subtask__list"></ul>
+              </div>
+              <div class="task-form__field">
+                  <label>Assigned to</label>
+                  <div class="dropdown dropdown--assigned">
+                      <button type="button" class="dropdown__trigger" data-action="toggle-dropdown" data-dropdown="assigned">
+                          <span class="dropdown__placeholder">Select contacts to assign</span>
+                          <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" alt="">
+                      </button>
+                      <div class="dropdown__menu">
+                          <div class="dropdown__list">
+                          </div>
+                      </div>
+                  </div>
+                  <div class="task-form__badges"></div>
               </div>
           </div>
       </form>
@@ -117,8 +139,8 @@ export function getAssignOptionTemplate(contact, initials) {
   return `
     <div class="dropdown__option" data-action="toggle-contact" data-id="${contact.id}">
       <div class="dropdown__avatar" style="background:${contact.color}">${initials}</div>
-      <span class="dropdown__label">${contact.name}</span>
-      <input type="checkbox">
+        <span class="dropdown__label">${getDisplayName(contact)}</span>
+      <input type="checkbox" aria-label="Assign ${contact.name}">
     </div>
   `;
 }
@@ -140,5 +162,25 @@ export function getSubtaskItemTemplate(text) {
         <img class="subtask__btn-icon" src="./assets/icons/delete.svg" alt="Delete">
       </button>
     </div>
+  `;
+}
+
+/**
+ * Returns the HTML of one attachment thumbnail in the preview list.
+ * @param {{name: string, base64: string}} attachment - The compressed image
+ * @param {number} index - The position of the image in the attachments array
+ * @returns {string} HTML string of the list item
+ */
+export function getAttachmentItemTemplate(attachment, index) {
+  return `
+    <li class="attachments__item">
+      <button class="attachments__open" type="button" data-action="open-edit-viewer" data-index="${index}" aria-label="Open ${attachment.name}">
+        <img class="attachments__thumb" src="${attachment.base64}" alt="">
+      </button>
+      <button class="attachments__remove" type="button" data-action="remove-attachment" data-index="${index}" aria-label="Remove ${attachment.name}">
+        <img class="attachments__remove-icon" src="./assets/icons/delete.svg" alt="">
+      </button>
+      <span class="attachments__name">${attachment.name}</span>
+    </li>
   `;
 }

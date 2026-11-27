@@ -226,6 +226,17 @@ function getSignupFormInputs() {
 }
 
 /**
+ * Enables the signup button only when all fields are filled and the privacy policy is accepted.
+ */
+export function updateSignupButton() {
+  const form = document.querySelector(".login__form[data-form='signup']");
+  if (!form) return;
+  const { acceptCheckbox, ...textInputs } = getSignupFormInputs();
+  const allFilled = Object.values(textInputs).every((input) => input.value.trim() !== "");
+  form.querySelector("[type='submit']").disabled = !(allFilled && acceptCheckbox.checked);
+}
+
+/**
  * Validates an input on submit with the same rules as on blur.
  * @param {HTMLInputElement} input - The input element
  * @param {string} errorId - The field name of the error span (e.g. "email")

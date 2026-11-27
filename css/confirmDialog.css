@@ -30,8 +30,52 @@
   font-size: var(--fs-s);
 }
 
-.confirm-dialog__btn--cancel:hover {
-  color: var(--highligted-color);
-  border-color: var(--highligted-color);
-  box-shadow: none;
+@media (hover: hover) {
+  .confirm-dialog__btn--cancel:hover {
+    color: var(--highligted-color);
+    border-color: var(--highligted-color);
+    box-shadow: none;
+  }
+}
+
+.confirm-dialog--account {
+  position: relative;
+  padding: 32px 48px 24px;
+  text-align: center;
+
+  .confirm-dialog__text {
+    max-width: 280px;
+    margin-bottom: 16px;
+  }
+
+  .confirm-dialog__btn {
+    padding: 6px 12px;
+    font-size: var(--fs-s);
+  }
+
+  .secondary-btn {
+    border: 1px solid black;
+  }
+}
+
+.confirm-dialog__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: var(--fs-l);
+  color: var(--primary-color);
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--highligted-color);
+    }
+  }
+}
+
+.confirm-dialog__icon {
+  display: block;
+  width: 32px;
+  height: 32px;
+  margin: 0 auto 12px;
+  color: var(--error-color);
 }

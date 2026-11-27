@@ -3,6 +3,7 @@ import { formatLabel } from "../utils/format.js";
 import { STATUS } from "../utils/constants.js";
 import { putData } from "../services/database.js";
 import { validateForm } from "./validation.js";
+import { attachments } from "./attachments.js";
 
 /**
  * Generates a task object from the current form values.
@@ -20,11 +21,20 @@ function generateTaskJson(taskID, statusArg = STATUS.TO_DO) {
     category: getTaskCategory(),
     categoryLabelColor: getTaskCategoryLabelColor(getTaskCategory()),
     assignedTo: getAssignedTo(),
+    attachments: [...attachments],
     subtasks: getSubtasks(),
     status: statusArg,
-    creatorName: window.currentUser.name,
-    creatorType: "internal",
+    ...getCreatorData(),
   };
+}
+
+/**
+ * Returns who created the task: the name and whether it was a logged-in user or a guest.
+ * @returns {{creatorName: string, creatorType: string}} The creator fields of the task
+ */
+function getCreatorData() {
+  const user = window.currentUser;
+  return { creatorName: user.name, creatorType: user.id ? "internal" : "guest" };
 }
 
 /**
@@ -77,7 +87,7 @@ function getTaskCategory() {
  * @param {string} category - The category name (e.g. "User Story")
  * @returns {string} The hex color code for the category
  */
-function getTaskCategoryLabelColor(category) {
+export function getTaskCategoryLabelColor(category) {
   switch (category) {
     case "User Story":
       return "#0038FF";

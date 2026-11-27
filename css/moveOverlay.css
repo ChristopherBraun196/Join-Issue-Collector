@@ -14,9 +14,11 @@
   transition: background-color 0.1s, border-color 0.1s;
 }
 
-.task-card__move-btn:hover {
-  background-color: #f0f0f0;
-  border-color: #bbb;
+@media (hover: hover) {
+  .task-card__move-btn:hover {
+    background-color: #f0f0f0;
+    border-color: #bbb;
+  }
 }
 
 .move-overlay {
@@ -68,8 +70,10 @@
   text-align: left;
 }
 
-.move-overlay__option:hover {
-  background-color: #1a2736;
+@media (hover: hover) {
+  .move-overlay__option:hover {
+    background-color: #1a2736;
+  }
 }
 
 .move-overlay__arrow {

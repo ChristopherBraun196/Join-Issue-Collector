@@ -1,0 +1,120 @@
+.task-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  min-width: 240px;
+  max-width: 240px;
+  width: 100%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.09);
+  transition: box-shadow 0.1s;
+  cursor: pointer;
+  position: relative;
+
+  @media (hover: hover) {
+    &:hover {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+    }
+  }
+
+  &.task-card--dragging {
+    transform: rotate(3deg);
+    opacity: 0.6;
+  }
+}
+
+.task-card__topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.task-card__title {
+  font-weight: 700;
+  font-size: var(--fs-m);
+  color: #1a1a2e;
+  margin: 0 0 6px 0;
+  line-height: 1.3;
+}
+
+.task-card__description {
+  font-size: var(--fs-s);
+  color: #aaa;
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+}
+
+.task-card__progress {
+  display: none;
+
+  &.task-card__progress--visible {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+}
+
+.task-card__progress-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e7ff;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.task-card__progress-fill {
+  height: 100%;
+  background: #0038ff;
+  border-radius: 99px;
+}
+
+.task-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.task-card__avatars {
+  display: flex;
+}
+
+.task-card__avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: var(--fs-s);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -8px;
+  border: 2px solid #fff;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &.task-card__avatar--overflow {
+    background-color: #999;
+    font-size: var(--fs-s);
+    flex-shrink: 0;
+  }
+}
+
+.category-badge {
+  display: inline-block;
+  color: #fff;
+  font-size: var(--fs-s);
+  font-weight: 600;
+  max-width: 135px;
+  white-space: nowrap;
+  border-radius: var(--border-radius);
+  padding: 4px 12px;
+
+  @media (max-width: 420px) {
+    font-size: var(--fs-xs);
+    width: auto;
+  }
+}

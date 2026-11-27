@@ -1,10 +1,11 @@
 /**
  * Opens the confirm dialog with the given question and waits for the answer.
  * @param {string} message - The question to show
+ * @param {string} [selector] - The confirm dialog to use, default is ".confirm-dialog"
  * @returns {Promise<boolean>} True if the user confirmed, false otherwise
  */
-export function confirmAction(message) {
-  const dialog = document.querySelector(".confirm-dialog");
+export function confirmAction(message, selector = ".confirm-dialog") {
+  const dialog = document.querySelector(selector);
   dialog.querySelector(".confirm-dialog__text").textContent = message;
   dialog.returnValue = "false";
   dialog.addEventListener("click", handleConfirmClick);

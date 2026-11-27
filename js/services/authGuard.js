@@ -6,8 +6,15 @@ import { renderUserMenue, loadSidebar, switchToGuestSidebar } from "../component
 const homePaths = ["", "index.html"];
 const publicPaths = ["privacy.html", "legal.html", "help.html"];
 const path = window.location.pathname.split("/").pop();
+const cameFromWelcome = document.referrer.includes("welcome.html") || window.location.search.includes("login");
 
-const cameFromWelcome = document.referrer.includes("welcome.html");
+let resolveCurrentUser;
+
+/**
+ * Resolves with the current user (or guest) as soon as it is loaded.
+ * @type {Promise<Object>}
+ */
+export const currentUserReady = new Promise((resolve) => (resolveCurrentUser = resolve));
 
 /**
  * Loads the authenticated user's data from Firebase and sets the global current user.
@@ -22,7 +29,8 @@ async function handleAuthenticatedUser(user, path) {
   if (!snapshot.val()) return;
   const { contactId } = snapshot.val();
   const contactSnap = await get(ref(db, `contacts/${contactId}`));
-  window.currentUser = contactSnap.val();
+  window.currentUser = { id: contactId, ...contactSnap.val() };
+  resolveCurrentUser(window.currentUser);
   renderUserMenue();
   if (homePaths.includes(path)) {
     window.location.href = "./summary.html";
@@ -46,7 +54,7 @@ function handleUnauthenticatedUser(path) {
       window.location.href = "./welcome.html";
     }
   } else {
-    window.location.href = "./welcome.html";
+    window.location.href = "./index.html?login";
   }
 }
 
@@ -56,6 +64,7 @@ function handleUnauthenticatedUser(path) {
  */
 function handleGuestUser(path) {
   window.currentUser = { name: "Guest" };
+  resolveCurrentUser(window.currentUser);
   renderUserMenue();
   if (homePaths.includes(path)) {
     if (!cameFromWelcome) window.location.href = "./welcome.html";
@@ -84,5 +93,5 @@ onAuthStateChanged(auth, async (user) => {
  */
 export async function logout() {
   await signOut(auth);
-  window.location.href = "./welcome.html";
+  window.location.href = "./index.html?login";
 }

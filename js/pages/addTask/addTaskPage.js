@@ -7,6 +7,8 @@ import { initTaskForm, renderContacts } from "../../components/taskForm.js";
 function init() {
   initLayout("addtask");
   initTaskForm(document.querySelector(".add-task"));
+  const status = new URLSearchParams(location.search).get("status");
+  if (status) document.querySelector(".task-form").dataset.status = status;
   renderContacts();
 }
 

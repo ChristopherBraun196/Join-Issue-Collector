@@ -1,17 +1,27 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
     <title>Join | Board</title>
     <link rel="shortcut icon" href="./assets/img/logo-light.svg" type="image/x-icon" />
     <link rel="stylesheet" href="./css/layout.css" />
     <link rel="stylesheet" href="./css/addTask.css" />
+    <link rel="stylesheet" href="./css/dropdown.css" />
+    <link rel="stylesheet" href="./css/subtask.css" />
+    <link rel="stylesheet" href="./css/attachments.css" />
     <link rel="stylesheet" href="./css/assets.css" />
     <link rel="stylesheet" href="./css/board.css" />
+    <link rel="stylesheet" href="./css/taskCard.css" />
+    <link rel="stylesheet" href="./css/taskDialog.css" />
+    <link rel="stylesheet" href="./css/taskDialogDetails.css" />
     <link rel="stylesheet" href="./css/moveOverlay.css" />
     <link rel="stylesheet" href="./css/editboard.css" />
     <link rel="stylesheet" href="./css/confirmDialog.css" />
+    <link rel="stylesheet" href="./css/contactDialog.css" />
+    <link rel="stylesheet" href="./css/contactDialogForm.css" />
+    <link rel="stylesheet" href="./css/imageViewer.css" />
     <link rel="stylesheet" href="./css/fonts.css" />
     <link rel="stylesheet" href="./css/standard.css" />
   </head>
@@ -24,10 +34,10 @@
         <h1>Board</h1>
         <div class="board__search-wrap">
           <div class="board__search">
-            <input class="board__search-input" type="text" role="search" placeholder="Find Task" />
+            <input class="board__search-input" type="text" placeholder="Find Task" aria-label="Find task" />
             <div class="board__search-divider"></div>
-            <button class="board__search-btn" data-action="search-task">
-              <img src="./assets/icons/search.svg" class="board__search-icon" />
+            <button class="board__search-btn" data-action="search-task" aria-label="Search tasks">
+              <img src="./assets/icons/search.svg" class="board__search-icon" alt="" />
             </button>
           </div>
           <button class="primary-btn board__add-btn" data-action="add-task" data-status="toDo">Add task +</button>
@@ -37,14 +47,14 @@
       <section class="board__bar-mobile">
         <div class="board__mobile-header">
           <h1>Board</h1>
-          <button class="board__add-btn-mobile" data-action="add-task" data-status="toDo">+</button>
+          <button class="board__add-btn-mobile" data-action="add-task" data-status="toDo" aria-label="Add task">+</button>
         </div>
         <div class="board__search-wrap">
           <div class="board__search">
-            <input class="board__search-input" type="text" role="search" placeholder="Find Task" />
+            <input class="board__search-input" type="text" placeholder="Find Task" aria-label="Find task" />
             <div class="board__search-divider"></div>
-            <button class="board__search-btn" data-action="search-task">
-              <img src="./assets/icons/search.svg" class="board__search-icon" />
+            <button class="board__search-btn" data-action="search-task" aria-label="Search tasks">
+              <img src="./assets/icons/search.svg" class="board__search-icon" alt="" />
             </button>
           </div>
         </div>
@@ -53,17 +63,18 @@
       <section class="board__columns">
         <div class="board__column">
           <div class="board__column-header">
-            <h4>Triage</h4>
-            <button class="board__plus-btn" data-action="add-task" data-status="triage">+</button>
+            <h2 class="board__column-title">Triage</h2>
+            <button class="board__plus-btn" data-action="add-task" data-status="triage" aria-label="Add task to Triage">+</button>
           </div>
           <div class="board__column-body" data-column="triage">
             <button
               class="board__arrow board__arrow--up board__arrow--hidden"
               data-target="triage"
+              aria-label="Scroll up"
               data-action="scroll-column"
               data-direction="-1"
             >
-              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16">
+              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
                 <polyline
                   points="2,11 8,5 14,11"
                   fill="none"
@@ -82,10 +93,11 @@
             <button
               class="board__arrow board__arrow--down board__arrow--hidden"
               data-target="triage"
+              aria-label="Scroll down"
               data-action="scroll-column"
               data-direction="1"
             >
-              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16">
+              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
                 <polyline
                   points="2,5 8,11 14,5"
                   fill="none"
@@ -101,17 +113,18 @@
 
         <div class="board__column">
           <div class="board__column-header">
-            <h4>To do</h4>
-            <button class="board__plus-btn" data-action="add-task" data-status="toDo">+</button>
+            <h2 class="board__column-title">To do</h2>
+            <button class="board__plus-btn" data-action="add-task" data-status="toDo" aria-label="Add task to To do">+</button>
           </div>
           <div class="board__column-body" data-column="toDo">
             <button
               class="board__arrow board__arrow--up board__arrow--hidden"
               data-target="toDo"
+              aria-label="Scroll up"
               data-action="scroll-column"
               data-direction="-1"
             >
-              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16">
+              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
                 <polyline
                   points="2,11 8,5 14,11"
                   fill="none"
@@ -129,10 +142,11 @@
             <button
               class="board__arrow board__arrow--down board__arrow--hidden"
               data-target="toDo"
+              aria-label="Scroll down"
               data-action="scroll-column"
               data-direction="1"
             >
-              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16">
+              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
                 <polyline
                   points="2,5 8,11 14,5"
                   fill="none"
@@ -148,17 +162,18 @@
 
         <div class="board__column">
           <div class="board__column-header">
-            <h4>In progress</h4>
-            <button class="board__plus-btn" data-action="add-task" data-status="inProgress">+</button>
+            <h2 class="board__column-title">In progress</h2>
+            <button class="board__plus-btn" data-action="add-task" data-status="inProgress" aria-label="Add task to In progress">+</button>
           </div>
           <div class="board__column-body" data-column="inProgress">
             <button
               class="board__arrow board__arrow--up board__arrow--hidden"
               data-target="inProgress"
+              aria-label="Scroll up"
               data-action="scroll-column"
               data-direction="-1"
             >
-              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16">
+              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
                 <polyline
                   points="2,11 8,5 14,11"
                   fill="none"
@@ -176,10 +191,11 @@
             <button
               class="board__arrow board__arrow--down board__arrow--hidden"
               data-target="inProgress"
+              aria-label="Scroll down"
               data-action="scroll-column"
               data-direction="1"
             >
-              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16">
+              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
                 <polyline
                   points="2,5 8,11 14,5"
                   fill="none"
@@ -195,17 +211,18 @@
 
         <div class="board__column">
           <div class="board__column-header">
-            <h4>Await feedback</h4>
-            <button class="board__plus-btn" data-action="add-task" data-status="await">+</button>
+            <h2 class="board__column-title">Await feedback</h2>
+            <button class="board__plus-btn" data-action="add-task" data-status="await" aria-label="Add task to Await feedback">+</button>
           </div>
           <div class="board__column-body" data-column="await">
             <button
               class="board__arrow board__arrow--up board__arrow--hidden"
               data-target="await"
+              aria-label="Scroll up"
               data-action="scroll-column"
               data-direction="-1"
             >
-              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16">
+              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
                 <polyline
                   points="2,11 8,5 14,11"
                   fill="none"
@@ -224,10 +241,11 @@
             <button
               class="board__arrow board__arrow--down board__arrow--hidden"
               data-target="await"
+              aria-label="Scroll down"
               data-action="scroll-column"
               data-direction="1"
             >
-              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16">
+              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
                 <polyline
                   points="2,5 8,11 14,5"
                   fill="none"
@@ -243,16 +261,17 @@
 
         <div class="board__column">
           <div class="board__column-header">
-            <h4>Done</h4>
+            <h2 class="board__column-title">Done</h2>
           </div>
           <div class="board__column-body" data-column="done">
             <button
               class="board__arrow board__arrow--up board__arrow--hidden"
               data-target="done"
+              aria-label="Scroll up"
               data-action="scroll-column"
               data-direction="-1"
             >
-              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16">
+              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
                 <polyline
                   points="2,11 8,5 14,11"
                   fill="none"
@@ -271,10 +290,11 @@
             <button
               class="board__arrow board__arrow--down board__arrow--hidden"
               data-target="done"
+              aria-label="Scroll down"
               data-action="scroll-column"
               data-direction="1"
             >
-              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16">
+              <svg class="board__arrow-icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
                 <polyline
                   points="2,5 8,11 14,5"
                   fill="none"
@@ -288,7 +308,7 @@
           </div>
         </div>
       </section>
-      <span class="toast toast--content"></span>
+      <span class="toast toast--content" popover="manual"></span>
     </main>
     <dialog class="task-dialog"></dialog>
     <dialog class="confirm-dialog">
@@ -304,6 +324,8 @@
         <button class="primary-btn confirm-dialog__btn" type="button" data-confirm="true">Delete</button>
       </div>
     </dialog>
+
+
     <script type="module" src="./js/pages/board/boardPage.js"></script>
   </body>
 </html>

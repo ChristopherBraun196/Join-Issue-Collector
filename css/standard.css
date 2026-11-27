@@ -15,9 +15,11 @@
   background: #2a3647;
   border-radius: 10px;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #2a3647d0;
-  cursor: pointer;
+@media (hover: hover) {
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2a3647d0;
+    cursor: pointer;
+  }
 }
 
 :root {
@@ -29,6 +31,7 @@
   --input-border-color: #a8a8a8;
   --border-radius: 8px;
   --nav-link-color: #cdcdcd;
+  --viewer-color: #124658;
   --error-color: #e60026;
   --fs-xs: 14px;
   --fs-s: 16px;

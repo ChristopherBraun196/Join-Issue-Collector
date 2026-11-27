@@ -88,9 +88,11 @@
   padding: 7px 56px;
   width: 100%;
 
-  &:hover {
-    color: #fff;
-    background: #091931;
+  @media (hover: hover) {
+    &:hover {
+      color: #fff;
+      background: #091931;
+    }
   }
 
   &.sidebar__link--active {
@@ -135,7 +137,7 @@
   right: 0;
   height: 100px;
   background: #f4f4f4;
-  box-shadow: 0px 1px 5px rgb(138, 138, 138);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   font-size: var(--fs-l);
   z-index: 1000;
@@ -177,15 +179,20 @@
 
 .topbar__actions {
   display: flex;
+  align-items: center;
   gap: 16px;
 }
 
 .topbar__help {
+  display: flex;
+  align-items: center;
   transition: all 0.1s ease-out;
 
-  &:hover {
-    transition: all 0.1s ease-in;
-    transform: scale(1.3);
+  @media (hover: hover) {
+    &:hover {
+      transition: all 0.1s ease-in;
+      transform: scale(1.3);
+    }
   }
 }
 
@@ -196,8 +203,10 @@
   color: white;
   font-family: InterBold;
   font-size: var(--fs-m);
-  aspect-ratio: 1/1;
+  width: 40px;
   height: 40px;
+  flex-shrink: 0;
+  overflow: hidden;
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.1s ease-in;
@@ -208,43 +217,62 @@
     display: flex;
   }
 
-  &:hover {
-    border: solid 2px var(--highligted-color);
-    background-color: var(--primary-color);
-    transition: all 0.1s ease-in-out;
-    transform: scale(1.1);
-  }
-}
-
-.topbar__dropdown {
-  display: none;
-
-  &.topbar__dropdown--open {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 24px 18px;
-    position: absolute;
-    top: 100px;
-    right: max(80px, calc(100vw - 1720px));
-    width: 150px;
-    background-color: var(--primary-color);
-    border-radius: 16px 0 16px 16px;
-
-    @media (max-width: 1200px) {
-      right: 40px;
+  @media (hover: hover) {
+    &:hover {
+      border: solid 2px var(--highligted-color);
+      background-color: var(--primary-color);
+      transition: all 0.1s ease-in-out;
+      transform: scale(1.1);
     }
   }
 }
 
+.topbar__dropdown {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 8px;
+  position: absolute;
+  top: 100px;
+  right: max(40px, calc(100vw - 1720px));
+  background-color: var(--primary-color);
+  border-radius: 20px 0 20px 20px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+  visibility: hidden;
+
+  &.topbar__dropdown--open {
+    visibility: visible;
+    transform: translateX(0);
+  }
+
+  @media (max-width: 1200px) {
+    top: 80px;
+    right: 0;
+    transform: translateX(calc(100% + 100vw));
+    transition:
+      transform 0.3s ease,
+      visibility 0.3s;
+  }
+}
+
 .topbar__dropdown-link {
+  padding: 12px 16px;
+  white-space: nowrap;
   font-family: InterRegular;
   color: var(--nav-link-color);
   font-size: var(--fs-s);
 
-  &:hover {
-    color: var(--highligted-color);
+  @media (max-width: 1200px) {
+    font-size: var(--fs-m);
+  }
+
+  &[hidden] {
+    display: none;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: #2b3d59;
+    }
   }
 }
 

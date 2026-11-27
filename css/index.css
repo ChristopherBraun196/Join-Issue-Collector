@@ -154,6 +154,8 @@
 }
 
 .login__back {
+  padding: 0;
+  background: none;
   position: absolute;
   top: 50%;
   left: 12px;
@@ -169,8 +171,10 @@
   transform: translateY(-50%);
   transition: all 0.1s ease-in;
 
-  &:hover {
-    background-color: #eeeeee;
+  @media (hover: hover) {
+    &:hover {
+      background-color: #eeeeee;
+    }
   }
 }
 
@@ -289,129 +293,4 @@
   & .login__eye--on {
     display: block;
   }
-}
-
-.login__error {
-  visibility: hidden;
-  min-height: 20px;
-  margin-top: 4px;
-  padding-left: 4px;
-  font-size: var(--fs-s);
-  color: var(--error-color);
-}
-
-.login__error--visible {
-  visibility: visible;
-}
-
-.login__error--center {
-  padding-left: 0;
-  text-align: center;
-}
-
-.login__accept {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-}
-
-.login__checkbox--invalid {
-  border-radius: 3px;
-  outline: 2px solid var(--error-color);
-}
-
-.login__buttons {
-  display: flex;
-  justify-content: center;
-  gap: 32px;
-  width: 100%;
-
-  @media (max-width: 575px) {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 20px;
-    width: auto;
-  }
-}
-
-.login__btn {
-  height: 48px;
-  padding: 0 24px;
-  border: 1px solid var(--primary-color);
-  border-radius: 8px;
-  font-family: InterBold;
-  font-size: var(--fs-xl);
-  white-space: nowrap;
-  transition: all 0.1s ease-in;
-
-  &:hover {
-    border-color: #177da8;
-    background-color: #177da8;
-    box-shadow: 0 4px 4px 0 #00000040;
-  }
-
-  @media (max-width: 575px) {
-    font-size: var(--fs-s);
-  }
-}
-
-.login__btn--small {
-  height: auto;
-  padding: 15px 16px;
-  font-size: var(--fs-s);
-  line-height: 1.2;
-}
-
-.login__btn--secondary {
-  background-color: white;
-  color: var(--primary-color);
-
-  &:hover {
-    background-color: white;
-    color: #177da8;
-    box-shadow:
-      inset 0 0 0 1px #177da8,
-      0 4px 4px 0 #00000040;
-  }
-}
-
-.login__footer {
-  padding: 16px 16px 40px;
-  text-align: center;
-
-  @media (max-width: 480px) {
-    padding: 16px 16px 20px;
-  }
-}
-
-.login__privacy-link {
-  display: inline-grid;
-  margin: 0 20px;
-  font-size: var(--fs-m);
-  color: #6d6d6d;
-  text-decoration: none;
-  transition: all 0.1s ease-in;
-
-  &::after {
-    content: attr(data-text);
-    height: 0;
-    overflow: hidden;
-    font-family: InterBold;
-    visibility: hidden;
-  }
-
-  &:hover {
-    color: #177da8;
-    font-family: InterBold;
-  }
-
-  @media (max-width: 480px) {
-    margin: 0 10px;
-    font-size: var(--fs-xs);
-  }
-}
-
-.login__signup--hidden,
-.login__signup-mobile--hidden {
-  display: none;
 }

@@ -1,11 +1,15 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
     <title>Join | Summary</title>
     <link rel="stylesheet" href="./css/layout.css" />
     <link rel="stylesheet" href="./css/assets.css" />
+    <link rel="stylesheet" href="./css/contactDialog.css" />
+    <link rel="stylesheet" href="./css/contactDialogForm.css" />
+    <link rel="stylesheet" href="./css/confirmDialog.css" />
     <link rel="stylesheet" href="./css/fonts.css" />
     <link rel="stylesheet" href="./css/standard.css" />
     <link rel="stylesheet" href="./css/summary.css" />
@@ -19,7 +23,7 @@
       <div class="headline">
         <h1 class="headline__title">Join 360</h1>
         <div class="headline__line"></div>
-        <a class="headline__subtitle">Key Metrics at a Glance</a>
+        <p class="headline__subtitle">Key Metrics at a Glance</p>
       </div>
 
       <div class="summary__content">
@@ -78,7 +82,7 @@
           <div class="summary__row summary__row--second">
             <div class="summary__bubble summary__bubble--deadline">
               <div class="summary__urgent">
-                <img src="./assets/icons/urgent_icon.svg" />
+                <img src="./assets/icons/urgent_icon.svg" alt="" />
                 <div class="summary__counter">
                   <div data-count="urgent" class="summary__count"></div>
                   <a>Urgent</a>
@@ -127,6 +131,7 @@
         </div>
       </div>
     </main>
+    <div class="toast toast--content" popover="manual"></div>
     <script type="module" src="./js/pages/summary/summary.js"></script>
   </body>
 </html>

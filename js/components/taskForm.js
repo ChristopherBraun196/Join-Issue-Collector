@@ -1,10 +1,19 @@
-import { getInitials } from "../utils/format.js";
+import { getAvatarContent } from "../utils/avatar.js";
 import { showMessage } from "./toast.js";
 import { loadData } from "../services/database.js";
+import { currentUserReady } from "../services/authGuard.js";
 import { getAddTaskDialogTemplate, getAssignOptionTemplate } from "../templates/addTaskTemplates.js";
 import { validateOnBlur, validateDate, clearFieldError } from "./validation.js";
 import { handleSubtaskAction, handleSubtaskKey, onSubtaskInput } from "./addSubtask.js";
 import { createTask } from "./taskFormData.js";
+import {
+  attachments,
+  addAttachments,
+  initAttachmentDrop,
+  handleAttachmentAction,
+  clearAttachments,
+} from "./attachments.js";
+import { openImageViewer } from "./imageViewer.js";
 
 let addTaskDialog;
 let contacts = [];
@@ -22,6 +31,7 @@ export function initTaskForm(container) {
   container.addEventListener("input", handleTaskFormInput);
   container.addEventListener("keydown", handleTaskFormKey);
   document.addEventListener("click", closeDropdownsOnOutsideClick);
+  initAttachmentDrop(container);
 }
 
 /**
@@ -38,7 +48,9 @@ function handleTaskFormClick(event) {
   if (action === "clear-form") clearTaskForm(event.currentTarget);
   if (action === "close-dialog") closeAddTaskDialog();
   if (action === "toggle-contact") toggleContact(target);
+  if (action === "open-edit-viewer") openImageViewer(attachments, Number(target.dataset.index));
   handleSubtaskAction(action, target);
+  handleAttachmentAction(action, target);
 }
 
 /**
@@ -56,6 +68,7 @@ function handleTaskFormBlur(event) {
  */
 function handleTaskFormChange(event) {
   if (event.target.matches("[data-validate-date]")) validateDate(event.target);
+  if (event.target.matches(".attachments__input")) addAttachments(event.target.files);
 }
 
 /**
@@ -113,6 +126,7 @@ async function finishTaskCreation(container, status) {
  * @param {HTMLElement} container - The container the listener is registered on
  */
 function clearTaskForm(container) {
+  clearAttachments();
   if (container.classList.contains("add-task-dialog")) {
     clearDialogAddTaskForm(container.querySelector("form").dataset.status);
   } else {
@@ -132,6 +146,7 @@ export function openAddTaskDialog(status, onCreated) {
   main.appendChild(dialogSection);
   dialogSection.innerHTML = getAddTaskDialogTemplate(status);
   initTaskForm(dialogSection);
+  clearAttachments();
   dialogSection.showModal();
   addTaskDialog = dialogSection;
   onTaskCreated = onCreated;
@@ -223,7 +238,7 @@ function setPriority(clickedButton) {
 async function loadContacts() {
   const data = (await loadData("/contacts")) || {};
   contacts = Object.entries(data)
-    .map(([id, contact]) => ({ id, name: contact.name, color: contact.avatarColor }))
+    .map(([id, contact]) => ({ id, name: contact.name, color: contact.avatarColor, photo: contact.photo }))
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 
@@ -233,9 +248,10 @@ async function loadContacts() {
  */
 export async function renderContacts() {
   await loadContacts();
+  await currentUserReady;
   const container = document.querySelector(".dropdown--assigned .dropdown__list");
   if (!container) return;
-  container.innerHTML = contacts.map((contact) => getAssignOptionTemplate(contact, getInitials(contact.name))).join("");
+  container.innerHTML = contacts.map((contact) => getAssignOptionTemplate(contact, getAvatarContent(contact))).join("");
 }
 
 /**
@@ -247,10 +263,8 @@ function toggleDropdown(id) {
   const trigger = wrapper.querySelector(".dropdown__trigger");
   const dropdown = wrapper.querySelector(".dropdown__menu");
   const isOpen = dropdown.classList.contains("dropdown__menu--open");
-
   document.querySelectorAll(".dropdown__menu--open").forEach((d) => d.classList.remove("dropdown__menu--open"));
   document.querySelectorAll(".dropdown__trigger--open").forEach((t) => t.classList.remove("dropdown__trigger--open"));
-
   if (!isOpen) {
     dropdown.classList.add("dropdown__menu--open");
     trigger.classList.add("dropdown__trigger--open");
@@ -302,7 +316,7 @@ function updateAssignedBadges() {
   badges.innerHTML = "";
   selected.slice(0, limit).forEach((opt) => {
     const avatar = opt.querySelector(".dropdown__avatar");
-    badges.appendChild(createBadge(avatar.textContent.trim(), avatar.style.background));
+    badges.appendChild(createBadge(avatar.innerHTML.trim(), avatar.style.background));
   });
   if (selected.length > limit)
     badges.appendChild(createBadge(`+${selected.length - limit}`, "", "task-form__badge--overflow"));
@@ -319,7 +333,7 @@ function createBadge(text, background, modifier = "") {
   const badge = document.createElement("div");
   badge.className = `task-form__badge ${modifier}`.trim();
   badge.style.background = background;
-  badge.textContent = text;
+  badge.innerHTML = text;
   return badge;
 }
 

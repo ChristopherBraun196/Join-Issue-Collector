@@ -17,9 +17,11 @@
     color: #29abe2;
     text-decoration: none;
 
-    &:hover {
-      color: black;
-      transition: all 0.1s ease-in-out;
+    @media (hover: hover) {
+      &:hover {
+        color: black;
+        transition: all 0.1s ease-in-out;
+      }
     }
   }
 
@@ -36,7 +38,8 @@
     font-weight: bold;
   }
 
-  & h3 {
+  & h3,
+  & .legal__section-title {
     font-size: var(--fs-l);
     font-family: InterBold;
   }

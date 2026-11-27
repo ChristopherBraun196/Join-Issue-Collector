@@ -1,4 +1,5 @@
-import { getInitials, capitalize } from "../utils/format.js";
+import { capitalize, getDisplayName } from "../utils/format.js";
+import { getAvatarContent } from "../utils/avatar.js";
 
 /**
  * Returns the HTML template for the task edit dialog.
@@ -11,44 +12,101 @@ import { getInitials, capitalize } from "../utils/format.js";
 export function getDialogBoardEditTemplate(element, priorityButtons, assignedHTML, subtasksHTML) {
   return `
     <header class="task-dialog__header">
-        <div class="task-dialog__top">
-            <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
-           <button class="task-dialog__close" data-action="close-task" data-id="${element.id}">✕</button>
+        <div class="task-dialog__top task-dialog__top--edit">
+            <button class="task-dialog__close" data-action="close-task" data-id="${element.id}" aria-label="Close"><img class="task-dialog__close-icon" src="./assets/icons/close.svg" alt=""></button>
         </div>
     </header>
     <main class="task-dialog__body">
-        <label class="task-edit__label" for="edit-title">Title</label>
-        <input type="text" class="task-edit__input task-edit__input--title" id="edit-title" value="${element.title}" />
-        <label class="task-edit__label" for="edit-description">Description</label>
-        <textarea class="task-edit__input task-edit__input--description" id="edit-description">${element.description}</textarea>
-        <label class="task-edit__label" for="edit-due-date">Due date</label>
-        <input type="date" class="task-edit__input task-edit__input--due-date" id="edit-due-date" value="${element.dueDate}" />
-        <label class="task-edit__label">Priority</label>
-        <div class="task-edit__priority">${priorityButtons}</div>
-        <label class="task-edit__label">Assigned To</label>
-        <div class="task-edit__contacts">${assignedHTML}</div>
-        <label class="task-edit__label">Subtasks</label>
-        <div class="subtask__input-wrap">
-           <input type="text" class="subtask__input" placeholder="Add new subtask"
-              data-id="${element.id}">
-            <div class="subtask__confirm">
-                <button class="subtask__btn" type="button" data-action="clear-subtask-edit">
-                    <img class="subtask__btn-icon" src="./assets/icons/close.svg">
-                </button>
-                <div class="task-edit__divider"></div>
-                <button class="subtask__btn" type="button" data-action="add-subtask-edit" data-id="${element.id}">
-                    <img class="subtask__btn-icon" src="./assets/icons/check-dark.svg">
-                </button>
+        <div class="task-edit__columns">
+            <div class="task-edit__column task-edit__column--left">
+                <div class="task-edit__field">
+                    <label class="task-edit__label" for="edit-title">Title<span class="task-form__required">*</span></label>
+                    <input type="text" class="task-edit__input task-edit__input--title" id="edit-title" value="${element.title}" required data-error-msg="Please enter a title" />
+                    <span class="task-form__error"></span>
+                </div>
+                <div class="task-edit__field">
+                    <label class="task-edit__label" for="edit-description">Description</label>
+                    <textarea class="task-edit__input task-edit__input--description" id="edit-description">${element.description}</textarea>
+                </div>
+                <div class="task-edit__field">
+                    <label class="task-edit__label" for="edit-due-date">Due date<span class="task-form__required">*</span></label>
+                    <input type="date" class="task-edit__input task-edit__input--due-date" id="edit-due-date" value="${element.dueDate}" required data-error-msg="Please pick a due date" />
+                    <span class="task-form__error"></span>
+                </div>
+                <div class="task-edit__field">
+                    <p class="task-edit__label">Prio</p>
+                    <div class="task-edit__priority">${priorityButtons}</div>
+                </div>
+                <div class="task-edit__field">
+                    <p class="task-edit__label">Category<span class="task-form__required">*</span></p>
+                    <div class="dropdown dropdown--category task-edit__category">
+                        <button type="button" class="dropdown__trigger" data-action="toggle-edit-category">
+                            <span class="task-edit__category-label">${element.category}</span>
+                            <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" alt="">
+                        </button>
+                        <div class="dropdown__menu">
+                            <div class="dropdown__list">
+                                <div class="dropdown__option" data-action="select-edit-category" data-value="Technical Task">
+                                    <span class="dropdown__label">Technical Task</span>
+                                </div>
+                                <div class="dropdown__option" data-action="select-edit-category" data-value="User Story">
+                                    <span class="dropdown__label">User Story</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="task-edit__column">
+                <div class="task-edit__field attachments">
+                    <label class="task-edit__label" for="attachmentsInput">Attachments</label>
+                    <div class="attachments__header">
+                        <p class="attachments__hint" id="attachmentsHint">Allowed file types are JPEG and PNG</p>
+                        <button class="attachments__delete-all" type="button" data-action="delete-all-attachments" hidden>
+                            <img class="attachments__delete-icon" src="./assets/icons/delete.svg" alt="">
+                            Delete all
+                        </button>
+                    </div>
+                    <label class="attachments__dropzone">
+                        <span class="attachments__text--desktop">Drag a file or browse</span>
+                        <span class="attachments__text--mobile">Upload file</span>
+                        <svg class="attachments__plus-icon" viewBox="0 0 19 19" aria-hidden="true"><path d="M8 10.6667H0V8H8V0H10.6667V8H18.6667V10.6667H10.6667V18.6667H8V10.6667Z" fill="currentColor"/></svg>
+                        <input class="attachments__input" id="attachmentsInput" type="file" accept="image/jpeg, image/png" multiple aria-describedby="attachmentsHint">
+                    </label>
+                    <span class="attachments__error" role="alert"></span>
+                    <ul class="attachments__list"></ul>
+                </div>
+                <div class="task-edit__field">
+                    <label class="task-edit__label" for="edit-subtask">Subtasks</label>
+                    <div class="subtask__input-wrap">
+                        <input type="text" class="subtask__input" id="edit-subtask" placeholder="Add new subtask" data-id="${element.id}">
+                        <div class="subtask__confirm">
+                            <button class="subtask__btn" type="button" data-action="clear-subtask-edit" aria-label="Cancel">
+                                <img class="subtask__btn-icon" src="./assets/icons/close.svg" alt="">
+                            </button>
+                            <div class="task-edit__divider"></div>
+                            <button class="subtask__btn" type="button" data-action="add-subtask-edit" data-id="${element.id}" aria-label="Add subtask">
+                                <img class="subtask__btn-icon" src="./assets/icons/check-dark.svg" alt="">
+                            </button>
+                        </div>
+                        <label class="subtask__btn subtask__plus" for="edit-subtask" aria-label="Add subtask">
+                            <svg class="subtask__btn-icon" viewBox="0 0 19 19" aria-hidden="true"><path d="M8 10.6667H0V8H8V0H10.6667V8H18.6667V10.6667H10.6667V18.6667H8V10.6667Z" fill="currentColor"/></svg>
+                        </label>
+                    </div>
+                    <ul class="task-dialog__subtasks">${subtasksHTML}</ul>
+                </div>
+                <div class="task-edit__field">
+                    <p class="task-edit__label">Assigned to</p>
+                    <div class="task-edit__contacts">${assignedHTML}</div>
+                </div>
             </div>
         </div>
-        <ul class="task-dialog__subtasks">${subtasksHTML}</ul>
     </main>
-    <footer class="task-dialog__footer">
-        <div class="task-edit__actions">
-            <button class="task-edit__save" data-action="save-task" data-id="${element.id}">
-                Ok <img src="./assets/icons/check.svg" alt="save Button">
-            </button>
-        </div>
+    <footer class="task-dialog__footer task-edit__footer">
+        <p class="task-edit__required-hint"><span class="task-form__required">*</span>This field is required</p>
+        <button class="task-edit__save" data-action="save-task" data-id="${element.id}">
+            Ok <img src="./assets/icons/check.svg" alt="">
+        </button>
     </footer>
   `;
 }
@@ -72,7 +130,7 @@ function getPriorityActiveClass(priority, currentPriority) {
 export function getPriorityButtonTemplate(priority, currentPriority) {
   const active = getPriorityActiveClass(priority, currentPriority);
   return `<button class="task-edit__priority-btn ${active}" data-priority="${priority}" data-action="set-edit-priority">
-    ${capitalize(priority)} <span><img class="task-edit__priority-img" src="./assets/icons/priority-${priority}.svg" /></span>
+    ${capitalize(priority)} <span><img class="task-edit__priority-img" src="./assets/icons/priority-${priority}.svg" alt="" /></span>
   </button>`;
 }
 
@@ -86,9 +144,9 @@ export function getPriorityButtonTemplate(priority, currentPriority) {
 export function getContactOptionTemplate(id, contact, checked) {
   return `
     <div class="dropdown__option" data-action="toggle-edit-contact" data-id="${id}">
-      <span class="task-edit__option-avatar" style="background:${contact.avatarColor}">${getInitials(contact.name)}</span>
-      <span class="dropdown__label">${contact.name}</span>
-      <input type="checkbox" value="${id}" ${checked} style="margin-left:auto" />
+      <span class="task-edit__option-avatar" style="background:${contact.avatarColor}">${getAvatarContent(contact)}</span>
+      <span class="dropdown__label">${getDisplayName({ id, name: contact.name })}</span>
+      <input type="checkbox" value="${id}" ${checked} style="margin-left:auto" aria-label="Assign ${contact.name}" />
     </div>`;
 }
 
@@ -98,7 +156,7 @@ export function getContactOptionTemplate(id, contact, checked) {
  * @returns {string} HTML string of the contact badge
  */
 export function getContactBadgeTemplate(contact) {
-  return `<div class="task-edit__badge" style="background:${contact.avatarColor}">${getInitials(contact.name)}</div>`;
+  return `<div class="task-edit__badge" style="background:${contact.avatarColor}">${getAvatarContent(contact)}</div>`;
 }
 
 /**
@@ -110,10 +168,10 @@ export function getContactBadgeTemplate(contact) {
 export function getAssignedContactsEditTemplate(optionsHTML, badgesHTML) {
   return `
     <div class="dropdown">
-      <div class="dropdown__trigger" data-action="toggle-edit-dropdown">
+      <button type="button" class="dropdown__trigger" data-action="toggle-edit-dropdown">
         <span>Select contacts to assign</span>
-        <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow">
-      </div>
+        <img src="./assets/icons/arrow_drop_down.svg" class="dropdown__arrow" alt="">
+      </button>
       <div class="dropdown__menu">
         <div class="dropdown__list">${optionsHTML}</div>
       </div>
@@ -134,12 +192,12 @@ export function getSubtaskEditItemTemplate(subtask, taskId, index) {
     <li class="task-edit__subtask" data-task-id="${taskId}" data-index="${index}">
       <span class="subtask__text" data-action="edit-subtask-edit">${subtask.title}</span>
       <div class="subtask__item-actions">
-        <button class="subtask__btn" type="button" data-action="edit-subtask-edit">
-          <img class="subtask__btn-icon" src="./assets/icons/edit.svg">
+        <button class="subtask__btn" type="button" data-action="edit-subtask-edit" aria-label="Edit subtask">
+          <img class="subtask__btn-icon" src="./assets/icons/edit.svg" alt="">
         </button>
         <div class="subtask__divider"></div>
-        <button class="subtask__btn" type="button" data-action="delete-subtask-edit" data-id="${taskId}" data-index="${index}">
-          <img class="subtask__btn-icon" src="./assets/icons/delete.svg">
+        <button class="subtask__btn" type="button" data-action="delete-subtask-edit" data-id="${taskId}" data-index="${index}" aria-label="Delete subtask">
+          <img class="subtask__btn-icon" src="./assets/icons/delete.svg" alt="">
         </button>
       </div>
     </li>
@@ -155,12 +213,12 @@ export function getSubtaskEditingStateTemplate(currentText) {
   return `
     <input class="subtask__edit-input" type="text" value="${currentText}">
     <div class="subtask__item-actions">
-      <button class="subtask__btn" type="button" data-action="remove-subtask-edit">
-        <img class="subtask__btn-icon" src="./assets/icons/delete.svg">
+      <button class="subtask__btn" type="button" data-action="remove-subtask-edit" aria-label="Delete subtask">
+        <img class="subtask__btn-icon" src="./assets/icons/delete.svg" alt="">
       </button>
       <div class="subtask__divider"></div>
-      <button class="subtask__btn" type="button" data-action="confirm-subtask-edit">
-        <img class="subtask__btn-icon" src="./assets/icons/check-dark.svg">
+      <button class="subtask__btn" type="button" data-action="confirm-subtask-edit" aria-label="Save subtask">
+        <img class="subtask__btn-icon" src="./assets/icons/check-dark.svg" alt="">
       </button>
     </div>
   `;

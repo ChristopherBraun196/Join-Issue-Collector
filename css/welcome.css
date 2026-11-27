@@ -108,6 +108,7 @@
 
   @media (max-width: 768px) {
     font-size: var(--fs-m);
+    margin-bottom: 22px;
   }
 }
 
@@ -128,6 +129,10 @@
   flex-direction: column;
   align-items: center;
   gap: 24px;
+
+  @media (max-width: 375px) {
+    gap: 14px;
+  }
 }
 
 .welcome__option-title {
@@ -141,6 +146,11 @@
 
   @media (max-width: 480px) {
     font-size: var(--fs-m);
+  }
+
+  @media (max-width: 375px) {
+    font-size: var(--fs-s);
+    white-space: nowrap;
   }
 }
 
@@ -171,10 +181,12 @@
   color: white;
   transition: all 0.1s ease-in;
 
-  &:hover {
-    color: var(--highligted-color);
-    font-weight: bold;
-    transform: scale(1.05);
+  @media (hover: hover) {
+    &:hover {
+      color: var(--highligted-color);
+      font-weight: bold;
+      transform: scale(1.05);
+    }
   }
 
   @media (max-width: 480px) {
@@ -205,9 +217,11 @@
   background-color: #177da8;
   color: white;
 
-  &:hover {
-    background-color: var(--highligted-color);
-    box-shadow: 0 4px 4px 0 #00000050;
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--highligted-color);
+      box-shadow: 0 4px 4px 0 #00000050;
+    }
   }
 }
 
@@ -216,8 +230,10 @@
   background-color: white;
   color: var(--primary-color);
 
-  &:hover {
-    border-color: var(--highligted-color);
-    box-shadow: 0 4px 4px 0 #00000050;
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--highligted-color);
+      box-shadow: 0 4px 4px 0 #00000050;
+    }
   }
 }
